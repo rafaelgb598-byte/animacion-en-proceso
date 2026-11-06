@@ -25,6 +25,8 @@ import { DURATION as MIL_V2_DURATION, FPS as MIL_V2_FPS } from "./videos/03-1000
 import { ContactSheet as MilAnosV2Sheet, UEP_SHEET_H, UEP_SHEET_W } from "./videos/03-1000-anos/v2/componentes/debug/ContactSheet";
 import { MilAnosCelularV3, milAnosV3Schema } from "./videos/03-1000-anos/final/MilAnosCelularV3";
 import { DURATION as MIL_V3_DURATION, FPS as MIL_V3_FPS } from "./videos/03-1000-anos/final/timeline";
+import { MilAnosCelularV4, milAnosV4Schema } from "./videos/03-1000-anos/v4/MilAnosCelularV4";
+import { DURATION as MIL_V4_DURATION, FPS as MIL_V4_FPS } from "./videos/03-1000-anos/v4/timeline";
 import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
 
 export const RemotionRoot: React.FC = () => {
@@ -99,6 +101,16 @@ export const RemotionRoot: React.FC = () => {
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="1000-anos">
+        <Composition
+          id="MilAnosCelularV4"
+          component={MilAnosCelularV4}
+          schema={milAnosV4Schema}
+          durationInFrames={MIL_V4_DURATION}
+          fps={MIL_V4_FPS}
+          width={1080}
+          height={1920}
+          defaultProps={{ showSafeZones: false, showYear: false }}
+        />
         <Composition
           id="MilAnosCelularV3"
           component={MilAnosCelularV3}
