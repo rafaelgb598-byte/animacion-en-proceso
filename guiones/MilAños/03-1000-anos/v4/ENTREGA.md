@@ -1,8 +1,8 @@
 # 1000 años — Celular v4 · Entrega
 
-- **Prueba:** `videosPrueba/1000-anos-celular-v4.mp4`. H.264, 1080 × 1920, 30 fps, 1.327 frames, 44,2 s. Audio a −14,6 LUFS, −1,4 dBTP.
-- **RAW:** `out/1000-anos/v4/1000-anos-celular-v4-raw.mp4`.
-- **Hoja de contactos:** `out/1000-anos/v4/stills/contact-sheet.png`.
+- **Prueba:** `videosPrueba/MilAños/03-1000-anos-celular-v4.mp4`. H.264, 1080 × 1920, 30 fps, 1.327 frames, 44,2 s. Audio a −14,6 LUFS, −1,4 dBTP.
+- **RAW:** `videosPrueba/MilAños/qa/03-1000-anos/v4/03-1000-anos-celular-v4-raw.mp4`.
+- **Hoja de contactos:** `videosPrueba/MilAños/qa/03-1000-anos/v4/stills/contact-sheet.png`.
 - **Composición:** `MilAnosCelularV4` (`src/videos/03-1000-anos/v4/`). La v3 no se tocó.
 
 ## Decisiones del usuario

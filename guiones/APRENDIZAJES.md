@@ -1,0 +1,43 @@
+# Aprendizajes del canal
+
+Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar lo nuevo al cerrar cada video
+(una línea por aprendizaje, con el video de origen). Las reglas fijas están en `CLAUDE.md`; acá va el porqué y los detalles.
+
+## Para todos los canales
+
+- **Gancho = pregunta directa en el fotograma 0**, escrita y narrada a la vez. Plantear una situación («Lo dejás cargando. Nunca volvés.») no alcanza: el espectador no sabe por qué quedarse. *(03 V2 → V3)*
+- **El objeto protagonista, grande.** Si ocupa ~20 % del ancho o hay cielo vacío > 50 % del cuadro, se pierde la historia. *(03 V2)*
+- **Alternar planos** (general + detalle del objeto en cada tramo). Un solo encuadre 40 s se siente «una imagen animada». *(03 V2)*
+- **El momento más fuerte necesita tiempo** (≥ 2,5 s y con voz). Un derrumbe de 0,25 s nadie lo ve. *(03 V2)*
+- **Texto en pantalla ≥ 56 px** en 1080 de ancho, una indicación por vez. Mono de 30 px queda ilegible en el teléfono. *(03 V2)*
+- **Jerarquía de lectura:** título/contador arriba, subtítulo en el carril fijo abajo, como mucho una indicación junto al objeto. *(03 V2)*
+- **Plantar y pagar:** lo que el remate usa («la foto») se nombra antes («la foto sigue ahí adentro»). *(03 V3)*
+- **El loop tiene que cerrar la idea**, no solo empalmar el fotograma: terminar en el plano del inicio con una frase que vuelva a la pregunta. *(03 V2 → V3)*
+- **Rigor:** nada de cifras sin fuente («~1.000.000 de años»); mejor una frase cualitativa verificable. Citar el estudio en pantalla (Huber, Payne & Puto 1982). *(01, 03)*
+- **Cierre útil > golpe triste:** «Tus recuerdos, solo si tienen copia» deja algo para hacer. *(03 V3)*
+- **No mezclar escalas** (contador «1.000 años» y voz «un millón»). *(03 V2)*
+
+## Voz (ElevenLabs)
+
+- Voz del canal: **Isaac – Friendly Young Male** `QmPfzE500cXXHM9uQKGc`. Misma voz y modelo entre versiones para que el timbre empate.
+- **Velocidad natural 1,0.** La voz acelerada sonó forzada (Stroop `-v2-voz-acelerada`, descartada). *(02)*
+- `eleven_multilingual_v2` + mastering suave (`normalize-voice.mjs --drive 6`). `eleven_v4` acepta etiquetas ([curious], [pause]) para tono y pausas. *(01, 02)*
+- **Ahorrar créditos:** reutilizar tomas de versiones anteriores (V3 de 1000 años reutilizó 5 de la V2: 0 créditos) y editar pausas por código en vez de regenerar. Guardar siempre la toma cruda en `voz-original/`. *(03)*
+- La voz entra **durante** el final de una transición, no después: si no, el ritmo queda «salto, frase, silencio». *(03 V2)*
+- Costos de referencia: ~1 crédito por carácter; un Short de 45 s ≈ 400–950 créditos de voz.
+
+## GiroDato (Tomi)
+
+- Fórmula que funcionó: **pregunta/desafío → el espectador participa → giro («nunca cambió») → nombre del efecto + dato con fuente → ejemplo cotidiano → pregunta final que invita a repetir.** *(01, 02)*
+- Interactivos: **la regla se enseña con un ejemplo y cuenta regresiva antes de jugar**; tiempo real para responder (decir «amarillo» lleva ~0,6 s → 1,2–1,4 s por tarjeta, el nivel rápido baja a ~0,9 s). Arrancar sin explicar (`-v3-inicio-rapido`) no funcionó. *(02)*
+- Comparación clave (precios, tarjetas) grande y centrada en la zona segura. *(01, 02)*
+
+## MilAños (sin Tomi)
+
+- Estructura: pregunta → «se corta la luz» → épocas con contador (1, 10, 50, 200, 1.000 años) → lo que queda → **lo que desapareció antes (giro)** → cierre que vuelve a la pregunta. *(03 V3)*
+- Se conserva: contador de años con rueda y barra logarítmica, la luz que cuenta el tiempo (velador → ventana → exterior), deterioro continuo en función de `year`. *(03)*
+- Efectos sintetizados por código (sin licencias) + un **motivo sonoro** para el objeto clave; ambientes con fundidos cruzados, ducking al 40 % bajo la voz. *(03)*
+
+## Ciberseguridad · Otro
+
+- (Todavía sin videos.)

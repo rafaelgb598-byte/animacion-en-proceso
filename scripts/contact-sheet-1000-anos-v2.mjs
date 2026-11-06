@@ -8,7 +8,7 @@ import path from "node:path";
 import process from "node:process";
 import console from "node:console";
 
-const [inDir = "out/1000-anos/v2/stills", output = "out/1000-anos/v2/stills/contact-sheet.png"] = process.argv.slice(2);
+const [inDir = "videosPrueba/MilAños/qa/03-1000-anos-v2/stills", output = "videosPrueba/MilAños/qa/03-1000-anos-v2/stills/contact-sheet.png"] = process.argv.slice(2);
 const tmp = path.resolve("public/videos/03-1000-anos/v2/qa");
 fs.mkdirSync(tmp, { recursive: true });
 for (const f of fs.readdirSync(inDir).filter((n) => /^MilAnosCelularV2-\d{4}\.png$/.test(n))) {

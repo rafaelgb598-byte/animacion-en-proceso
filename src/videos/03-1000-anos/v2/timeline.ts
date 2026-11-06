@@ -167,7 +167,7 @@ export const CAMERA_KEYS = {
   driftY: 2,
 } as const;
 
-/** Voz (Isaac): frame de entrada de cada segmento. Ver produccion/03-1000-anos/v2/guion.json. */
+/** Voz (Isaac): frame de entrada de cada segmento. Ver guiones/MilAños/03-1000-anos/v2/guion.json. */
 export const VOICE_CUES = {
   hook: 12,
   week: 100,

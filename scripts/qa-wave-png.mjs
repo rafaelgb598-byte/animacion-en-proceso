@@ -7,7 +7,7 @@ import process from "node:process";
 import console from "node:console";
 
 const inDir = path.resolve(process.argv[2] ?? "public/videos/03-1000-anos/v2/sfx");
-const outDir = path.resolve(process.argv[3] ?? "out/1000-anos/v2/sfx-waves");
+const outDir = path.resolve(process.argv[3] ?? "videosPrueba/MilAños/qa/03-1000-anos-v2/sfx-waves");
 fs.mkdirSync(outDir, { recursive: true });
 
 const crcTable = Array.from({ length: 256 }, (_, n) => {

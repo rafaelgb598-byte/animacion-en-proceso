@@ -1,6 +1,6 @@
 // QA de imagen del Short Stroop (sección 9): loop, daltonismo, legibilidad y hoja de contactos.
 // Uso: node scripts/qa-stroop.mjs [dirStills] [dirQA] [prefijo] [desde-hasta del desafío difícil]
-//   por defecto: out/stroop/stills out/stroop/qa StroopShort 281-521
+//   por defecto: videosPrueba/GiroDato/qa/02-stroop/stills videosPrueba/GiroDato/qa/02-stroop/qa StroopShort 281-521
 import fs from "node:fs";
 import path from "node:path";
 import console from "node:console";
@@ -8,8 +8,8 @@ import process from "node:process";
 import { blit, canvas, decodePng, downscale, encodePng } from "./lib/png.mjs";
 
 const [argDir, argQa, argPrefix, argRange] = process.argv.slice(2);
-const DIR = argDir ?? "out/stroop/stills";
-const QA = argQa ?? "out/stroop/qa";
+const DIR = argDir ?? "videosPrueba/GiroDato/qa/02-stroop/stills";
+const QA = argQa ?? "videosPrueba/GiroDato/qa/02-stroop/qa";
 const PREFIX = argPrefix ?? "StroopShort";
 const [R0, R1] = (argRange ?? "281-521").split("-").map(Number);
 fs.mkdirSync(QA, { recursive: true });
