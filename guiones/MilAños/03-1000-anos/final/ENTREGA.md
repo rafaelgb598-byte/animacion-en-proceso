@@ -9,7 +9,7 @@
 
 - **Nuevas, 381 créditos en total:** v3hook 48 · v3power 83 · v3remains 47 · v3before 56 · v3photo 86 · v3close 61.
 - **Reutilizadas de la V2 (0 créditos):** year1, year10, year50, year200, year1000.
-- **Tomas originales:** `produccion/03-1000-anos/final/voz-original/`.
+- **Tomas originales:** `guiones/MilAños/03-1000-anos/final/voz-original/`.
 - **Edición:** `node scripts/edit-voz-1000-anos-final.mjs` genera `public/videos/03-1000-anos/final/voz/*.wav` y `src/videos/03-1000-anos/final/voz.json`.
 
 ## Efectos

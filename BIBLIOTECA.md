@@ -36,7 +36,10 @@ videosFinal/                 ← SOLO las versiones finales, listas para subir, 
   GiroDato/                  videos de Tomi (psicología, curiosidades) → todos los de este tipo van acá
   MilAños/                   serie «1000 años» (sin Tomi: qué queda de un objeto con el paso de los siglos)
   Ciberseguridad/  Otro/     (qué va en cada una lo define el usuario)
-produccion/<nn-video>/       ← guiones, prompts, planes y notas de cada video
+guiones/                     ← guiones, prompts, planes y entregas, por canal (mismas 4 carpetas):
+  APRENDIZAJES.md            qué funcionó y qué no (leer antes de escribir un guion)
+  README.md                  índice de todos los videos
+  <canal>/<nn-video>/        guion, prompt-vN, propuesta, ENTREGA, voz-original/
 src/
   canal/                     ← TODO lo reutilizable entre videos
     personaje/               esqueleto, animación, pies (rig, anim, feet, motion, presets)
@@ -105,7 +108,7 @@ Desde el código: `import { SONIDOS, MUSICA } from "…/canal/sonidos/sonidos"` 
 | `biblioteca/imagenes/` | imágenes y texturas reutilizables (vacía por ahora: todo se dibuja en SVG) |
 | `videos/01-efecto-senuelo/` | `voz/` narración Isaac + palabras · `sfx/` efectos propios del video |
 | `videos/02-stroop/` | `v1/voz/` y `final/voz/`: narración (mp3 crudo, masterizado y alineación por carácter) |
-| `videos/03-1000-anos/` | `v2/` y `final/`: `voz/` (Isaac, wav editados) y `sfx/` (sintetizados por código). Tomas originales en `produccion/03-1000-anos/*/voz-original/`. |
+| `videos/03-1000-anos/` | `v2/` y `final/`: `voz/` (Isaac, wav editados) y `sfx/` (sintetizados por código). Tomas originales en `guiones/MilAños/03-1000-anos/*/voz-original/`. |
 
 - Los `.mp3` de efectos son de ElevenLabs Sound Effects; los `.wav`, sintetizados por nuestros scripts (gratis).
 - Al agregar un sonido: copiarlo a la categoría que corresponda y correr `node scripts/catalogo-biblioteca.mjs`.
@@ -119,7 +122,7 @@ La clave va solo por variable de entorno.
 
 ## 4. Cómo hacer un video nuevo
 
-1. **Guion y voz.** Guion en `produccion/<nn-video>/` → voz ElevenLabs en `public/videos/<nn-video>/voz/` (con alineación por carácter).
+1. **Guion y voz.** Leer `guiones/APRENDIZAJES.md`. Guion en `guiones/<canal>/<nn-video>/` → voz ElevenLabs en `public/videos/<nn-video>/voz/` (con alineación por carácter).
 2. **Copiar la plantilla.** `src/videos/<plantilla>/final/` → `src/videos/<nn-video>/final/`. Cambiar textos y tiempos (todo fotograma con nombre en `timeline.ts`).
 3. **Escena.** Reusar el set o armar uno nuevo; objetos en `cafe.ts` (posiciones, apariciones, carteles).
 4. **Cámara.** Encuadres con la función `frame(cx, cy, zoom)` para comparaciones centradas; cortes `cut: true`.

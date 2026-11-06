@@ -15,6 +15,11 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - Voz a velocidad natural (1,0), mastering suave. Tomi mueve la boca con la voz (`lipsync.ts`).
 - Videos interactivos: la regla se entiende antes de jugar (ejemplo + cuenta regresiva) y hay tiempo real para responder.
 
+## Guiones y aprendizaje continuo
+- Todo lo escrito de cada video (guion, prompts, propuesta, ENTREGA, tomas de voz originales) va en `guiones/<canal>/<nn-video>/` (mismas 4 carpetas que `videosFinal/`).
+- **Antes de escribir un guion, leer `guiones/APRENDIZAJES.md`** y el índice `guiones/README.md`; para un video nuevo, partir del guion y del código del video más parecido en vez de empezar de cero (ahorra tokens y créditos).
+- **Al cerrar cada versión/video, actualizar `APRENDIZAJES.md`** (qué funcionó, qué el usuario rechazó y por qué, créditos gastados) y su fila en `guiones/README.md`.
+
 ## Trabajo
 - Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Cada render de video de prueba va a `videosPrueba/<canal>/` (mismas 4 carpetas que `videosFinal/`; nombre `<nn>-<video>-vN.mp4`, sin sobrescribir: numerar `-v2`, `-v3`…). Solo cuando el usuario dice que es la versión final, se decide con él y se mueve a `videosFinal/<canal>/`. Stills, hojas de contacto y QA van a `videosPrueba/<canal>/qa/<nn-video>/` y se borran cuando el video queda final. **No se usa `out/`** (nada de renders sueltos en `out/` ni en `src/`).
 - `videosFinal/` tiene 4 carpetas: `GiroDato`, `MilAños`, `Ciberseguridad`, `Otro`. **Los videos de Tomi (como el efecto señuelo y el Stroop) van siempre a `GiroDato/`.** Los videos de la serie **«1000 años»** (sin Tomi: objetos que envejecen; código en `src/videos/03-1000-anos/`, composiciones `MilAnos…`) van a `MilAños/`. Para otros tipos de video, preguntar al usuario dónde van.

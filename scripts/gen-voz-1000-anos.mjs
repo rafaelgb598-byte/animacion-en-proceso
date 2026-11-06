@@ -13,7 +13,7 @@ if (!KEY) {
   process.exit(1);
 }
 const VOICE = "QmPfzE500cXXHM9uQKGc";
-const guion = JSON.parse(fs.readFileSync("produccion/03-1000-anos/v2/guion.json", "utf8"));
+const guion = JSON.parse(fs.readFileSync("guiones/MilAños/03-1000-anos/v2/guion.json", "utf8"));
 const OUT = path.resolve("public/videos/03-1000-anos/v2/voz");
 fs.mkdirSync(OUT, { recursive: true });
 const wordsFile = path.join(OUT, "palabras.json");
