@@ -24,7 +24,15 @@ export const DIM = {
   headRy: 84,
   sole: 25, // del tobillo al piso
   palm: 14,
+  /** separación lateral de hombros y caderas (de frente) */
+  shoulderX: 40,
+  hipX: 24,
+  /** del centro de la cabeza al mentón */
+  chinY: 72,
 };
+
+/** Proporciones del esqueleto (V1 = DIM). Permite variantes de diseño con el mismo rig. */
+export type Dims = typeof DIM;
 
 export type Vec = { x: number; y: number };
 
@@ -166,31 +174,31 @@ export const localToScene = (p: Pose, v: Vec): Vec => {
   return { x: p.x + v.x * p.scale * fs, y: p.y + v.y * p.scale };
 };
 
-export const computeRig = (p: Pose): Rig => {
+export const computeRig = (p: Pose, d: Dims = DIM): Rig => {
   const t = p.bodyTurn;
 
   // --- Piernas (antes de apoyar en el piso)
   const leg = (h: Vec, lp: LegPose): LegRig => {
-    const knee = add(h, dir(lp.hip), DIM.thigh);
-    const ankle = add(knee, dir(lp.hip - lp.knee), DIM.shin);
+    const knee = add(h, dir(lp.hip), d.thigh);
+    const ankle = add(knee, dir(lp.hip - lp.knee), d.shin);
     return { hip: h, knee, ankle };
   };
-  const lf0 = leg({ x: lerp(-24, -10, t), y: 0 }, p.legFront);
-  const lb0 = leg({ x: lerp(24, 14, t), y: 0 }, p.legBack);
+  const lf0 = leg({ x: lerp(-d.hipX, (-d.hipX * 10) / 24, t), y: 0 }, p.legFront);
+  const lb0 = leg({ x: lerp(d.hipX, (d.hipX * 14) / 24, t), y: 0 }, p.legBack);
 
   // El pie más bajo toca el piso: agacharse baja el cuerpo automáticamente
   // y al caminar el rebote vertical aparece solo.
   // V3: con hipHeight la altura de la cadera es explícita y los pies se resuelven con IK.
   const ground =
-    p.hipHeight !== undefined ? -p.hipHeight - p.hop : -(Math.max(lf0.ankle.y, lb0.ankle.y) + DIM.sole) - p.hop;
+    p.hipHeight !== undefined ? -p.hipHeight - p.hop : -(Math.max(lf0.ankle.y, lb0.ankle.y) + d.sole) - p.hop;
   const G = (v: Vec): Vec => ({ x: v.x, y: v.y + ground });
   const legIK = (l0: LegRig, lp: LegPose): LegRig => {
     const hip = G(l0.hip);
     if (!lp.ik) return { hip, knee: G(l0.knee), ankle: G(l0.ankle) };
     const target = sceneToLocal(p, lp.ik);
-    const sol = solveIK(hip, target, DIM.thigh, DIM.shin, -1);
-    const knee = add(hip, dir(sol.tu), DIM.thigh);
-    const ankle = add(knee, dir(sol.tf), DIM.shin);
+    const sol = solveIK(hip, target, d.thigh, d.shin, -1);
+    const knee = add(hip, dir(sol.tu), d.thigh);
+    const ankle = add(knee, dir(sol.tf), d.shin);
     return { hip, knee, ankle };
   };
   const legF = legIK(lf0, p.legFront);
@@ -201,14 +209,14 @@ export const computeRig = (p: Pose): Rig => {
   const sx = 1 / Math.sqrt(p.squash);
   const T = (lx: number, ly: number) => G(rotP({ x: lx * sx, y: ly * sy }, p.lean));
 
-  const neck = T(0, DIM.neckY);
+  const neck = T(0, d.neckY);
   const shrugY = -p.shrug * 12;
-  const shF = T(lerp(-40, -22, t), DIM.shoulderY + shrugY);
-  const shB = T(lerp(40, 24, t), DIM.shoulderY + shrugY);
+  const shF = T(lerp(-d.shoulderX, (-d.shoulderX * 22) / 40, t), d.shoulderY + shrugY);
+  const shB = T(lerp(d.shoulderX, (d.shoulderX * 24) / 40, t), d.shoulderY + shrugY);
 
   const headAngle = p.lean + p.headTilt;
-  const headCenter = add(neck, rotP({ x: 0, y: DIM.headCenter }, headAngle));
-  const chin = add(headCenter, rotP({ x: p.headTurn * 26, y: 72 }, headAngle));
+  const headCenter = add(neck, rotP({ x: 0, y: d.headCenter }, headAngle));
+  const chin = add(headCenter, rotP({ x: p.headTurn * 26, y: d.chinY }, headAngle));
 
   const arm = (sh: Vec, ap: ArmPose): ArmRig => {
     let tu = ap.shoulder - p.lean;
@@ -219,19 +227,19 @@ export const computeRig = (p: Pose): Rig => {
       if (ik.space === "scene") target = sceneToLocal(p, ik);
       else if (ik.space === "chin") target = add(chin, rotP({ x: ik.x, y: ik.y }, headAngle));
       else target = T(ik.x, ik.y);
-      const sol = solveIK(sh, target, DIM.upperArm, DIM.foreArm, ik.bend ?? 1);
+      const sol = solveIK(sh, target, d.upperArm, d.foreArm, ik.bend ?? 1);
       tu = tu + angDiff(tu, sol.tu) * ik.weight;
       te = te + angDiff(te, sol.tf) * ik.weight;
     }
-    const el = add(sh, dir(tu), DIM.upperArm);
-    const wr = add(el, dir(te), DIM.foreArm);
+    const el = add(sh, dir(tu), d.upperArm);
+    const wr = add(el, dir(te), d.foreArm);
     let handAng = te + ap.wrist + (ap.wristDrag ?? 0);
     if (ap.aim && ap.aim.weight > 0.0001) {
       const a = sceneToLocal(p, ap.aim);
       const want = (Math.atan2(a.x - wr.x, a.y - wr.y) / R);
       handAng = handAng + angDiff(handAng, want) * ap.aim.weight;
     }
-    const palm = add(wr, dir(handAng), DIM.palm);
+    const palm = add(wr, dir(handAng), d.palm);
     return { sh, el, wr, palm, handAng };
   };
 
