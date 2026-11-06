@@ -72,7 +72,7 @@ const camTf = (c: Cam, depth = 1) => {
 /* ------------------------------ elementos ------------------------------ */
 
 /** cartel de precio colgado: tamaño + precio en US$ (coma decimal) */
-const Tag: React.FC<{ size: string; price: string; highlight?: number; glow?: number; dim?: number; scale?: number }> = ({
+export const Tag: React.FC<{ size: string; price: string; highlight?: number; glow?: number; dim?: number; scale?: number }> = ({
   size,
   price,
   highlight = 0,
@@ -104,7 +104,7 @@ const ChalkPath: React.FC<{ d: string; t: number; color?: string; w?: number }> 
   t <= 0 ? null : (
     <path d={d} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - clamp(t, 0, 1)} stroke={color} strokeWidth={w} fill="none" strokeLinecap="round" strokeLinejoin="round" />
   );
-const ChalkText: React.FC<{ x: number; y: number; t: number; size: number; color?: string; children: string }> = ({ x, y, t, size, color = "#FFF4D6", children }) =>
+export const ChalkText: React.FC<{ x: number; y: number; t: number; size: number; color?: string; children: string }> = ({ x, y, t, size, color = "#FFF4D6", children }) =>
   t <= 0 ? null : (
     <text
       x={x}
@@ -124,7 +124,7 @@ const ChalkText: React.FC<{ x: number; y: number; t: number; size: number; color
     </text>
   );
 
-const Sparkle: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) =>
+export const Sparkle: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s }) =>
   s <= 0 ? null : (
     <path
       transform={`translate(${x},${y}) scale(${s})`}
