@@ -41,8 +41,10 @@ export type SubtitulosProps = {
   italicas?: string[];
   /** visibilidad por fotograma (rangos ocultos) */
   visible?: (f: number) => boolean;
-  /** solo para comparar fuentes en el laboratorio */
+  /** fuente de los subtítulos (por defecto la del repo; otro canal puede pasar la suya) */
   fuente?: Fuente;
+  /** color de la palabra clave (por defecto el amarillo del repo, `COLOR.enfasis`) */
+  colorEnfasis?: string;
   debug?: boolean;
 };
 
@@ -113,7 +115,19 @@ const qaActivo = () => {
     return false;
   }
 };
-const useVolcadoQA = (ref: React.RefObject<SVGGElement | null>, f: number, paginas: Pagina[] | null, fuente: Fuente, remates: string[], enfasis: string[]) => {
+/** texto visible FUERA de los subtítulos (para las listas de prohibidas «solo pantalla» de un canal) */
+const textoPantalla = () => {
+  const out: string[] = [];
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const el = n.parentElement;
+    if (!el || el.closest('[data-capa="subtitulos"]')) continue;
+    const t = (n.textContent ?? "").trim();
+    if (t) out.push(t);
+  }
+  return out.join(" ¦ ");
+};
+const useVolcadoQA = (ref: React.RefObject<SVGGElement | null>, f: number, paginas: Pagina[] | null, fuente: Fuente, remates: string[], enfasis: string[], colorEnfasis: string) => {
   useLayoutEffect(() => {
     if (!paginas || !qaActivo()) return;
     const g = ref.current;
@@ -126,7 +140,7 @@ const useVolcadoQA = (ref: React.RefObject<SVGGElement | null>, f: number, pagin
       y = ty;
       renglones[renglones.length - 1] = `${renglones[renglones.length - 1]} ${t.textContent ?? ""}`.trim();
     }
-    const amarillas = textos.filter((t) => (t.getAttribute("fill") ?? "").toUpperCase() === COLOR.enfasis.toUpperCase()).map((t) => t.textContent);
+    const amarillas = textos.filter((t) => (t.getAttribute("fill") ?? "").toUpperCase() === colorEnfasis.toUpperCase()).map((t) => t.textContent);
     const recta = textos.find((t) => getComputedStyle(t).fontStyle !== "italic");
     const familia = recta ? getComputedStyle(recta).fontFamily : null;
     const visibles = Array.from(document.querySelectorAll("svg text")).map((t) => t.textContent ?? "").concat(document.body.innerText ?? "");
@@ -145,12 +159,13 @@ const useVolcadoQA = (ref: React.RefObject<SVGGElement | null>, f: number, pagin
           remates,
           enfasis,
           textosVisibles: visibles.join(" ¦ "),
+          textosPantalla: textoPantalla(),
         }),
     );
   });
 };
 
-export const Subtitulos: React.FC<SubtitulosProps> = ({ f, palabras, enfasis = [], remates = [], italicas = [], visible, fuente = FUENTE_SUBTITULOS, debug = false }) => {
+export const Subtitulos: React.FC<SubtitulosProps> = ({ f, palabras, enfasis = [], remates = [], italicas = [], visible, fuente = FUENTE_SUBTITULOS, colorEnfasis = COLOR.enfasis, debug = false }) => {
   const { fps } = useVideoConfig();
   const ref = useRef<SVGGElement>(null);
   const lista = useFuenteLista(fuente);
@@ -158,7 +173,7 @@ export const Subtitulos: React.FC<SubtitulosProps> = ({ f, palabras, enfasis = [
   const paginas = usePaginas(palabras, { fuente, italicas: ital, remates, lista });
   const oculto = !paginas || (visible && !visible(f));
   const pag = oculto ? null : (paginas as Pagina[]).find((p) => f >= p.f0 && f < p.f1);
-  useVolcadoQA(ref, f, paginas, fuente, remates, enfasis);
+  useVolcadoQA(ref, f, paginas, fuente, remates, enfasis, colorEnfasis);
   if (!paginas) return null;
   if (!pag) return <g ref={ref} />;
 
@@ -210,7 +225,7 @@ export const Subtitulos: React.FC<SubtitulosProps> = ({ f, palabras, enfasis = [
               fontStyle={it ? "italic" : "normal"}
               fontSize={it ? size * 1.08 : size}
               letterSpacing={it ? 0 : LETRA_ESPACIADO}
-              fill={amarillas.has(i) ? COLOR.enfasis : COLOR.texto}
+              fill={amarillas.has(i) ? colorEnfasis : COLOR.texto}
               stroke={COLOR.contorno}
               strokeWidth={CONTORNO}
               paintOrder="stroke"

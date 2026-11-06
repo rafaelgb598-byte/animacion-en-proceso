@@ -40,6 +40,15 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - Se conserva: contador de años con rueda y barra logarítmica, la luz que cuenta el tiempo (velador → ventana → exterior), deterioro continuo en función de `year`. *(03)*
 - Efectos sintetizados por código (sin licencias) + un **motivo sonoro** para el objeto clave; ambientes con fundidos cruzados, ducking al 40 % bajo la voz. *(03)*
 
-## Ciberseguridad · Otro
+## Ciberseguridad («Anatomía de una estafa»)
+
+- **El texto pide más tiempo del que da el cronograma:** a ~15 caracteres/s, los 677 caracteres del 01 ES son ~45 s de voz en un video de 40 s. Contar caracteres por bloque ANTES de fijar frames y colgar todo `timeline.ts` del inicio de cada bloque de voz. *(01 v1)*
+- **Teléfono 2.5D con burbujas de 40 px:** con el carril de subtítulos libre a escala 1,06, el teléfono no puede pasar de ~580 × 900; renglones de burbuja escritos a mano (≤ 17 caracteres) y la hora en el mismo renglón para que entren dos mensajes. *(01 v1)*
+- **Mesa a 52°:** el texto del teléfono acostado se achata (se lee poco); lo que se lee en la autopsia son los marcadores y los subtítulos. Los marcadores de pie sobre la mesa se ven de canto con cámara cenital: se levantan al subir a la defensa. *(01 v1)*
+- `<Freeze>` dentro de un `<Still>` no pasa del frame 0: la hoja de contactos va como `Composition` y se renderiza con `remotion still`. *(01 v1)*
+- `fontStretch` no condensa Archivo variable cargada con `loadVariableFont`: usar `fontVariationSettings: "'wdth' 75"`. *(01 v1)*
+- Lista de marcas reales «solo pantalla» (`PROHIBIDAS_PANTALLA`): la voz puede decir «WhatsApp», la imagen no; el QA la busca como palabra entera para no confundir «Plin» con «disciplina». *(01 v1)*
+
+## Otro
 
 - (Todavía sin videos.)

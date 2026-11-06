@@ -27,6 +27,18 @@ import { MilAnosCelularV3, milAnosV3Schema } from "./videos/03-1000-anos/final/M
 import { DURATION as MIL_V3_DURATION, FPS as MIL_V3_FPS } from "./videos/03-1000-anos/final/timeline";
 import { ComparaFuentes } from "./laboratorio/subtitulos/ComparaFuentes";
 import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
+import {
+  ESTAFA_CODIGO_FPS,
+  ESTAFA_CODIGO_FRAMES,
+  EstafaCodigo,
+  EstafaCodigoHojaContactos,
+  HOJA_H as ESTAFA_HOJA_H,
+  HOJA_W as ESTAFA_HOJA_W,
+  estafaCodigoMetadata,
+  estafaCodigoSchema,
+  hojaSchema as estafaHojaSchema,
+} from "./canales/ciberseguridad/episodios/01-codigo-por-error";
+import { SPONSOR_APAGADO } from "./canales/ciberseguridad/marca/SponsorSlot";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -131,6 +143,33 @@ export const RemotionRoot: React.FC = () => {
           height={690}
         />
         <Still id="MilAnosV2HojaContactos" component={MilAnosV2Sheet} width={UEP_SHEET_W} height={UEP_SHEET_H} />
+      </Folder>
+      <Folder name="ciberseguridad">
+        {(["es", "en"] as const).map((lang) => (
+          <Composition
+            key={lang}
+            id={lang === "es" ? "EstafaCodigoES" : "EstafaCodigoEN"}
+            component={EstafaCodigo}
+            schema={estafaCodigoSchema}
+            calculateMetadata={estafaCodigoMetadata}
+            durationInFrames={ESTAFA_CODIGO_FRAMES}
+            fps={ESTAFA_CODIGO_FPS}
+            width={1080}
+            height={1920}
+            defaultProps={{ lang, showSafeZones: false, capa: "todo" as const, sponsor: SPONSOR_APAGADO }}
+          />
+        ))}
+        {/* hoja de contactos: Composition (no Still) para que <Freeze> pueda ir a cualquier frame; se renderiza con `remotion still` */}
+        <Composition
+          id="EstafaCodigoHojaContactos"
+          component={EstafaCodigoHojaContactos}
+          schema={estafaHojaSchema}
+          defaultProps={{ lang: "es" as const }}
+          durationInFrames={ESTAFA_CODIGO_FRAMES}
+          fps={ESTAFA_CODIGO_FPS}
+          width={ESTAFA_HOJA_W}
+          height={ESTAFA_HOJA_H}
+        />
       </Folder>
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />

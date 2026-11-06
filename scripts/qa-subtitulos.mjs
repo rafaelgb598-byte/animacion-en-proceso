@@ -1,6 +1,6 @@
 // QA de subtítulos que mide los PÍXELES renderizados (no reutiliza cajas ni medidas del sistema de subtítulos).
-// Uso: npm run qa:subs -- <Composicion>      (EfectoSenueloTomiV2 | GiroDatoStroopV2)
-// Salida: videosPrueba/GiroDato/qa/<nn-video>/subtitulos/{reporte.json, reporte.md, paginas.png}
+// Uso: npm run qa:subs -- <Composicion>      (EfectoSenueloTomiV2 | GiroDatoStroopV2 | EstafaCodigoES | EstafaCodigoEN)
+// Salida: videosPrueba/<canal>/qa/<nn-video>/subtitulos[-<sufijo>]/{reporte.json, reporte.md, paginas.png}
 // Código de salida ≠ 0 si falla cualquier prueba.
 //
 // Por cada página: renderiza el fotograma del medio y el de máxima escala de entrada con
@@ -16,17 +16,20 @@ import process from "node:process";
 import console from "node:console";
 import { blit, canvas, decodePng, downscale, encodePng } from "./lib/png.mjs";
 
+// canal (carpeta de videosPrueba), familia de la fuente y lista «solo pantalla» son opcionales: por defecto, los de GiroDato
 const COMPS = {
   EfectoSenueloTomiV2: { nn: "01-efecto-senuelo", props: { debug: false } },
   GiroDatoStroopV2: { nn: "02-stroop", props: { showSafeZones: false, hasVoiceover: true } },
+  EstafaCodigoES: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "es", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "es", showSafeZones: false } },
+  EstafaCodigoEN: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "en", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "en", showSafeZones: false } },
 };
 const comp = process.argv[2];
 if (!COMPS[comp]) {
   console.error(`Uso: npm run qa:subs -- <${Object.keys(COMPS).join(" | ")}>`);
   process.exit(2);
 }
-const { nn, props } = COMPS[comp];
-const OUT = path.resolve(`videosPrueba/GiroDato/qa/${nn}/subtitulos`);
+const { nn, props, canal = "GiroDato", sufijo = null, familia = null, pantalla: listaPantalla = null } = COMPS[comp];
+const OUT = path.resolve(`videosPrueba/${canal}/qa/${nn}/subtitulos${sufijo ? `-${sufijo}` : ""}`);
 const TMP = path.join(OUT, "frames");
 fs.mkdirSync(TMP, { recursive: true });
 
@@ -47,7 +50,11 @@ const C = { tolCentro: 4, x0: Z.centro - Z.anchoMax / 2, x1: Z.centro + Z.anchoM
 const NO_CIERRA = "el la lo los las un una unos unas al del de a en con por para sin sobre entre que y e o u ni pero más muy tan su sus mi tu se me te le les no".split(" ");
 const PROHIBIDAS = JSON.parse(fs.readFileSync("src/canal/qa/prohibidas.ts", "utf8").match(/PROHIBIDAS: string\[\] = (\[[^\]]*\])/)[1]);
 const FUENTE = fs.readFileSync("src/canal/subtitulos/estilo.ts", "utf8").match(/FUENTE_SUBTITULOS = FUENTES\.(\w+)/)[1];
-const FAMILIA = { interTight: "Inter Tight", montserrat: "Montserrat", segoe: "Segoe UI Black" }[FUENTE];
+const FAMILIA = familia ?? { interTight: "Inter Tight", montserrat: "Montserrat", segoe: "Segoe UI Black" }[FUENTE];
+// lista «solo pantalla» del canal (texto visible sin los subtítulos), como palabra entera
+const PANTALLA = listaPantalla ? JSON.parse(fs.readFileSync("src/canal/qa/prohibidas.ts", "utf8").match(/PROHIBIDAS_PANTALLA: Record<string, string\[\]> = (\{[\s\S]*?\n\});/)[1])[listaPantalla] ?? [] : [];
+const escapar = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const enPantalla = (texto) => PANTALLA.filter((pr) => new RegExp(`(^|[^\\p{L}\\p{N}])${escapar(pr)}($|[^\\p{L}\\p{N}])`, "iu").test(texto ?? ""));
 
 const clave = (t) => t.toLowerCase().replace(/[^a-zñáéíóúü0-9]/g, "");
 const norm = (t) => clave(t).normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -175,6 +182,7 @@ for (const [pi, p] of PAGS.entries()) {
       hojas.push({ img: todo.img, b, pagina: pi + 1, ch: ch.donde });
       for (const pr of PROHIBIDAS)
         if ((todo.log?.textosVisibles ?? "").toLowerCase().includes(pr.toLowerCase())) ok("prohibidas", false, `f${fr}: «${pr}» en pantalla`);
+      for (const pr of enPantalla(todo.log?.textosPantalla)) ok("prohibidas", false, `f${fr}: «${pr}» en pantalla (lista del canal)`);
     }
   }
   // texto (lo dibujado)
@@ -204,6 +212,7 @@ const pantalla = [];
 for (let fr = 0; fr < composition.durationInFrames; fr += 30) {
   const t = await render(fr, "todo");
   for (const pr of PROHIBIDAS) if ((t.log?.textosVisibles ?? "").toLowerCase().includes(pr.toLowerCase())) pantalla.push(`f${fr}: «${pr}»`);
+  for (const pr of enPantalla(t.log?.textosPantalla)) pantalla.push(`f${fr}: «${pr}» (lista del canal, sin subtítulos)`);
 }
 await browser.close({ silent: true });
 

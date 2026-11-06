@@ -1,0 +1,42 @@
+// English (neutral). `\n` = fixed line · `[phrase]` = what a marker points at · `{icon}` = SVG icon.
+import type { Textos } from "./tipos";
+
+export const EN: Textos = {
+  recreacion: "RECREATION",
+  caso: "CASE #001",
+  siguiente: "CASE #002 →",
+  rebobinando: "REWINDING",
+  gancho: { pregunta: "DO YOU SEND IT?", opciones: ["SEND", "NO"] },
+  telefono: { hora: "9:41", contacto: "Caro · volleyball", estado: "online", inicial: "C", placeholder: "Message" },
+  notificacion: { app: "Messages", cuando: "now", texto: "Your registration code:", codigo: "482 913", copiar: "Copy", copiado: "Copied", pie: "Don’t share it." },
+  mensajes: {
+    b1: "Sorry! I sent you\na code\n[by mistake] {verguenza}",
+    b2: "Can you send it?\n[It’s urgent]",
+    enviado: "482 913",
+    horas: ["9:14 PM", "9:14 PM", "9:15 PM"],
+  },
+  perdida: { banner: "Your number was\nregistered on\nanother phone", sello: "ACCOUNT LOST" },
+  segundo: { titulo: "Enter the\n6-digit code", numero: "+00 000 000 4821", grupo: "Family", mensaje: "Hi, can you\nlend me money\ntill tomorrow?", autor: "You", hora: "9:17 PM" },
+  grafo: { titulo: "HOW IT SPREADS", caro: "Caro", tu: "You", familia: "Family", voley: "Volleyball" },
+  vidrio: "old chats:\nnot visible",
+  defensa: { titulo: "Settings", ruta: "Settings › Account ›\nTwo-step verification", ajuste: "Two-step\nverification", detalle: "Asks for your PIN when\nyour number is registered" },
+  ficha: { titulo: "IF IT ALREADY HAPPENED", lineas: ["Log back in with a new\ncode → their session\nis closed.", "If asked for a PIN:\nwait 7 days."] },
+  cierre: { cabecera: "SEND THIS TO WHOEVER\nSAYS “I’D NEVER\nFALL FOR IT”", siguiente: "CASE #002 →\n“Hi, I changed my number”" },
+  sponsor: { plantilla: "This case is brought to you by {nombre} · {claim}", etiqueta: "AD" },
+  voz: {
+    v01: { dicho: "A friend asks for a code she sent you by mistake." },
+    v02: { dicho: "Do you send it?" },
+    v03: { dicho: "If you did, you just handed over your WhatsApp." },
+    v04: { dicho: "Let’s rewind." },
+    v05: { dicho: "That code isn’t hers. It’s the key to your account: someone is registering it on another phone, right now." },
+    v06: { dicho: "Why is your friend asking? Because hers was stolen first. That’s how it spreads." },
+    v07: { dicho: "The excuse arrives before the doubt." },
+    v08: { dicho: "And the rush keeps you from thinking." },
+    v09: { dicho: "They can’t read your old chats. They don’t need to: they write in your groups, as you." },
+    v10: { dicho: "The defense: never share a code. And turn on two-step verification: even if they get it, it’s not enough." },
+    v11: { dicho: "If it already happened, log back in with a new code and they’re out." },
+    v12: { dicho: "Send this to whoever says “I’d never fall for it”." },
+  },
+  enfasis: ["code", "key", "spreads", "excuse", "rush", "two-step"],
+  remates: [],
+};
