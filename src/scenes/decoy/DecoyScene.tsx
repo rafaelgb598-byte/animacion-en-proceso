@@ -285,8 +285,9 @@ const camTf = (c: Cam, depth = 1) => {
 /* Escena                                                              */
 /* ------------------------------------------------------------------ */
 
-export const DecoyScene: React.FC = () => {
-  const f = useCurrentFrame();
+export const DecoyScene: React.FC<{ inst?: string; frame?: number }> = ({ inst = "", frame }) => {
+  const current = useCurrentFrame();
+  const f = frame ?? current;
   const pose = buildPose(f);
   const rig = computeRig(pose);
   const cam = camAt(f);
@@ -379,7 +380,7 @@ export const DecoyScene: React.FC = () => {
           <Character
             pose={pose}
             rig={rig}
-            uid="tomi"
+            uid={`tomi${inst}`}
             frontProp={
               held ? (
                 <g transform={`scale(${1 / S}) rotate(${heldTilt})`}>

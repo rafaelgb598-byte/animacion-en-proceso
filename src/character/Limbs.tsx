@@ -52,6 +52,18 @@ export const Hand: React.FC<{
       </g>
     );
   }
+  if (shape === "reach") {
+    // mano abierta y extendida antes de agarrar (los dedos se separan)
+    return (
+      <g>
+        <ellipse cx={side * 17} cy={8} rx={6.5} ry={12} transform={`rotate(${side * -50} ${side * 17} 8)`} {...s} />
+        {[-9, 0, 9].map((x, i) => (
+          <rect key={i} x={x - 5} y={22} width={10} height={24 - Math.abs(x) * 0.5} rx={5} transform={`rotate(${x * 0.9} ${x} 22)`} {...s} />
+        ))}
+        <rect x={-15} y={2} width={30} height={28} rx={13} {...s} />
+      </g>
+    );
+  }
   if (shape === "open") {
     return (
       <g>

@@ -116,3 +116,75 @@ export const wobble = (f: number, start: number, amp: number, freq = 0.45, decay
   const t = f - start;
   return amp * Math.exp(-t / decay) * Math.sin(t * freq);
 };
+
+/* ------------------------------------------------------------------ */
+/* V2: trayectorias en arco, ruido suave y simulaciones                */
+/* ------------------------------------------------------------------ */
+
+export type V2 = { x: number; y: number };
+
+/**
+ * Clave de trayectoria: [fotograma, punto (o función del fotograma), easing, curvatura].
+ * La curvatura desvía el tramo hacia un costado para que las manos viajen en arco
+ * (los movimientos orgánicos casi nunca son líneas rectas).
+ */
+export type PathKey = [number, V2 | ((f: number) => V2), EaseFn?, number?];
+
+export const pathTrack = (f: number, keys: PathKey[]): V2 => {
+  const val = (k: PathKey) => (typeof k[1] === "function" ? k[1](f) : k[1]);
+  if (f <= keys[0][0]) return val(keys[0]);
+  for (let i = 1; i < keys.length; i++) {
+    const k1 = keys[i];
+    if (f <= k1[0]) {
+      const k0 = keys[i - 1];
+      const a = val(k0);
+      const b = val(k1);
+      const t = k1[0] === k0[0] ? 1 : (f - k0[0]) / (k1[0] - k0[0]);
+      const e = (k1[2] ?? ease.inOut)(t);
+      const bulge = k1[3] ?? 0;
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy) || 1;
+      const arc = Math.sin(Math.PI * clamp(e, 0, 1)) * bulge;
+      return { x: a.x + dx * e + (-dy / len) * arc, y: a.y + dy * e + (dx / len) * arc };
+    }
+  }
+  return val(keys[keys.length - 1]);
+};
+
+/** Ruido suave determinista (suma de senos) para cámara en mano y respiración. */
+export const noise = (t: number, seed = 0) =>
+  (Math.sin(t * 0.071 + seed * 1.7) * 0.5 +
+    Math.sin(t * 0.137 + seed * 3.1) * 0.3 +
+    Math.sin(t * 0.291 + seed * 5.3) * 0.2);
+
+/** Resorte amortiguado sobre una serie completa (O(n)). */
+export const springSeries = (
+  signal: number[],
+  stiffness = 0.18,
+  damping = 0.72,
+): number[] => {
+  const out = new Array<number>(signal.length);
+  let x = signal[0];
+  let v = 0;
+  for (let i = 0; i < signal.length; i++) {
+    v = v * damping + (signal[i] - x) * stiffness;
+    x += v;
+    out[i] = x;
+  }
+  return out;
+};
+
+/** Desplaza en el tiempo canales de un objeto (para que las cejas anticipen y la boca llegue después). */
+export const offsetTrack = <T extends Record<string, number>>(
+  f: number,
+  keys: PoseKey<T>[],
+  groups: { keys: (keyof T)[]; offset: number }[],
+): T => {
+  const out = { ...poseTrack(f, keys) } as Record<string, number>;
+  for (const g of groups) {
+    const shifted = poseTrack(f + g.offset, keys) as Record<string, number>;
+    for (const k of g.keys) out[k as string] = shifted[k as string];
+  }
+  return out as T;
+};

@@ -28,7 +28,7 @@ export const DIM = {
 
 export type Vec = { x: number; y: number };
 
-export type HandShape = "relaxed" | "open" | "fist" | "point" | "chin" | "hold";
+export type HandShape = "relaxed" | "open" | "fist" | "point" | "chin" | "hold" | "reach";
 
 export type IKTarget = {
   x: number;
@@ -45,6 +45,10 @@ export type ArmPose = {
   wrist: number;
   hand: HandShape;
   ik?: IKTarget;
+  /** V2: orienta la mano (p. ej. el índice) hacia un punto de la escena. */
+  aim?: { x: number; y: number; weight: number };
+  /** V2: arrastre de la muñeca agregado después de la IK (follow-through). */
+  wristDrag?: number;
 };
 
 export type LegPose = { hip: number; knee: number; foot: number };
@@ -199,7 +203,12 @@ export const computeRig = (p: Pose): Rig => {
     }
     const el = add(sh, dir(tu), DIM.upperArm);
     const wr = add(el, dir(te), DIM.foreArm);
-    const handAng = te + ap.wrist;
+    let handAng = te + ap.wrist + (ap.wristDrag ?? 0);
+    if (ap.aim && ap.aim.weight > 0.0001) {
+      const a = sceneToLocal(p, ap.aim);
+      const want = (Math.atan2(a.x - wr.x, a.y - wr.y) / R);
+      handAng = handAng + angDiff(handAng, want) * ap.aim.weight;
+    }
     const palm = add(wr, dir(handAng), DIM.palm);
     return { sh, el, wr, palm, handAng };
   };

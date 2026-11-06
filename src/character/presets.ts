@@ -200,3 +200,41 @@ export const standing = (x: number, y: number, scale: number): Pose => ({
   blink: 1,
   hairLag: 0,
 });
+
+/* ------------------------------------------------------------------ */
+/* V2: expresiones intermedias para una actuación más progresiva       */
+/* ------------------------------------------------------------------ */
+
+export const FACES_V2 = {
+  /** caminando relajado, de buen humor */
+  stroll: face({ browLiftL: 0.12, browLiftR: 0.1, smile: 0.35, lidL: 0.1, lidR: 0.1, blush: 0.35 }),
+  /** algo le llamó la atención (doble toma) */
+  notice: face({ browLiftL: 0.55, browLiftR: 0.45, eyeScale: 1.06, lidL: 0, lidR: 0, smile: 0.05, mouthOpen: 0.08, mouthWidth: 0.7 }),
+  /** evaluando, todavía sin opinión */
+  weigh: face({ browLiftL: 0.2, browLiftR: -0.05, browAngleL: 3, browAngleR: -5, lidL: 0.12, lidR: 0.18, smile: -0.05, mouthWidth: 0.75, mouthSkew: 0.3 }),
+  /** "mmm…": boca fruncida de costado */
+  hmm: face({
+    browLiftL: 0.55, browLiftR: -0.3, browAngleL: 8, browAngleR: -12,
+    lidL: 0.18, lidR: 0.36, smile: -0.35, mouthWidth: 0.5, mouthSkew: 0.9, blush: 0.2,
+  }),
+  /** pequeño sobresalto por el ruido */
+  startle: face({ browLiftL: 0.9, browLiftR: 0.9, eyeScale: 1.16, pupil: 0.82, lidL: 0, lidR: 0, smile: -0.1, mouthOpen: 0.18, mouthWidth: 0.45 }),
+  /** "¡ah, mirá!" */
+  aha: face({ browLiftL: 0.95, browLiftR: 0.85, browAngleL: 3, browAngleR: 3, eyeScale: 1.1, lidL: 0, lidR: 0, smile: 0.5, mouthOpen: 0.42, mouthWidth: 0.85, blush: 0.45 }),
+  /** comparando con atención: entrecierra un ojo */
+  compare: face({
+    browLiftL: -0.25, browLiftR: 0.4, browAngleL: -13, browAngleR: -1,
+    lidL: 0.36, lidR: 0.18, smile: -0.08, mouthWidth: 0.55, mouthSkew: -0.55, blush: 0.2,
+  }),
+  /** el "clic": empieza a darse cuenta */
+  realize: face({ browLiftL: 0.6, browLiftR: 0.7, eyeScale: 1.12, pupil: 1.1, lidL: 0, lidR: 0, smile: 0.1, mouthOpen: 0.12, mouthWidth: 0.6 }),
+  /** entusiasmo después de la sorpresa */
+  delighted: face({ browLiftL: 0.75, browLiftR: 0.75, lidL: 0, lidR: 0, lowerLid: 0.4, smile: 1, mouthOpen: 0.55, mouthWidth: 1.3, blush: 0.75 }),
+  /** satisfecho con su elección */
+  satisfied: face({ browLiftL: 0.25, browLiftR: 0.25, lidL: 0.3, lidR: 0.3, lowerLid: 0.25, smile: 0.75, mouthWidth: 1.05, mouthSkew: 0.2, blush: 0.55 }),
+  /** de reojo hacia el señuelo: "…un momento" */
+  suspicious: face({
+    browLiftL: -0.3, browLiftR: 0.2, browAngleL: -10, browAngleR: -6,
+    lidL: 0.42, lidR: 0.38, smile: 0.15, mouthWidth: 0.7, mouthSkew: -0.4, blush: 0.4,
+  }),
+};
