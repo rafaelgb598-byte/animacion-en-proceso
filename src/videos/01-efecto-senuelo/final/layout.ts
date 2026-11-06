@@ -67,7 +67,7 @@ export const boardBoxes = (f: number, dy = 0): Box[] => {
   if (rv(b, CUE.suscripciones - 4, 12) > 0.02) out.push(rect(410, 750, 1000, 1015, "suscripciones", dy));
   // Tomi presentador (V2)
   const p0 = presenter(Math.max(0, b));
-  const p = { ...p0, x: p0.x - 125 }; // PRESENTADOR_DX de EfectoSenueloTomiV2
+  const p = p0; // PRESENTADOR_DX = 0 en EfectoSenueloTomiV2
   const r = rigV2(p);
   const hx = p.x + r.headCenter.x * p.scale;
   const hy = p.y + r.headCenter.y * p.scale;

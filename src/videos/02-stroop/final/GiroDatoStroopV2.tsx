@@ -7,6 +7,7 @@ import { snap } from "../../../canal/personaje/tomi-v2/motion2";
 import { SONIDOS } from "../../../canal/sonidos/sonidos";
 import type { Box } from "../../01-efecto-senuelo/final/cafe";
 import { Subtitulos } from "../../../canal/subtitulos/Subtitulos";
+import { PRIMER_PLANO_MESA, PrimerPlano } from "../../../canal/escenarios/PrimerPlano";
 import type { CaptionOpts } from "../../01-efecto-senuelo/historial/subtitulos-v1/captions";
 import type { Word } from "../../01-efecto-senuelo/short-final/words";
 import { RaceExplainer, type RaceGeom } from "../../../canal/componentes/tarjetas/RaceExplainer";
@@ -27,7 +28,7 @@ import { getTomiV2, tomiBoxes } from "./tomi";
 /** capa: "todo" (video) · "subtitulos" (solo subtítulos, fondo transparente) · "escena" (todo menos subtítulos)
  *  · "fondo" (solo mesa, borde, viñeta y grano: con "escena" el QA saca la máscara de Tomi, objetos y textos) */
 export const CAPAS_STROOP = ["todo", "subtitulos", "escena", "fondo"] as const;
-export const giroDatoStroopV2Schema = z.object({ showSafeZones: z.boolean(), hasVoiceover: z.boolean(), capa: z.enum(CAPAS_STROOP).default("todo") });
+export const giroDatoStroopV2Schema = z.object({ showSafeZones: z.boolean(), hasVoiceover: z.boolean(), capa: z.enum(CAPAS_STROOP).default("todo"), primerPlano: z.boolean().default(true) });
 export type GiroDatoStroopV2Props = z.infer<typeof giroDatoStroopV2Schema>;
 export const GIRODATO_STROOP_V2_FRAMES = T.DURATION;
 
@@ -418,7 +419,12 @@ const TableLip: React.FC = () => (
   </g>
 );
 
-export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean; capa?: (typeof CAPAS_STROOP)[number] }> = ({ f, showSafeZones = false, capa = "todo" }) => {
+export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean; capa?: (typeof CAPAS_STROOP)[number]; primerPlano?: boolean }> = ({
+  f,
+  showSafeZones = false,
+  capa = "todo",
+  primerPlano = true,
+}) => {
   const escena = capa !== "subtitulos";
   const obj = capa === "todo" || capa === "escena";
   const subs = capa === "todo" || capa === "subtitulos";
@@ -504,6 +510,8 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean; ca
           <TableLip />
         </g>
         ) : null}
+        {/* mesa en primer plano (escenario, fija en pantalla): el carril de subtítulos queda sobre la mesa */}
+        {escena && primerPlano ? <PrimerPlano estilo={PRIMER_PLANO_MESA} uid="gd" /> : null}
 
         {obj ? (
           <>
@@ -568,11 +576,11 @@ const CUES: Cue[] = [
   { src: SONIDOS["whoosh-suave"], at: T.RETURN[0] - 6, vol: 0.22 },
 ];
 
-export const GiroDatoStroopV2: React.FC<GiroDatoStroopV2Props> = ({ showSafeZones, hasVoiceover, capa = "todo" }) => {
+export const GiroDatoStroopV2: React.FC<GiroDatoStroopV2Props> = ({ showSafeZones, hasVoiceover, capa = "todo", primerPlano = true }) => {
   const f = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <GiroDatoV2Visual f={f} showSafeZones={showSafeZones} capa={capa} />
+      <GiroDatoV2Visual f={f} showSafeZones={showSafeZones} capa={capa} primerPlano={primerPlano} />
       <Audio src={staticFile(SONIDOS["sala-cafe"])} volume={0.05} durationInFrames={T.DURATION} />
       {hasVoiceover
         ? (Object.keys(T.VOICE_AT) as T.VoiceId[]).map((id) => (

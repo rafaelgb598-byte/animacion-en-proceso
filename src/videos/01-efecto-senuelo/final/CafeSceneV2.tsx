@@ -4,6 +4,7 @@ import { CharacterV2 } from "../../../canal/personaje/tomi-v2/CharacterV2";
 import { Cup } from "../../../canal/escenarios/cafeteria/Props";
 import { BackWallV2, COUNTER_TOP, CounterV2, FLOOR, FloorV2, GradeV2, Lamps, Outside, PAL_CHAIN, Sunbeams } from "../../../canal/escenarios/cafeteria/CafeV2";
 import { ChalkPath, ChalkText, NapkinDraped, NapkinHeld, Sparkle, Tag } from "../short-final/CafeScene";
+import { PRIMER_PLANO_CAFE, PrimerPlano } from "../../../canal/escenarios/PrimerPlano";
 import { CUE } from "../short-final/timing";
 import {
   camAt,
@@ -82,7 +83,7 @@ const Snap: React.FC<{ x: number; y: number; t: number }> = ({ x, y, t }) =>
   );
 
 /** `soloFondo`: solo el escenario (afuera, paredes, lámparas, piso, mostrador, luz): máscara de choques del QA de subtítulos. */
-export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boolean }> = ({ f, inst = "", soloFondo = false }) => {
+export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boolean; primerPlano?: boolean }> = ({ f, inst = "", soloFondo = false, primerPlano = true }) => {
   const fr = clamp(f, 0, N - 1);
   const { pose, rig, head } = getCafeV2()[fr];
   const cam = camAt(fr);
@@ -245,6 +246,8 @@ export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boole
         </>
         )}
       </g>
+      {/* mostrador en primer plano (escenario, fijo en pantalla): el carril de subtítulos queda sobre madera */}
+      {primerPlano ? <PrimerPlano estilo={PRIMER_PLANO_CAFE} uid={id("pp")} /> : null}
       <GradeV2 w={W} h={H} />
       {soloFondo ? null : (
       <>

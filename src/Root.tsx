@@ -75,7 +75,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={tomiV2Schema}
-        defaultProps={{ debug: false, capa: "todo" as const }}
+        defaultProps={{ debug: false, capa: "todo" as const, primerPlano: true }}
       />
       <Still id="QATomiV2" component={QATomiV2} width={QA2_W} height={QA2_H} />
       <Composition
@@ -97,7 +97,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={giroDatoStroopV2Schema}
-        defaultProps={{ showSafeZones: false, hasVoiceover: true, capa: "todo" as const }}
+        defaultProps={{ showSafeZones: false, hasVoiceover: true, capa: "todo" as const, primerPlano: true }}
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="1000-anos">
