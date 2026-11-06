@@ -8,7 +8,7 @@ import process from "node:process";
 import console from "node:console";
 
 const [inDir = "videosPrueba/MilAños/qa/03-1000-anos-final/stills", output = "videosPrueba/MilAños/qa/03-1000-anos-final/stills/contact-sheet.png"] = process.argv.slice(2);
-const prefix = "MilAnosCelularV3";
+const prefix = process.env.SHEET_PREFIX ?? "MilAnosCelularV3";
 const tmp = path.resolve("public/videos/03-1000-anos/final/qa");
 fs.mkdirSync(tmp, { recursive: true });
 const files = fs.readdirSync(inDir).filter((n) => new RegExp(`^${prefix}-\\d{4}\\.png$`).test(n)).sort();
