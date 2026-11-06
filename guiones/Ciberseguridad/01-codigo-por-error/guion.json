@@ -2,22 +2,110 @@
   "canal": "Ciberseguridad · «Caso Desarmado» (nombre de trabajo)",
   "serie": "Anatomía de una estafa",
   "episodio": "01 · Te mandé un código por error",
-  "voz": "Donovan (DMyrgzQFny3JI1Y1paM5) por ELEVENLABS_VOICE_ID_CIBER · todavía NO generada",
-  "modelo": "eleven_multilingual_v2 · velocidad 1,0 · normalize-voice --drive 6",
-  "nota": "El texto vive en src/canales/ciberseguridad/episodios/01-codigo-por-error/i18n/{es,en}.ts (única fuente). voz-lineas-{es,en}.json se regeneran con `node scripts/voz-lineas-ciberseguridad.mjs 01-codigo-por-error`. Frames planificados: timeline.ts (VOZ_AT).",
+  "voz": "Donovan (DMyrgzQFny3JI1Y1paM5), plugin de ElevenLabs (flow tjn7Rc6azwKZ5qKlCB3O): una toma por idioma, cortada en bloques con los tiempos de Scribe",
+  "modelo": "eleven_multilingual_v2 · ajustes por defecto · velocidad 1,0 · normalize-voice --drive 6 sobre la toma entera",
+  "nota": "Texto: src/canales/ciberseguridad/episodios/01-codigo-por-error/i18n/{es,en}.ts. Tomas crudas: voz-original/{es,en}-toma1.mp3 (+ .words.json de Scribe). Bloques: node scripts/voz-ciberseguridad.mjs 01-codigo-por-error <es|en>. Los frames de cada bloque los calcula timeline.ts a partir de la voz de cada idioma (el campo f de abajo es el plan original de 40 s).",
   "segmentos": [
-    { "id": "v01", "f": 20, "imagen": "SMS ya compuesto + chat de Caro (dos burbujas con «escribiendo…»)", "es": "Una amiga te pide un código que te llegó por error.", "en": "A friend asks for a code she sent you by mistake." },
-    { "id": "v02", "f": 62, "imagen": "«¿SE LO PASAS?» + PASAR / NO; el dedo duda", "es": "¿Se lo pasas?", "en": "Do you send it?" },
-    { "id": "v03", "f": 172, "imagen": "Copiar, pegar, enviar · aviso rojo · «CUENTA PERDIDA»", "es": "Si se lo pasaste, acabas de entregar tu WhatsApp.", "en": "If you did, you just handed over your WhatsApp." },
-    { "id": "v04", "f": 232, "imagen": "Rebobinado: la pantalla retrocede, el teléfono se acuesta en la mesa", "es": "Rebobinemos.", "en": "Let’s rewind." },
-    { "id": "v05", "f": 272, "imagen": "Marcador 1 (SMS) · segundo teléfono «Ingresa el código» · línea amarilla", "es": "Ese código no es de ella. Es la llave de tu cuenta: alguien la está registrando en otro teléfono, ahora.", "en": "That code isn’t hers. It’s the key to your account: someone is registering it on another phone, right now." },
-    { "id": "v06", "f": 382, "imagen": "Marcador 2 (Caro · vóley) · grafo Caro → Tú → grupos", "es": "¿Y por qué te escribe tu amiga? Porque a ella ya se la robaron. Así se contagia.", "en": "Why is your friend asking? Because hers was stolen first. That’s how it spreads." },
-    { "id": "v07", "f": 482, "imagen": "Marcador 3 («por error»)", "es": "La excusa llega antes que la duda.", "en": "The excuse arrives before the doubt." },
-    { "id": "v08", "f": 542, "imagen": "Marcador 4 («Es urgente»)", "es": "Y la prisa no te deja pensar.", "en": "And the rush keeps you from thinking." },
-    { "id": "v09", "f": 602, "imagen": "Vidrio esmerilado «chats anteriores: no los ve» · el otro teléfono escribe en «Familia»", "es": "No puede leer tus chats viejos. No los necesita: escribe en tus grupos, con tu nombre.", "en": "They can’t read your old chats. They don’t need to: they write in your groups, as you." },
-    { "id": "v10", "f": 762, "imagen": "Defensa: teléfono vertical, Ajustes › Verificación en dos pasos, interruptor turquesa, candado", "es": "La defensa: un código nunca se pasa. Y activa la verificación en dos pasos: aunque te lo saquen, no les alcanza.", "en": "The defense: never share a code. And turn on two-step verification: even if they get it, it’s not enough." },
-    { "id": "v11", "f": 902, "imagen": "Ficha «SI YA TE PASÓ»", "es": "Si ya te pasó, vuelve a entrar con un código nuevo y lo sacas.", "en": "If it already happened, log back in with a new code and they’re out." },
-    { "id": "v12", "f": 1012, "imagen": "«MÁNDASELO A QUIEN DICE «YO NO CAIGO»» · «CASO #002 →»", "es": "Mándaselo a quien siempre dice «yo no caigo».", "en": "Send this to whoever says “I’d never fall for it”." }
+    {
+      "id": "v01",
+      "f": 20,
+      "imagen": "SMS ya compuesto + chat de Caro (dos burbujas con «escribiendo…»)",
+      "es": "Una amiga te pide un código que te llegó por error.",
+      "en": "A friend asks for a code she sent you by mistake."
+    },
+    {
+      "id": "v02",
+      "f": 62,
+      "imagen": "«¿SE LO PASAS?» + PASAR / NO; el dedo duda",
+      "es": "¿Se lo pasas?",
+      "en": "Do you send it?"
+    },
+    {
+      "id": "v03",
+      "f": 172,
+      "imagen": "Copiar, pegar, enviar · aviso rojo · «CUENTA PERDIDA»",
+      "es": "Si se lo pasaste, acabas de entregar tu WhatsApp.",
+      "en": "If you did, you just handed over your WhatsApp."
+    },
+    {
+      "id": "v04",
+      "f": 232,
+      "imagen": "Rebobinado: la pantalla retrocede, el teléfono se acuesta en la mesa",
+      "es": "Rebobinemos.",
+      "en": "Let’s rewind."
+    },
+    {
+      "id": "v05",
+      "f": 272,
+      "imagen": "Marcador 1 (SMS) · segundo teléfono «Ingresa el código» · línea amarilla",
+      "es": "Ese código no es de ella. Es la llave de tu cuenta: alguien la está registrando en otro teléfono, ahora.",
+      "en": "That code isn’t hers. It’s the key to your account: someone is registering it on another phone, right now."
+    },
+    {
+      "id": "v06",
+      "f": 382,
+      "imagen": "Marcador 2 (Caro · vóley) · grafo Caro → Tú → grupos",
+      "es": "¿Y por qué te escribe tu amiga? Porque a ella ya se la robaron. Así se contagia.",
+      "en": "Why is your friend asking? Because hers was stolen first. That’s how it spreads."
+    },
+    {
+      "id": "v07",
+      "f": 482,
+      "imagen": "Marcador 3 («por error»)",
+      "es": "La excusa llega antes que la duda.",
+      "en": "The excuse arrives before the doubt."
+    },
+    {
+      "id": "v08",
+      "f": 542,
+      "imagen": "Marcador 4 («Es urgente»)",
+      "es": "Y la prisa no te deja pensar.",
+      "en": "And the rush keeps you from thinking."
+    },
+    {
+      "id": "v09",
+      "f": 602,
+      "imagen": "Vidrio esmerilado «chats anteriores: no los ve» · el otro teléfono escribe en «Familia»",
+      "es": "No puede leer tus chats viejos. No los necesita: escribe en tus grupos, con tu nombre.",
+      "en": "They can’t read your old chats. They don’t need to: they write in your groups, as you."
+    },
+    {
+      "id": "v10",
+      "f": 762,
+      "imagen": "Defensa: teléfono vertical, Ajustes › Verificación en dos pasos, interruptor turquesa, candado",
+      "es": "La defensa: un código nunca se pasa. Y activa la verificación en dos pasos: aunque te lo saquen, no les alcanza.",
+      "en": "The defense: never share a code. And turn on two-step verification: even if they get it, it’s not enough."
+    },
+    {
+      "id": "v11",
+      "f": 902,
+      "imagen": "Ficha «SI YA TE PASÓ»",
+      "es": "Si ya te pasó, vuelve a entrar con un código nuevo y lo sacas.",
+      "en": "If it already happened, log back in with a new code and they’re out."
+    },
+    {
+      "id": "v12",
+      "f": 1012,
+      "imagen": "«MÁNDASELO A QUIEN DICE «YO NO CAIGO»» · «CASO #002 →»",
+      "es": "Mándaselo a quien siempre dice «yo no caigo».",
+      "en": "Send this to whoever says “I’d never fall for it”."
+    }
   ],
-  "caracteres": { "es": 677, "en": 692, "total": 1369, "presupuesto": 3000 }
+  "caracteres": {
+    "es": 677,
+    "en": 692,
+    "total": 1369,
+    "presupuesto": 3000,
+    "creditosGastados": {
+      "vozES": 688,
+      "vozEN": 703,
+      "scribe": 0,
+      "total": 1391
+    }
+  },
+  "duracion": {
+    "es": "1.683 frames (56,1 s)",
+    "en": "1.505 frames (50,2 s)",
+    "nota": "decidido con el usuario: alargar en vez de recortar el guion"
+  }
 }

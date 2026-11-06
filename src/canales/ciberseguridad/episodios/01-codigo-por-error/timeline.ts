@@ -1,155 +1,190 @@
 // Episodio 01 · «Te mandé un código por error» — todos los frames con nombre (prompt § 6 y § 10).
+// La imagen sigue a la voz REAL de cada idioma: cada bloque empieza cuando termina el anterior (más una pausa),
+// y cada evento se cuelga de la palabra que lo nombra («llave», «registrando», «contagia», «activa»…).
 // Dos relojes: `video` (frame real) y `escena` (lo que muestra la pantalla; el rebobinado la hace retroceder).
-// Con la voz real se ajusta ESTE archivo (VOZ_AT y los eventos), nunca el audio.
 // Con patrocinio activo, todo lo que va desde la ficha en adelante se corre SPONSOR_EXTRA frames.
+import type { Palabra } from "../../../../canal/subtitulos/tipos";
 
 export const FPS = 30;
-export const DURACION_BASE = 1200;
 export const SPONSOR_EXTRA = 60;
-/** a partir de acá se corre todo cuando hay patrocinio */
-const CORTE_SPONSOR = 900;
+export const VOZ_IDS = ["v01", "v02", "v03", "v04", "v05", "v06", "v07", "v08", "v09", "v10", "v11", "v12"] as const;
+export type VozId = (typeof VOZ_IDS)[number];
+export type BloqueMedido = { duracion: number; palabras: Palabra[] };
 
-export const crearTimeline = (conSponsor: boolean) => {
+const fr = (s: number) => Math.round(s * FPS);
+const clave = (t: string) => t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9ñ-]/g, "");
+
+export const crearTimeline = (voz: Record<VozId, BloqueMedido>, conSponsor: boolean) => {
+  const dur = (id: VozId) => fr(voz[id].duracion);
+  const V = {} as Record<VozId, number>;
+  /** frame (de video) de la primera palabra del bloque que coincide con alguna de las claves (ES o EN) */
+  const en = (id: VozId, claves: string[]) => {
+    const w = voz[id].palabras.find((p) => claves.includes(clave(p.t)));
+    if (!w) throw new Error(`${id}: no encuentro ninguna de [${claves.join(", ")}] en la voz`);
+    return V[id] + fr(w.s);
+  };
+
+  // ── acto 1: la trampa ──
+  V.v01 = 10;
+  V.v02 = V.v01 + dur("v01") + 4;
+  const GANCHO_SALE = V.v02 + dur("v02") + 4;
+  const TOQUES = { PASAR: GANCHO_SALE, COPIAR: GANCHO_SALE + 16, PEGAR: GANCHO_SALE + 27, ENVIAR: GANCHO_SALE + 42 };
+  const DEDO_ENTRA = V.v02 - 20;
+  const PERDIDA = GANCHO_SALE + 50;
+  V.v03 = PERDIDA + 2;
+  const REBOBINADO = Math.max(V.v03 + dur("v03") + 6, PERDIDA + 50);
+  V.v04 = REBOBINADO + 2;
+  const REBOBINADO_HASTA = Math.max(REBOBINADO + 40, V.v04 + dur("v04") + 2);
+
+  // ── acto 2: la autopsia ──
+  V.v05 = REBOBINADO_HASTA + 2;
+  const MARCADOR_1 = V.v05 + 6;
+  const ENLACE = en("v05", ["llave", "key"]);
+  const SEGUNDO_ENTRA = ENLACE - 14;
+  const CODIGO_ENTRA = en("v05", ["registrando", "registering"]);
+  V.v06 = V.v05 + dur("v05") + 4;
+  const MARCADOR_2 = en("v06", ["amiga", "friend"]) - 4;
+  const GRAFO = en("v06", ["porque", "because"]) - 8;
+  const GRAFO_NODOS = [GRAFO + 6, en("v06", ["robaron", "stolen"]), en("v06", ["contagia", "spreads"]), en("v06", ["contagia", "spreads"]) + 13] as const;
+  V.v07 = V.v06 + dur("v06") + 4;
+  const MARCADOR_3 = en("v07", ["excusa", "excuse"]) - 2;
+  V.v08 = V.v07 + dur("v07") + 4;
+  const MARCADOR_4 = en("v08", ["prisa", "rush"]) - 2;
+  V.v09 = V.v08 + dur("v08") + 6;
+  const VIDRIO = V.v09 + 4;
+  const GRUPO_MENSAJE = en("v09", ["escribe", "write"]);
+
+  // ── acto 3: la defensa ──
+  const DEFENSA = V.v09 + dur("v09") + 4;
+  V.v10 = DEFENSA + 2;
+  const TOGGLE = en("v10", ["activa", "turn"]);
+  const CANDADO = en("v10", ["alcanza", "enough"]);
   const S = conSponsor ? SPONSOR_EXTRA : 0;
-  const d = (f: number) => (f >= CORTE_SPONSOR ? f + S : f);
-  const DURACION = DURACION_BASE + S;
+  const SPONSOR = V.v10 + dur("v10") + 4;
+  const FICHA = SPONSOR + S;
+  V.v11 = FICHA + 4;
+  const FICHA_HASTA = V.v11 + dur("v11") + 12;
+  const CIERRE = FICHA_HASTA;
+  V.v12 = CIERRE + 6;
+  const CIERRE_HASTA = V.v12 + dur("v12") + 16;
+  const VUELTA = CIERRE_HASTA;
+  const DURACION = VUELTA + 72;
   const ULTIMO = DURACION - 1;
+
   return {
     DURACION,
     ULTIMO,
     S,
-    // ── tiempo de ESCENA (pantalla del teléfono) ──
+    // ── tiempo de ESCENA (pantalla del teléfono; hasta el rebobinado coincide con el video) ──
     escena: {
       SMS: -10, // ya compuesto en el frame 0
       B1_ESCRIBE: 10,
       B1: 22,
       B2_ESCRIBE: 32,
       B2: 50,
-      COPIAR: 124,
-      PEGADO: 140,
-      ENVIADO: 160,
-      PERDIDA: 170,
-      /** estado que queda congelado durante la autopsia (antes de enviar el código) */
+      COPIAR: TOQUES.COPIAR,
+      PEGADO: TOQUES.PEGAR + 3,
+      ENVIADO: TOQUES.ENVIAR + 2,
+      PERDIDA,
+      /** estado que queda congelado durante la autopsia (antes de copiar el código) */
       AUTOPSIA: 100,
     },
     // ── tiempo de VIDEO ──
-    GANCHO_ELEGIDA: 104,
-    GANCHO_SALE: 104,
-    GANCHO_VUELVE: 1150 + S,
-    DEDO_DESDE: 64,
-    DEDO_HASTA: 172,
-    DEDO: {
-      ENTRA: 64,
-      NO: 78,
-      DUDA: 92,
-      PASAR: 100,
-      COPIAR: 120,
-      CAMPO: 133,
-      ENVIAR: 152,
-    },
-    TOQUES: { COPIAR: 124, PASAR: 104, PEGAR: 137, ENVIAR: 158 },
-    PERDIDA: 170,
-    PERDIDA_HASTA: 230,
-    REBOBINADO: 230,
-    REBOBINADO_HASTA: 270,
-    MARCADOR_1: 280,
-    SEGUNDO_ENTRA: 290,
-    ENLACE: 300,
-    CODIGO_ENTRA: 322,
-    MARCADOR_2: 385,
-    GRAFO: 398,
-    GRAFO_NODOS: [405, 425, 445, 460] as const,
-    MARCADOR_3: 488,
-    MARCADOR_4: 548,
-    GRAFO_HASTA: 600,
-    VIDRIO: 610,
-    GRUPO_MENSAJE: 640,
-    VIDRIO_HASTA: 760,
-    ENLACE_HASTA: 600,
-    DEFENSA: 760,
-    TOGGLE: 840,
-    CANDADO: 865,
-    SEGUNDO_SALE: d(1000),
-    SPONSOR: CORTE_SPONSOR,
-    SPONSOR_HASTA: CORTE_SPONSOR + SPONSOR_EXTRA,
-    FICHA: d(900),
-    FICHA_HASTA: d(1010),
-    CIERRE: d(1010),
-    CIERRE_HASTA: d(1110),
+    GANCHO_ELEGIDA: TOQUES.PASAR,
+    GANCHO_SALE,
+    GANCHO_VUELVE: VUELTA + 30,
+    DEDO_DESDE: DEDO_ENTRA,
+    DEDO_HASTA: GANCHO_SALE + 54,
+    DEDO: { ENTRA: DEDO_ENTRA, NO: DEDO_ENTRA + 14, DUDA: DEDO_ENTRA + 28, PASAR: GANCHO_SALE - 4, COPIAR: GANCHO_SALE + 12, CAMPO: GANCHO_SALE + 23, ENVIAR: GANCHO_SALE + 37 },
+    TOQUES,
+    PERDIDA,
+    PERDIDA_HASTA: REBOBINADO,
+    REBOBINADO,
+    REBOBINADO_HASTA,
+    MARCADOR_1,
+    SEGUNDO_ENTRA,
+    ENLACE,
+    CODIGO_ENTRA,
+    MARCADOR_2,
+    GRAFO,
+    GRAFO_NODOS,
+    MARCADOR_3,
+    MARCADOR_4,
+    GRAFO_HASTA: V.v09,
+    VIDRIO,
+    GRUPO_MENSAJE,
+    VIDRIO_HASTA: DEFENSA,
+    ENLACE_HASTA: V.v09,
+    DEFENSA,
+    TOGGLE,
+    CANDADO,
+    SEGUNDO_SALE: CIERRE - 14,
+    SPONSOR,
+    SPONSOR_HASTA: SPONSOR + SPONSOR_EXTRA,
+    FICHA,
+    FICHA_HASTA,
+    CIERRE,
+    CIERRE_HASTA,
     /** los marcadores se levantan cuando la cámara sube a la defensa (vista cenital: de canto no se leen) */
-    MARCADORES_SALEN: 760,
-    VUELTA: d(1110),
-    VUELTA_LISTA: d(1170),
-    DEFENSA_HASTA: d(1110),
-    SUBS_DESDE: 110,
-    SUBS_HASTA: d(1010),
-    /** inicio de cada bloque de voz (planificado; se ajusta a la voz real) */
-    VOZ_AT: {
-      v01: 20,
-      v02: 62,
-      v03: 172,
-      v04: 232,
-      v05: 272,
-      v06: 382,
-      v07: 482,
-      v08: 542,
-      v09: 602,
-      v10: 762,
-      v11: d(902),
-      v12: d(1012),
-    },
+    MARCADORES_SALEN: DEFENSA,
+    VUELTA,
+    VUELTA_LISTA: VUELTA + 50,
+    DEFENSA_HASTA: VUELTA,
+    SUBS_DESDE: V.v03 - 2,
+    SUBS_HASTA: CIERRE,
+    VOZ_AT: V,
     // ── cámara (§ 10): escala, inclinación de la mesa, desplazamientos ──
     CAM_ESCALA: [
       { f: 0, v: 1 },
-      { f: 110, v: 1.03 },
-      { f: 170, v: 1.03 },
-      { f: 200, v: 1.06 },
-      { f: 230, v: 1.06 },
-      { f: 270, v: 0.82 },
-      { f: 600, v: 0.86 },
-      { f: 760, v: 0.86 },
-      { f: 800, v: 0.96 },
-      { f: d(1110), v: 0.96 },
+      { f: GANCHO_SALE, v: 1.03 },
+      { f: PERDIDA, v: 1.03 },
+      { f: PERDIDA + 30, v: 1.06 },
+      { f: REBOBINADO, v: 1.06 },
+      { f: REBOBINADO_HASTA, v: 0.82 },
+      { f: V.v09, v: 0.86 },
+      { f: DEFENSA, v: 0.86 },
+      { f: DEFENSA + 40, v: 0.96 },
+      { f: VUELTA, v: 0.96 },
       { f: ULTIMO, v: 1 },
     ],
     CAM_INCLINACION: [
       { f: 0, v: 0 },
-      { f: 230, v: 0 },
-      { f: 270, v: 52 },
-      { f: 760, v: 52 },
-      { f: 800, v: 0 },
+      { f: REBOBINADO, v: 0 },
+      { f: REBOBINADO_HASTA, v: 52 },
+      { f: DEFENSA, v: 52 },
+      { f: DEFENSA + 40, v: 0 },
     ],
     CAM_X: [
       { f: 0, v: 0 },
-      { f: 270, v: 0 },
-      { f: 290, v: 40 },
-      { f: 330, v: -30 },
-      { f: 395, v: 45 },
-      { f: 470, v: 10 },
-      { f: 495, v: 50 },
-      { f: 555, v: 50 },
-      { f: 600, v: 0 },
+      { f: REBOBINADO_HASTA, v: 0 },
+      { f: MARCADOR_1 + 10, v: 40 },
+      { f: ENLACE + 30, v: -30 },
+      { f: MARCADOR_2 + 10, v: 45 },
+      { f: GRAFO + 70, v: 10 },
+      { f: MARCADOR_3 + 7, v: 50 },
+      { f: MARCADOR_4 + 7, v: 50 },
+      { f: V.v09, v: 0 },
     ],
     CAM_Y: [
       { f: 0, v: 0 },
-      { f: 160, v: 0 },
-      { f: 190, v: -60 },
-      { f: 230, v: -60 },
-      { f: 270, v: 40 },
-      { f: 760, v: 40 },
-      { f: 800, v: 0 },
+      { f: PERDIDA - 10, v: 0 },
+      { f: PERDIDA + 20, v: -60 },
+      { f: REBOBINADO, v: -60 },
+      { f: REBOBINADO_HASTA, v: 40 },
+      { f: DEFENSA, v: 40 },
+      { f: DEFENSA + 40, v: 0 },
     ],
     TELEFONO_X: [
       { f: 0, v: 540 },
-      { f: 230, v: 540 },
-      { f: 270, v: 530 },
-      { f: 760, v: 530 },
-      { f: 800, v: 450 },
-      { f: d(1110), v: 450 },
+      { f: REBOBINADO, v: 540 },
+      { f: REBOBINADO_HASTA, v: 530 },
+      { f: DEFENSA, v: 530 },
+      { f: DEFENSA + 40, v: 450 },
+      { f: VUELTA, v: 450 },
       { f: ULTIMO, v: 540 },
     ],
-    /** deriva: los períodos dividen la duración base (1.200) */
-    DERIVA: { ax: 3, px: 150, ay: 2, py: 240 },
+    /** deriva: períodos que dividen la duración (cerca de 150 y 240 frames) para que el loop empalme */
+    DERIVA: { ax: 3, px: DURACION / Math.max(1, Math.round(DURACION / 150)), ay: 2, py: DURACION / Math.max(1, Math.round(DURACION / 240)) },
   };
 };
 

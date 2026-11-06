@@ -47,6 +47,9 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - **Mesa a 52°:** el texto del teléfono acostado se achata (se lee poco); lo que se lee en la autopsia son los marcadores y los subtítulos. Los marcadores de pie sobre la mesa se ven de canto con cámara cenital: se levantan al subir a la defensa. *(01 v1)*
 - `<Freeze>` dentro de un `<Still>` no pasa del frame 0: la hoja de contactos va como `Composition` y se renderiza con `remotion still`. *(01 v1)*
 - `fontStretch` no condensa Archivo variable cargada con `loadVariableFont`: usar `fontVariationSettings: "'wdth' 75"`. *(01 v1)*
+- **Voz con el plugin de ElevenLabs** (sin `.env`): una toma por idioma con todo el guion (da continuidad natural, en vez de `previous_text`), `generations_count: 1`, y Scribe (0 créditos) para los tiempos por palabra; `scripts/voz-ciberseguridad.mjs` masteriza la toma entera y la corta en bloques. Costo real: ~1 crédito por carácter (ES 688, EN 703). *(01)*
+- **Medida real de Donovan a 1,0:** ES ≈ 13,9 caracteres/s, EN ≈ 16,1. El mismo guion dura 48,8 s en ES y 42,9 s en EN: cada idioma necesita su propio timeline (eventos colgados de la palabra que los nombra). Con los silencios (acción, rebobinado, loop) el 01 quedó en 56 s ES / 50 s EN. *(01)*
+- El ffmpeg que trae Remotion no tiene `afade` ni filtros de dinámica: los fundidos y el limitador se hacen en Node. *(01)*
 - Lista de marcas reales «solo pantalla» (`PROHIBIDAS_PANTALLA`): la voz puede decir «WhatsApp», la imagen no; el QA la busca como palabra entera para no confundir «Plin» con «disciplina». *(01 v1)*
 
 ## Otro

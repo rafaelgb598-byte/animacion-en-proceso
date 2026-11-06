@@ -7,7 +7,7 @@ import type { BloqueVoz, CueSfx, Episodio, Lang } from "../../marca/tipos";
 import { EN } from "./i18n/en";
 import { ES } from "./i18n/es";
 import type { Textos } from "./i18n/tipos";
-import { crearTimeline, tiempoEscena } from "./timeline";
+import { type BloqueMedido, VOZ_IDS, type VozId, crearTimeline, tiempoEscena } from "./timeline";
 import { VOZ_REAL } from "./vozReal";
 
 export const TEXTOS: Record<Lang, Textos> = { es: ES, en: EN };
@@ -17,8 +17,20 @@ const SFX = (n: string) => `videos/ciberseguridad/sfx/${n}.wav`;
 /** puntos de toque en pantalla (cámara del gancho ≈ 1,03): botón Copiar, campo de texto, enviar */
 const PANTALLA = { copiar: { x: 602, y: 621 }, campo: { x: 516, y: 1243 }, enviar: { x: 768, y: 1243 } } as const;
 
+/** duración de cada bloque y sus palabras, de la voz real del idioma */
+const medidas = (lang: Lang): Record<VozId, BloqueMedido> =>
+  Object.fromEntries(
+    VOZ_IDS.map((id) => {
+      const v = VOZ_REAL[lang][id];
+      if (!v) throw new Error(`Falta la voz ${lang}/${id}: correr scripts/voz-ciberseguridad.mjs`);
+      return [id, { duracion: v.duracion, palabras: v.palabras }];
+    }),
+  ) as Record<VozId, BloqueMedido>;
+
+export const timelineDe = (lang: Lang, conSponsor: boolean) => crearTimeline(medidas(lang), conSponsor);
+
 export const crearEpisodio = (lang: Lang, sponsor: { nombre: string; claim: string; activo: boolean }): Episodio => {
-  const T = crearTimeline(sponsor.activo);
+  const T = timelineDe(lang, sponsor.activo);
   const X = TEXTOS[lang];
   const E = T.escena;
   const pasar = posicionOpcion(0);
@@ -29,7 +41,7 @@ export const crearEpisodio = (lang: Lang, sponsor: { nombre: string; claim: stri
     const real = VOZ_REAL[lang][id];
     return {
       id,
-      f: T.VOZ_AT[id],
+      f: T.VOZ_AT[id as VozId],
       dicho: X.voz[id].dicho,
       escrito: X.voz[id].escrito ?? X.voz[id].dicho,
       palabras: real?.palabras ?? null,
@@ -152,6 +164,8 @@ export const crearEpisodio = (lang: Lang, sponsor: { nombre: string; claim: stri
     subtitulos: { enfasis: X.enfasis, remates: X.remates, visible: (f) => f >= T.SUBS_DESDE && f < T.SUBS_HASTA },
     sfx,
     ambiente: { archivo: SFX("room"), volumen: 0.04 },
+    // −3 dB: con la voz a 1,0 la mezcla medía −11,2 LUFS (ES v3); así queda cerca de −14
+    vozVolumen: 0.71,
     sponsor: { ...sponsor, f: T.SPONSOR, hasta: T.SPONSOR_HASTA, plantilla: X.sponsor.plantilla, etiqueta: X.sponsor.etiqueta },
   };
 };
