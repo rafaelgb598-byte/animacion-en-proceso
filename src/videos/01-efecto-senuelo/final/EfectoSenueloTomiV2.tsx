@@ -1,12 +1,15 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { z } from "zod";
 import { clamp, ease, smooth } from "../../../canal/personaje/anim";
 import { snap } from "../../../canal/personaje/tomi-v2/motion2";
 import { BoardScene } from "../short-final/BoardScene";
 import { CUE, DURATION, SFX } from "../short-final/timing";
 import { CafeSceneV2 } from "./CafeSceneV2";
-import { SAFE } from "../../../canal/subtitulos/captions";
-import { CaptionsLayer } from "../../../canal/subtitulos/CaptionsLayer";
+import { PRIMER_PLANO_CAFE, PrimerPlano } from "../../../canal/escenarios/PrimerPlano";
+import { Subtitulos } from "../../../canal/subtitulos/Subtitulos";
+import { ZONA } from "../../../canal/zonaSegura";
+import { WORDS } from "../short-final/words";
 import { frameBoxes, LOOP_TITLE_IN, montage, TITLE_OUT } from "./layout";
 
 /**
@@ -16,7 +19,21 @@ import { frameBoxes, LOOP_TITLE_IN, montage, TITLE_OUT } from "./layout";
  */
 
 export const TOMI_V2_FRAMES = DURATION;
-export type TomiV2Props = { debug: boolean };
+/** el presentador del pizarrón queda donde estaba (aprobado): el mostrador en primer plano ya tapa su cuerpo en el carril */
+export const PRESENTADOR_DX = 0;
+/** capa: "todo" (video) · "subtitulos" (solo subtítulos, fondo transparente) · "escena" (todo menos subtítulos)
+ *  · "fondo" (solo el escenario: con "escena" el QA saca la máscara de Tomi, objetos y textos) */
+export const CAPAS = ["todo", "subtitulos", "escena", "fondo"] as const;
+/** primerPlano: mostrador en primer plano de la cafetería (deja el carril de subtítulos sobre madera) */
+export const tomiV2Schema = z.object({ debug: z.boolean(), capa: z.enum(CAPAS).default("todo"), primerPlano: z.boolean().default(true) });
+export type TomiV2Props = { debug: boolean; capa?: (typeof CAPAS)[number]; primerPlano?: boolean };
+
+/** subtítulos: palabras clave en amarillo (máx. 1 por página) y palabras que pueden ir solas */
+export const SUBS_SENUELO = {
+  palabras: WORDS,
+  enfasis: ["señuelo", "cincuenta centavos", "grande", "mediano", "tapá"],
+  remates: [] as string[],
+};
 
 const W = 1080;
 const H = 1920;
@@ -56,15 +73,12 @@ const HookTitle: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-const Captions: React.FC<{ f: number; debug: boolean }> = ({ f, debug }) => (
-  <CaptionsLayer f={f} frames={DURATION} boxesAt={frameBoxes} debug={debug} />
-);
 
 const DebugBoxes: React.FC<{ f: number }> = ({ f }) => (
   <g>
-    <rect x={SAFE.left} y={SAFE.top} width={SAFE.right - SAFE.left} height={SAFE.bottom - SAFE.top} fill="none" stroke="#00FF9C" strokeWidth={3} strokeDasharray="14 10" />
-    <rect x={0} y={SAFE.bottom} width={W} height={H - SAFE.bottom} fill="#FF0040" opacity={0.12} />
-    <rect x={SAFE.right} y={0} width={W - SAFE.right} height={SAFE.bottom} fill="#FF0040" opacity={0.08} />
+    <rect x={ZONA.left} y={ZONA.top} width={ZONA.right - ZONA.left} height={ZONA.bottom - ZONA.top} fill="none" stroke="#00FF9C" strokeWidth={3} strokeDasharray="14 10" />
+    <rect x={0} y={ZONA.bottom} width={W} height={H - ZONA.bottom} fill="#FF0040" opacity={0.12} />
+    <rect x={ZONA.right} y={0} width={W - ZONA.right} height={ZONA.bottom} fill="#FF0040" opacity={0.08} />
     {frameBoxes(f).map((b, i) => (
       <rect key={i} x={b.x0} y={b.y0} width={b.x1 - b.x0} height={b.y1 - b.y0} fill="none" stroke={b.kind === "hard" ? "#FF2D55" : "#FFB020"} strokeWidth={b.kind === "hard" ? 4 : 2} />
     ))}
@@ -72,24 +86,36 @@ const DebugBoxes: React.FC<{ f: number }> = ({ f }) => (
 );
 
 /** parte visual (también la usan las herramientas de QA con un fotograma fijo) */
-export const TomiV2Visual: React.FC<{ f: number; debug?: boolean; inst?: string }> = ({ f, debug = false, inst = "" }) => {
+export const TomiV2Visual: React.FC<{ f: number; debug?: boolean; inst?: string; capa?: TomiV2Props["capa"]; primerPlano?: boolean }> = ({
+  f,
+  debug = false,
+  inst = "",
+  capa = "todo",
+  primerPlano = true,
+}) => {
   const m = montage(f);
+  const escena = capa !== "subtitulos";
+  const fondo = capa === "fondo";
+  const subs = capa === "todo" || capa === "subtitulos";
   return (
-    <AbsoluteFill style={{ backgroundColor: "#F2DDBA" }}>
-      {m.showCafe ? (
+    <AbsoluteFill style={{ backgroundColor: escena ? "#F2DDBA" : undefined }}>
+      {escena && m.showCafe ? (
         <AbsoluteFill style={{ transform: `translateY(${m.cafeY}px)` }}>
-          <CafeSceneV2 f={m.cafeF} inst={inst} />
+          <CafeSceneV2 f={m.cafeF} inst={inst} soloFondo={fondo} primerPlano={false} />
         </AbsoluteFill>
       ) : null}
-      {m.showBoard ? (
+      {escena && m.showBoard ? (
         <AbsoluteFill style={{ transform: `translateY(${m.boardY}px)` }}>
-          <BoardScene f={f} inst={`v2${inst}`} v2 />
+          <BoardScene f={f} inst={`v2${inst}`} v2 soloFondo={fondo} presentadorDx={PRESENTADOR_DX} />
         </AbsoluteFill>
       ) : null}
       <AbsoluteFill>
         <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
-          <HookTitle f={f} />
-          <Captions f={f} debug={debug} />
+          {/* mostrador en primer plano, FIJO en pantalla para todo el video (café y pizarrón, también durante los
+              deslizamientos): el carril de subtítulos queda siempre sobre madera. Es escenario: también va en la capa «fondo». */}
+          {escena && primerPlano ? <PrimerPlano estilo={PRIMER_PLANO_CAFE} uid={`v2${inst}`} /> : null}
+          {escena && !fondo ? <HookTitle f={f} /> : null}
+          {subs ? <Subtitulos f={f} {...SUBS_SENUELO} debug={debug} /> : null}
           {debug ? <DebugBoxes f={f} /> : null}
         </svg>
       </AbsoluteFill>
@@ -97,11 +123,11 @@ export const TomiV2Visual: React.FC<{ f: number; debug?: boolean; inst?: string 
   );
 };
 
-export const EfectoSenueloTomiV2: React.FC<TomiV2Props> = ({ debug }) => {
+export const EfectoSenueloTomiV2: React.FC<TomiV2Props> = ({ debug, capa = "todo", primerPlano = true }) => {
   const f = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <TomiV2Visual f={f} debug={debug} />
+      <TomiV2Visual f={f} debug={debug} capa={capa} primerPlano={primerPlano} />
       <Audio src={staticFile("videos/01-efecto-senuelo/voz/narracion-isaac.mp3")} />
       {SFX.map((s, i) => (
         <Sequence key={i} from={s.at} durationInFrames={s.dur ?? 60} layout="none" name={`sfx ${s.name}`}>

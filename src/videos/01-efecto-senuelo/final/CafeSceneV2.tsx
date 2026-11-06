@@ -4,6 +4,7 @@ import { CharacterV2 } from "../../../canal/personaje/tomi-v2/CharacterV2";
 import { Cup } from "../../../canal/escenarios/cafeteria/Props";
 import { BackWallV2, COUNTER_TOP, CounterV2, FLOOR, FloorV2, GradeV2, Lamps, Outside, PAL_CHAIN, Sunbeams } from "../../../canal/escenarios/cafeteria/CafeV2";
 import { ChalkPath, ChalkText, NapkinDraped, NapkinHeld, Sparkle, Tag } from "../short-final/CafeScene";
+import { PRIMER_PLANO_CAFE, PrimerPlano } from "../../../canal/escenarios/PrimerPlano";
 import { CUE } from "../short-final/timing";
 import {
   camAt,
@@ -81,7 +82,8 @@ const Snap: React.FC<{ x: number; y: number; t: number }> = ({ x, y, t }) =>
     </g>
   );
 
-export const CafeSceneV2: React.FC<{ f: number; inst?: string }> = ({ f, inst = "" }) => {
+/** `soloFondo`: solo el escenario (afuera, paredes, lámparas, piso, mostrador, luz): máscara de choques del QA de subtítulos. */
+export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boolean; primerPlano?: boolean }> = ({ f, inst = "", soloFondo = false, primerPlano = true }) => {
   const fr = clamp(f, 0, N - 1);
   const { pose, rig, head } = getCafeV2()[fr];
   const cam = camAt(fr);
@@ -140,6 +142,12 @@ export const CafeSceneV2: React.FC<{ f: number; inst?: string }> = ({ f, inst = 
       <g transform={camTf(cam)}>
         <FloorV2 />
         <CounterV2 f={fr} pal={PAL_CHAIN} />
+        {soloFondo ? (
+          <g opacity={0.6}>
+            <Sunbeams f={fr} />
+          </g>
+        ) : (
+        <>
 
         <ellipse cx={sx + 6} cy={COUNTER_TOP + 3} rx={CUP_H.S * 0.3} ry={8} fill="#3A1E10" opacity={0.3} filter={`url(#${id("soft")})`} />
         <ellipse cx={lx + 6} cy={COUNTER_TOP + 3} rx={CUP_H.L * 0.3} ry={8} fill="#3A1E10" opacity={0.3} filter={`url(#${id("soft")})`} />
@@ -235,14 +243,22 @@ export const CafeSceneV2: React.FC<{ f: number; inst?: string }> = ({ f, inst = 
         </g>
         <ellipse cx={pose.x + 10} cy={FLOOR + 8} rx={95 * (1 - pose.hop / 120)} ry={18} fill="#2A1408" opacity={0.2} />
         <CharacterV2 pose={pose} rig={rig} uid={`cv2t${inst}`} backProp={napkinHeld(fr) ? <NapkinHeld /> : undefined} />
+        </>
+        )}
       </g>
+      {/* mostrador en primer plano (escenario, fijo en pantalla): el carril de subtítulos queda sobre madera */}
+      {primerPlano ? <PrimerPlano estilo={PRIMER_PLANO_CAFE} uid={id("pp")} /> : null}
       <GradeV2 w={W} h={H} />
+      {soloFondo ? null : (
+      <>
 
       {/* énfasis en pantalla (breves y con propósito) */}
       <SpeedLines x={headS.x} y={headS.y} t={(fr - CUE.rapido - 1) / 9} r0={170 * cam.zoom * 0.7} />
       <SpeedLines x={mScreen.x} y={mScreen.y - 40} t={(fr - land) / 9} r0={170} n={10} color="#FFF4D6" />
       <SpeedLines x={headS.x} y={headS.y} t={(fr - CUE.son - 2) / 10} r0={190 * cam.zoom * 0.6} color="#FFE27A" />
       <Snap x={handS.x} y={handS.y - 30 * cam.zoom} t={(fr - CUE.deRepente - 2) / 8} />
+      </>
+      )}
       {fr >= land && fr < land + 3 ? <rect x={0} y={0} width={W} height={H} fill="#FFFFFF" opacity={0.22 * (1 - (fr - land) / 3)} /> : null}
       {fr >= CUE.nunca - 2 && fr < CUE.nunca + 2 ? <rect x={0} y={0} width={W} height={H} fill="#FFF6D8" opacity={0.18 * (1 - (fr - CUE.nunca + 2) / 4)} /> : null}
     </svg>

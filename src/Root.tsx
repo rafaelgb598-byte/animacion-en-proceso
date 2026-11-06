@@ -14,7 +14,7 @@ import { ACT_H, ACT_W, HojaActuacion } from "./laboratorio/propuesta-tomi-v2/Hoj
 import { PruebaAnimacionV2 } from "./laboratorio/propuesta-tomi-v2/clip/PruebaAnimacionV2";
 import { CLIP_FRAMES } from "./laboratorio/propuesta-tomi-v2/clip/timeline";
 import { QA_H, QA_W, QASubtitulos } from "./laboratorio/propuesta-tomi-v2/clip/QA";
-import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./videos/01-efecto-senuelo/final/EfectoSenueloTomiV2";
+import { EfectoSenueloTomiV2, TOMI_V2_FRAMES, tomiV2Schema } from "./videos/01-efecto-senuelo/final/EfectoSenueloTomiV2";
 import { QA2_H, QA2_W, QATomiV2 } from "./videos/01-efecto-senuelo/final/QA";
 import { STROOP_FRAMES, StroopShort, stroopSchema } from "./videos/02-stroop/v1/StroopShort";
 import { QAS_H, QAS_W, QAStroop } from "./videos/02-stroop/v1/QAStroop";
@@ -25,6 +25,7 @@ import { DURATION as MIL_V2_DURATION, FPS as MIL_V2_FPS } from "./videos/03-1000
 import { ContactSheet as MilAnosV2Sheet, UEP_SHEET_H, UEP_SHEET_W } from "./videos/03-1000-anos/v2/componentes/debug/ContactSheet";
 import { MilAnosCelularV3, milAnosV3Schema } from "./videos/03-1000-anos/final/MilAnosCelularV3";
 import { DURATION as MIL_V3_DURATION, FPS as MIL_V3_FPS } from "./videos/03-1000-anos/final/timeline";
+import { ComparaFuentes } from "./laboratorio/subtitulos/ComparaFuentes";
 import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
 
 export const RemotionRoot: React.FC = () => {
@@ -73,7 +74,8 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1080}
         height={1920}
-        defaultProps={{ debug: false }}
+        schema={tomiV2Schema}
+        defaultProps={{ debug: false, capa: "todo" as const, primerPlano: true }}
       />
       <Still id="QATomiV2" component={QATomiV2} width={QA2_W} height={QA2_H} />
       <Composition
@@ -95,7 +97,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={giroDatoStroopV2Schema}
-        defaultProps={{ showSafeZones: false, hasVoiceover: true }}
+        defaultProps={{ showSafeZones: false, hasVoiceover: true, capa: "todo" as const, primerPlano: true }}
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="1000-anos">
@@ -143,6 +145,9 @@ export const RemotionRoot: React.FC = () => {
           defaultProps={{ debug: false }}
         />
         <Still id="QASubtitulosV2" component={QASubtitulos} width={QA_W} height={QA_H} />
+      </Folder>
+      <Folder name="Subtitulos">
+        <Composition id="ComparaFuentes" component={ComparaFuentes} durationInFrames={TOMI_V2_FRAMES} fps={30} width={3240} height={1920} />
       </Folder>
       <Folder name="Revision">
         <Still

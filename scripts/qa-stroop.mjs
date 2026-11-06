@@ -1,6 +1,7 @@
 // QA de imagen del Short Stroop (sección 9): loop, daltonismo, legibilidad y hoja de contactos.
 // Uso: node scripts/qa-stroop.mjs [dirStills] [dirQA] [prefijo] [desde-hasta del desafío difícil]
-//   por defecto: videosPrueba/GiroDato/qa/02-stroop/stills videosPrueba/GiroDato/qa/02-stroop/qa StroopShort 281-521
+//   por defecto (V2, GiroDatoStroopV2): videosPrueba/GiroDato/qa/02-stroop/stills videosPrueba/GiroDato/qa/02-stroop/qa GiroDatoStroopV2 426-602
+//   (nivel 3 de la V2: L_START[3] = 426 hasta FREEZE = 602; la V1 era StroopShort 281-521)
 import fs from "node:fs";
 import path from "node:path";
 import console from "node:console";
@@ -10,8 +11,8 @@ import { blit, canvas, decodePng, downscale, encodePng } from "./lib/png.mjs";
 const [argDir, argQa, argPrefix, argRange] = process.argv.slice(2);
 const DIR = argDir ?? "videosPrueba/GiroDato/qa/02-stroop/stills";
 const QA = argQa ?? "videosPrueba/GiroDato/qa/02-stroop/qa";
-const PREFIX = argPrefix ?? "StroopShort";
-const [R0, R1] = (argRange ?? "281-521").split("-").map(Number);
+const PREFIX = argPrefix ?? "GiroDatoStroopV2";
+const [R0, R1] = (argRange ?? "426-602").split("-").map(Number);
 fs.mkdirSync(QA, { recursive: true });
 const load = (f) => decodePng(fs.readFileSync(path.join(DIR, `${PREFIX}-${String(f).padStart(4, "0")}.png`)));
 

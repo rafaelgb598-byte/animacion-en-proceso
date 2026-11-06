@@ -220,13 +220,12 @@ export const tomiBoxes = (f: number, cam: (v: Vec) => Vec): Box[] => {
     return { x0: Math.min(p.x, q.x), y0: Math.min(p.y, q.y), x1: Math.max(p.x, q.x), y1: Math.max(p.y, q.y), kind, name };
   };
   const out: Box[] = [bx({ x: head.x - r * 1.05, y: head.y - r * 1.12 }, { x: head.x + r * 1.05, y: head.y + r * 1.15 }, "hard", "cara")];
-  const chestY = (L(rig.neck).y + L(rig.legF.hip).y) / 2;
   for (const [name, a] of [["mano", rig.front], ["mano2", rig.back]] as const) {
     const w = L(a.wr);
     const p = L(a.palm);
-    out.push(bx({ x: Math.min(w.x, p.x) - 24 * S, y: Math.min(w.y, p.y) - 24 * S }, { x: Math.max(w.x, p.x) + 24 * S, y: Math.max(w.y, p.y) + 30 * S }, w.y < chestY ? "hard" : "soft", name));
+    out.push(bx({ x: Math.min(w.x, p.x) - 24 * S, y: Math.min(w.y, p.y) - 24 * S }, { x: Math.max(w.x, p.x) + 24 * S, y: Math.max(w.y, p.y) + 30 * S }, "hard", name));
   }
   const neck = L(rig.neck);
-  out.push(bx({ x: neck.x - 64 * S, y: neck.y }, { x: neck.x + 64 * S, y: 1450 }, "soft", "cuerpo"));
+  out.push(bx({ x: neck.x - 64 * S, y: neck.y }, { x: neck.x + 64 * S, y: 1450 }, "hard", "cuerpo"));
   return out;
 };

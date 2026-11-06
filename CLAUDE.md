@@ -9,7 +9,11 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - El dibujo **siempre nítido** (sin desenfoque sobre personaje u objetos).
 - Gancho con **pregunta directa** y opciones/precios visibles desde el fotograma 0.
 - La comparación clave va **grande y centrada** en la zona segura.
-- Subtítulos en **carril fijo abajo**; nunca tapan cara, manos que gesticulan, objetos ni textos; nunca saltan arriba. Correr el QA (0 choques, ≥95 % en carril).
+- Subtítulos (`src/canal/subtitulos/`, reglas en `BIBLIOTECA.md` § Subtítulos; medidas en `src/canal/zonaSegura.ts`): centrados en x = 540, ancho ≤ 720, carril fijo con base en y = 1500 (crecen hacia arriba, nunca suben).
+  Páginas cortadas por frase (nunca en «de», «la», «que»…, sin palabras huérfanas). Amarillo solo para la palabra clave (`enfasis`, máx. 1 por página).
+  El subtítulo no esquiva nada: el encuadre deja el carril libre de Tomi, objetos y textos.
+  Antes de entregar: `npm run qa:subs -- <Composición>` con **0 fallas** (mide los píxeles del render).
+- Nunca mostrar ni decir el tercer apellido del estudio de 1982; la cita es «Huber et al. · 1982» (lista en `src/canal/qa/prohibidas.ts`).
 - Zona segura Shorts: nada clave bajo y = 1536 ni a la derecha de x = 900.
 - Lo reutilizable va en `src/canal/` (código) y `public/biblioteca/` (audios, imágenes; `catalogo.json`). Lo exclusivo de un video, en `src/videos/<nn-video>/` y `public/videos/<nn-video>/`. Música CC BY: poner el crédito.
 - Voz a velocidad natural (1,0), mastering suave. Tomi mueve la boca con la voz (`lipsync.ts`).
@@ -21,7 +25,7 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - **Al cerrar cada versión/video, actualizar `APRENDIZAJES.md`** (qué funcionó, qué el usuario rechazó y por qué, créditos gastados) y su fila en `guiones/README.md`.
 
 ## Trabajo
-- Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Cada render de video de prueba va a `videosPrueba/<canal>/` (mismas 4 carpetas que `videosFinal/`; nombre `<nn>-<video>-vN.mp4`, sin sobrescribir: numerar `-v2`, `-v3`…). Solo cuando el usuario dice que es la versión final, se decide con él y se mueve a `videosFinal/<canal>/`. Stills, hojas de contacto y QA van a `videosPrueba/<canal>/qa/<nn-video>/` y se borran cuando el video queda final. **No se usa `out/`** (nada de renders sueltos en `out/` ni en `src/`).
+- Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Cada render de video de prueba va a `videosPrueba/<canal>/` (mismas 4 carpetas que `videosFinal/`; nombre `<nn>-<video>-vN.mp4`, sin sobrescribir: numerar `-v2`, `-v3`…) y **se sube al repo** (commit + push) para ir masterizándolo; las pruebas que no sirvan las borra el usuario después. Solo cuando el usuario dice que es la versión final, se decide con él y se mueve a `videosFinal/<canal>/`. Stills, hojas de contacto y QA van a `videosPrueba/<canal>/qa/<nn-video>/` y se borran cuando el video queda final. **No se usa `out/`** (nada de renders sueltos en `out/` ni en `src/`).
 - `videosFinal/` tiene 4 carpetas: `GiroDato`, `MilAños`, `Ciberseguridad`, `Otro`. **Los videos de Tomi (como el efecto señuelo y el Stroop) van siempre a `GiroDato/`.** Los videos de la serie **«1000 años»** (sin Tomi: objetos que envejecen; código en `src/videos/03-1000-anos/`, composiciones `MilAnos…`) van a `MilAños/`. Para otros tipos de video, preguntar al usuario dónde van.
 - No regenerar voces ni gastar créditos de APIs (ElevenLabs) sin autorización. La clave va solo por variable de entorno.
 - Render de prueba: `npx remotion render <Comp> videosPrueba/<nombre>.mp4 --gl=angle` · stills: `node scripts/stills.mjs`.
