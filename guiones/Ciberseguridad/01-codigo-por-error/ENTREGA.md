@@ -1,14 +1,14 @@
-# ENTREGA · Ciberseguridad 01 «Te mandé un código por error» — con voz (ES v4 · EN v2)
+# ENTREGA · Ciberseguridad 01 «Te mandé un código por error» — ✅ FINAL (ES y EN)
 
-Rama `canal/ciberseguridad-01-codigo-por-error` (salió de `fix/subtitulos-canal`). El primer commit ya está en `main`; lo de la voz todavía no (falta el OK del usuario para pasarlo a `main` y hacer push).
+Todo en `main` (la rama `canal/ciberseguridad-01-codigo-por-error` se mezcló y se borró).
 
 ## Estado
-**Para revisión del usuario.** Voz real en los dos idiomas, timeline ajustado a la voz de cada idioma, subtítulos con 0 fallas. Falta que el usuario escuche y apruebe.
+**✅ FINAL** — aprobado por el usuario a la primera (ES v4 y EN v2).
 
 ## Archivos
-- Renders: `videosPrueba/Ciberseguridad/01-codigo-por-error-es-v4.mp4` y `…-en-v2.mp4`. Anteriores, para borrar a mano: `-es-v1/v2-borrador-sin-voz` (sin voz) y `-es-v3` / `-en-v1` (con voz, mezcla a −11 LUFS: muy fuerte).
-- Hojas de contactos: `videosPrueba/Ciberseguridad/qa/01-codigo-por-error/hoja-contactos-{es,en}.png`.
-- QA de subtítulos: `…/qa/01-codigo-por-error/subtitulos-{es,en}/reporte.md`.
+- **Finales:** `videosFinal/Ciberseguridad/01-codigo-por-error-es.mp4` (era la `es-v4`) y `videosFinal/Ciberseguridad/01-codigo-por-error-en.mp4` (era la `en-v2`).
+- Pruebas que quedan en `videosPrueba/Ciberseguridad/` (para borrar a mano si no sirven): `-es-v1/v2-borrador-sin-voz` (sin voz) y `-es-v3` / `-en-v1` (con voz, mezcla a −11 LUFS: muy fuerte).
+- Stills, hojas de contactos y reportes de QA (`videosPrueba/Ciberseguridad/qa/01-codigo-por-error/`): borrados al quedar final, como pide `CLAUDE.md`. Los resultados quedan en la tabla de abajo y se regeneran con `npm run qa:subs -- EstafaCodigoES` / `EstafaCodigoEN`.
 - Voz: tomas crudas y tiempos de Scribe en `guiones/Ciberseguridad/01-codigo-por-error/voz-original/`; bloques masterizados en `public/videos/ciberseguridad/01-codigo-por-error/voz/{es,en}/`; captions en `…/captions/{es,en}.json`.
 
 ## Duración (decidido con el usuario: alargar en vez de recortar el guion)

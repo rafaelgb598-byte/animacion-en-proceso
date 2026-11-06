@@ -43,6 +43,8 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 
 ## Ciberseguridad («Anatomía de una estafa»)
 
+- **El 01 se aprobó a la primera** (ES y EN). Lo que funcionó: 3 actos (trampa en primera persona → rebobinado y autopsia con marcadores amarillos numerados → defensa de 1 paso), paleta oscura con regla de color estricta, app de chat propia, cámara 2.5D con la mesa de evidencia y cada evento visual colgado de la palabra que lo nombra en la voz real. Partir de esta plantilla y de este flujo de voz para el 02. *(01)*
+
 - **El texto pide más tiempo del que da el cronograma:** a ~15 caracteres/s, los 677 caracteres del 01 ES son ~45 s de voz en un video de 40 s. Contar caracteres por bloque ANTES de fijar frames y colgar todo `timeline.ts` del inicio de cada bloque de voz. *(01 v1)*
 - **Teléfono 2.5D con burbujas de 40 px:** con el carril de subtítulos libre a escala 1,06, el teléfono no puede pasar de ~580 × 900; renglones de burbuja escritos a mano (≤ 17 caracteres) y la hora en el mismo renglón para que entren dos mensajes. *(01 v1)*
 - **Mesa a 52°:** el texto del teléfono acostado se achata (se lee poco); lo que se lee en la autopsia son los marcadores y los subtítulos. Los marcadores de pie sobre la mesa se ven de canto con cámara cenital: se levantan al subir a la defensa. *(01 v1)*
