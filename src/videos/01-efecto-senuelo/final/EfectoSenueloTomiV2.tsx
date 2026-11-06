@@ -19,13 +19,15 @@ import { frameBoxes, LOOP_TITLE_IN, montage, TITLE_OUT } from "./layout";
  */
 
 export const TOMI_V2_FRAMES = DURATION;
-/** el presentador del pizarrón queda donde estaba (aprobado): el mostrador en primer plano ya tapa su cuerpo en el carril */
-export const PRESENTADOR_DX = 0;
+/** el presentador del pizarrón va 125 px más a la izquierda: deja libre el carril de subtítulos (x ≥ 168) sin cambiar su actuación */
+export const PRESENTADOR_DX = -125;
 /** capa: "todo" (video) · "subtitulos" (solo subtítulos, fondo transparente) · "escena" (todo menos subtítulos)
- *  · "fondo" (solo el escenario: con "escena" el QA saca la máscara de Tomi, objetos y textos) */
-export const CAPAS = ["todo", "subtitulos", "escena", "fondo"] as const;
-/** primerPlano: mostrador en primer plano de la cafetería (deja el carril de subtítulos sobre madera) */
-export const tomiV2Schema = z.object({ debug: z.boolean(), capa: z.enum(CAPAS).default("todo"), primerPlano: z.boolean().default(true) });
+ *  · "fondo" (solo el escenario: con "escena" el QA saca la máscara de Tomi, objetos y textos)
+ *  · "sinTomi" (escena sin Tomi) · "tomiClave" (solo la cara y las manos de Tomi, transparente): en este video el QA
+ *    permite el torso y las piernas de Tomi bajo el subtítulo, pero no su cara, sus manos, objetos ni textos */
+export const CAPAS = ["todo", "subtitulos", "escena", "fondo", "sinTomi", "tomiClave"] as const;
+/** primerPlano: mostrador en primer plano. APAGADO en el señuelo (el usuario lo descartó: tapaba el 40 % del cuadro); queda para comparar */
+export const tomiV2Schema = z.object({ debug: z.boolean(), capa: z.enum(CAPAS).default("todo"), primerPlano: z.boolean().default(false) });
 export type TomiV2Props = { debug: boolean; capa?: (typeof CAPAS)[number]; primerPlano?: boolean };
 
 /** subtítulos: palabras clave en amarillo (máx. 1 por página) y palabras que pueden ir solas */
@@ -91,22 +93,24 @@ export const TomiV2Visual: React.FC<{ f: number; debug?: boolean; inst?: string;
   debug = false,
   inst = "",
   capa = "todo",
-  primerPlano = true,
+  primerPlano = false,
 }) => {
   const m = montage(f);
-  const escena = capa !== "subtitulos";
+  const clave = capa === "tomiClave";
+  const escena = capa !== "subtitulos" && !clave;
   const fondo = capa === "fondo";
   const subs = capa === "todo" || capa === "subtitulos";
+  const tomi = capa === "sinTomi" ? "no" : clave ? "clave" : "si";
   return (
     <AbsoluteFill style={{ backgroundColor: escena ? "#F2DDBA" : undefined }}>
-      {escena && m.showCafe ? (
+      {(escena || clave) && m.showCafe ? (
         <AbsoluteFill style={{ transform: `translateY(${m.cafeY}px)` }}>
-          <CafeSceneV2 f={m.cafeF} inst={inst} soloFondo={fondo} primerPlano={false} />
+          <CafeSceneV2 f={m.cafeF} inst={inst} soloFondo={fondo} primerPlano={false} tomi={tomi} />
         </AbsoluteFill>
       ) : null}
-      {escena && m.showBoard ? (
+      {(escena || clave) && m.showBoard ? (
         <AbsoluteFill style={{ transform: `translateY(${m.boardY}px)` }}>
-          <BoardScene f={f} inst={`v2${inst}`} v2 soloFondo={fondo} presentadorDx={PRESENTADOR_DX} />
+          <BoardScene f={f} inst={`v2${inst}`} v2 soloFondo={fondo} presentadorDx={PRESENTADOR_DX} tomi={tomi} />
         </AbsoluteFill>
       ) : null}
       <AbsoluteFill>
@@ -123,7 +127,7 @@ export const TomiV2Visual: React.FC<{ f: number; debug?: boolean; inst?: string;
   );
 };
 
-export const EfectoSenueloTomiV2: React.FC<TomiV2Props> = ({ debug, capa = "todo", primerPlano = true }) => {
+export const EfectoSenueloTomiV2: React.FC<TomiV2Props> = ({ debug, capa = "todo", primerPlano = false }) => {
   const f = useCurrentFrame();
   return (
     <AbsoluteFill>

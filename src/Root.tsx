@@ -75,7 +75,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         schema={tomiV2Schema}
-        defaultProps={{ debug: false, capa: "todo" as const, primerPlano: true }}
+        defaultProps={{ debug: false, capa: "todo" as const, primerPlano: false }}
       />
       <Still id="QATomiV2" component={QATomiV2} width={QA2_W} height={QA2_H} />
       <Composition
