@@ -7,7 +7,7 @@ import path from "node:path";
 import process from "node:process";
 import console from "node:console";
 
-const [inDir = "out/1000-anos/final/stills", output = "out/1000-anos/final/stills/contact-sheet.png"] = process.argv.slice(2);
+const [inDir = "videosPrueba/MilAños/qa/03-1000-anos-final/stills", output = "videosPrueba/MilAños/qa/03-1000-anos-final/stills/contact-sheet.png"] = process.argv.slice(2);
 const prefix = "MilAnosCelularV3";
 const tmp = path.resolve("public/videos/03-1000-anos/final/qa");
 fs.mkdirSync(tmp, { recursive: true });

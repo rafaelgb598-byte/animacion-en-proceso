@@ -29,7 +29,9 @@ que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a 
 ## 2. Organización del repo
 
 ```
-videosPrueba/                ← renders de prueba de video, hasta que el usuario apruebe la versión final (no se sube a git)
+videosPrueba/                ← renders de prueba, hasta que el usuario apruebe la final (no se sube a git), por canal:
+  GiroDato/  MilAños/  Ciberseguridad/  Otro/   (las mismas 4 que videosFinal; nombre <nn>-<video>-vN.mp4)
+    qa/<nn-video>/           stills, hojas de contacto y QA de ese video (se borran cuando queda final)
 videosFinal/                 ← SOLO las versiones finales, listas para subir, por canal:
   GiroDato/                  videos de Tomi (psicología, curiosidades) → todos los de este tipo van acá
   MilAños/                   serie «1000 años» (sin Tomi: qué queda de un objeto con el paso de los siglos)
@@ -56,7 +58,6 @@ public/
   biblioteca/                ← audios e imágenes reutilizables (ver §3)
   videos/<nn-video>/         ← lo exclusivo de cada video: voz/ (narración + alineación) y sfx/ propios
 scripts/                     voz, mastering, efectos, catálogo, stills y QA
-out/                         stills, hojas de contacto y QA (fuera de git)
 ```
 
 **Regla de reutilización:** si algo puede servir para otro video (un personaje, un gesto, un sonido, un componente
@@ -126,7 +127,7 @@ La clave va solo por variable de entorno.
 5. **Actuación.** `BEATS` con estados de `acting.ts`; mirada (`GAZE`) hacia lo que se nombra; saltos y aterrizajes.
 6. **Sonido.** `SFX` con la biblioteca (`SONIDOS`), sincronizados a los `CUE`. Música con `MUSICA` y ducking bajo la voz.
 7. **QA.** Renderizar el Still de QA: **0 choques**, **≥ 95 % en el carril**, **ningún salto > 200 px**. Revisar la hoja de contactos.
-8. **Render.** `npx remotion render <Composición> videosPrueba/<nombre>.mp4 --gl=angle` (y una versión `--props='{"debug":true}'` para revisar cajas).
+8. **Render.** `npx remotion render <Composición> videosPrueba/<canal>/<nn>-<video>-vN.mp4 --gl=angle` (y una versión `--props='{"debug":true}'` para revisar cajas).
 
 **Stills rápidos:** `node scripts/stills.mjs <carpeta> [--props=JSON] <Composición>:<f1>,<f2> …` (un solo bundle).
 
@@ -140,4 +141,4 @@ La clave va solo por variable de entorno.
 - [ ] QA de subtítulos en verde (0 choques, ≥ 95 % en el carril, sin saltos grandes).
 - [ ] Crédito de la música en la descripción (si se usa Investigations).
 - [ ] Si es interactivo: regla clara antes de jugar, tiempo real para responder, colores verificados.
-- [ ] Las pruebas van a `videosPrueba/`; cuando el usuario dice que es la final, se decide con él y se mueve a `videosFinal/<canal>/` (los de Tomi a `GiroDato/`). Nunca sobrescribir.
+- [ ] Las pruebas van a `videosPrueba/<canal>/` (stills y QA en `videosPrueba/<canal>/qa/<nn-video>/`, nunca en `out/`); cuando el usuario dice que es la final, se decide con él y se mueve a `videosFinal/<canal>/` (los de Tomi a `GiroDato/`). Nunca sobrescribir.
