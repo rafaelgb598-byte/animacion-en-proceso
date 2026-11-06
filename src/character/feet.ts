@@ -1,5 +1,5 @@
 import { clamp, ease, lerp, smooth } from "./anim";
-import { DIM, rotP, type Vec } from "./rig";
+import { DIM, rotP, type Dims, type Vec } from "./rig";
 
 /**
  * Pies plantados reutilizables (extraído y generalizado de la V3).
@@ -17,11 +17,10 @@ const TOE: Vec = { x: 50, y: 24 };
 const HEEL: Vec = { x: -18, y: 22 };
 const TOE_OFF = 24;
 const STRIKE = -12;
-const LEG = DIM.thigh + DIM.shin;
 
 /** posición del tobillo (escena) y ángulo del pie para el fotograma f */
-export const footState = (plan: FootPlan, foot: Foot, f: number, floor: number, scale: number) => {
-  const ankleY = floor - DIM.sole * scale;
+export const footState = (plan: FootPlan, foot: Foot, f: number, floor: number, scale: number, dims: Dims = DIM) => {
+  const ankleY = floor - dims.sole * scale;
   const flat = (x: number): Vec => ({ x, y: ankleY });
   const toePivot = (x: number, ang: number): Vec => {
     const toe = { x: x + TOE.x * scale, y: ankleY + TOE.y * scale };
@@ -69,8 +68,10 @@ export const hipHeightFor = (
   floor: number,
   scale: number,
   reach = 0.99,
+  dims: Dims = DIM,
 ) => {
-  let h = LEG * 0.996 + DIM.sole;
+  const LEG = dims.thigh + dims.shin;
+  let h = LEG * 0.996 + dims.sole;
   for (const foot of ["F", "B"] as Foot[]) {
     const a = ankles[foot];
     const dx = (a.x - hips[foot]) / scale;

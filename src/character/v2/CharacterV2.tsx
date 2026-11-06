@@ -115,8 +115,10 @@ export const CharacterV2: React.FC<{
   pose: Pose;
   uid: string;
   frontProp?: React.ReactNode;
+  /** objeto en la mano de atrás (alcanza más lejos en tres cuartos) */
+  backProp?: React.ReactNode;
   rig?: Rig;
-}> = ({ pose: p, uid, frontProp, rig: given }) => {
+}> = ({ pose: p, uid, frontProp, backProp, rig: given }) => {
   const rig = given ?? rigV2(p);
   const fs = p.flip ? -1 : 1;
   const t = p.bodyTurn;
@@ -127,7 +129,7 @@ export const CharacterV2: React.FC<{
 
   return (
     <g transform={`translate(${p.x},${p.y}) scale(${p.scale * fs},${p.scale})`}>
-      <ArmV2 rig={rig.back} hand={p.armBack.hand} handNext={p.armBack.handNext} handMix={p.armBack.handMix} shade side={-1} />
+      <ArmV2 rig={rig.back} hand={p.armBack.hand} handNext={p.armBack.handNext} handMix={p.armBack.handMix} shade side={-1} prop={backProp} />
       <LegV2 rig={rig.legB} foot={p.legBack.foot} shade />
       <LegV2 rig={rig.legF} foot={p.legFront.foot} />
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { clamp, ease, lerp, poseTrack, smooth, track, type Key, type PoseKey } from "../character/anim";
 import { Character } from "../character/Character";
+import { CharacterV2 } from "../character/v2/CharacterV2";
 import { arm, FACES, FACES_V2, standing } from "../character/presets";
 import { blink as blinkAt } from "../character/anim";
 import type { FacePose, HandShape, Pose } from "../character/rig";
@@ -82,7 +83,7 @@ const pointAt = (b: number) => {
   return { x: lerp(prev[1], a[1], t), y: lerp(prev[2], a[2], t) };
 };
 
-const presenter = (b: number): Pose => {
+export const presenter = (b: number): Pose => {
   const base = standing(TX, FLOOR_Y, SC);
   const face = poseTrack(b, FACE_KEYS);
   face.lookX = track(b, LX);
@@ -209,7 +210,8 @@ const Plan: React.FC<{ x: number; y: number; name: string; decoy?: boolean; star
 
 /* ------------------------------ escena ------------------------------ */
 
-export const BoardScene: React.FC<{ f: number; inst?: string }> = ({ f, inst = "" }) => {
+/** `v2`: dibuja a Tomi V2 (mismas poses y tiempos); por defecto, el Tomi original. */
+export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean }> = ({ f, inst = "", v2 = false }) => {
   const b = f - SCENE.boardIn;
   const id = (n: string) => `bd${n}${inst}`;
   const pose = presenter(b);
@@ -312,7 +314,7 @@ export const BoardScene: React.FC<{ f: number; inst?: string }> = ({ f, inst = "
 
       {/* sombra y presentador */}
       <ellipse cx={TX + 10} cy={FLOOR_Y + 6} rx={110} ry={20} fill="#2A1408" opacity={0.22} />
-      <Character pose={pose} uid={`bdt${inst}`} />
+      {v2 ? <CharacterV2 pose={pose} uid={`bdt2${inst}`} /> : <Character pose={pose} uid={`bdt${inst}`} />}
     </svg>
   );
 };

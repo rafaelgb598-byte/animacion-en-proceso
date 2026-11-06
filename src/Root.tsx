@@ -14,6 +14,8 @@ import { ACT_H, ACT_W, HojaActuacion } from "./proposal-v2/HojaActuacion";
 import { PruebaAnimacionV2 } from "./proposal-v2/clip/PruebaAnimacionV2";
 import { CLIP_FRAMES } from "./proposal-v2/clip/timeline";
 import { QA_H, QA_W, QASubtitulos } from "./proposal-v2/clip/QA";
+import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./final-v2/EfectoSenueloTomiV2";
+import { QA2_H, QA2_W, QATomiV2 } from "./final-v2/QA";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -54,6 +56,16 @@ export const RemotionRoot: React.FC = () => {
       />
       <Still id="ComparacionV1V2" component={CompareV1V2} width={COMPARE_W} height={Math.round(COMPARE_H)} />
       <Still id="ComparacionV2V3" component={CompareV2V3} width={COMPARE23_W} height={Math.round(COMPARE23_H)} />
+      <Composition
+        id="EfectoSenueloTomiV2"
+        component={EfectoSenueloTomiV2}
+        durationInFrames={TOMI_V2_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{ debug: false }}
+      />
+      <Still id="QATomiV2" component={QATomiV2} width={QA2_W} height={QA2_H} />
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />
         <Still id="ActuacionV2" component={HojaActuacion} width={ACT_W} height={ACT_H} />

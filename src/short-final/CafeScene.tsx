@@ -100,7 +100,7 @@ export const Tag: React.FC<{ size: string; price: string; highlight?: number; gl
 );
 
 /** trazo de tiza que se dibuja (0..1) */
-const ChalkPath: React.FC<{ d: string; t: number; color?: string; w?: number }> = ({ d, t, color = "#FFF4D6", w = 7 }) =>
+export const ChalkPath: React.FC<{ d: string; t: number; color?: string; w?: number }> = ({ d, t, color = "#FFF4D6", w = 7 }) =>
   t <= 0 ? null : (
     <path d={d} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - clamp(t, 0, 1)} stroke={color} strokeWidth={w} fill="none" strokeLinecap="round" strokeLinejoin="round" />
   );
@@ -136,13 +136,13 @@ export const Sparkle: React.FC<{ x: number; y: number; s: number }> = ({ x, y, s
   );
 
 /** servilleta: arrugada en la mano / apoyada sobre el vaso */
-const NapkinHeld: React.FC = () => (
+export const NapkinHeld: React.FC = () => (
   <g transform={`scale(${1 / S})`}>
     <path d="M -34 -14 Q -20 -40 6 -30 Q 34 -36 40 -8 Q 46 18 20 26 Q -6 36 -28 22 Q -46 6 -34 -14 Z" fill="#FFFFFF" stroke={LINE} strokeWidth={5} strokeLinejoin="round" />
     <path d="M -14 -16 Q 0 -2 -6 14 M 12 -18 Q 22 0 14 16" stroke="#D8D2C8" strokeWidth={3} fill="none" strokeLinecap="round" />
   </g>
 );
-const NapkinDraped: React.FC<{ h: number; t: number }> = ({ h, t }) => {
+export const NapkinDraped: React.FC<{ h: number; t: number }> = ({ h, t }) => {
   const top = -h - 18;
   const drop = lerp(20, 92, t);
   return (
