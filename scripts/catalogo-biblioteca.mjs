@@ -1,4 +1,4 @@
-// Regenera public/biblioteca/catalogo.json y src/biblioteca/sonidos.ts a partir de los archivos.
+// Regenera public/biblioteca/catalogo.json y src/canal/sonidos/sonidos.ts a partir de los archivos.
 // Uso: node scripts/catalogo-biblioteca.mjs   (correrlo cada vez que se agrega un sonido)
 import { execSync } from "node:child_process";
 import fs from "node:fs";
@@ -39,13 +39,16 @@ const DESC = {
   paper: "manipular papel",
   "sala-cafe": "ambiente de sala (room tone) para poner debajo de todo",
   "investigations-kevin-macleod": "música de intriga/curiosidad, 93 s, loop fácil",
+  "tic-r1": "tic de tarjeta suave (1,6 kHz, 12 ms): cuenta regresiva y nivel fácil",
+  ...Object.fromEntries(Array.from({ length: 8 }, (_, k) => [`tic-r2-${k + 1}`, `tic de tarjeta, serie de 8 que sube de tono (${k + 1}/8)`])),
+  ...Object.fromEntries(Array.from({ length: 9 }, (_, k) => [`tic-v2-${k + 1}`, `tic de tarjeta, serie de 9 que sube de tono (${k + 1}/9)`])),
 };
 const origin = (cat, ext) =>
   cat === "musica"
     ? { origen: "Kevin MacLeod (incompetech.com)", licencia: "CC BY 4.0 — crédito obligatorio en la descripción" }
     : ext === ".mp3"
       ? { origen: "ElevenLabs Sound Effects (cuenta del canal)", licencia: "uso según los términos de ElevenLabs del plan" }
-      : { origen: "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)", licencia: "propio, libre" };
+      : { origen: "sintetizado por nuestros scripts (gen-sfx*.mjs)", licencia: "propio, libre" };
 
 const files = [];
 const walk = (d) => {
@@ -88,5 +91,5 @@ const ts = [
   "export type Sonido = keyof typeof SONIDOS;",
   "",
 ];
-fs.writeFileSync("src/biblioteca/sonidos.ts", ts.join("\n"));
+fs.writeFileSync("src/canal/sonidos/sonidos.ts", ts.join("\n"));
 console.log(`${items.length} archivos catalogados`);

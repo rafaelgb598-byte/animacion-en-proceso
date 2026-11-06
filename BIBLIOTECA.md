@@ -1,8 +1,9 @@
 # Biblioteca del canal — cómo hacemos los Shorts
 
 Este repo es la **base de todos los Shorts**: personaje, animación, dinámica, subtítulos y recursos.
-El video de referencia (aprobado) es **`EfectoSenueloTomiV2`** (`src/final-v2/`). Cada video nuevo
-se arma copiando esa carpeta y cambiando guion, voz, escena y tiempos.
+Plantillas aprobadas: **`EfectoSenueloTomiV2`** (`src/videos/01-efecto-senuelo/final/`, escena con cámara y comparaciones)
+y **`GiroDatoStroopV2`** (`src/videos/02-stroop/final/`, desafío interactivo). Cada video nuevo se arma copiando la
+que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a `videosFinal/`.
 
 ---
 
@@ -25,62 +26,94 @@ se arma copiando esa carpeta y cambiando guion, voz, escena y tiempos.
 
 ---
 
-## 2. Mapa del código
+## 2. Organización del repo
 
-| Carpeta / archivo | Qué es |
+```
+videosFinal/                 ← SOLO las versiones finales, listas para subir (+ títulos y descripciones)
+produccion/<nn-video>/       ← guiones, prompts, planes y notas de cada video
+src/
+  canal/                     ← TODO lo reutilizable entre videos
+    personaje/               esqueleto, animación, pies (rig, anim, feet, motion, presets)
+      tomi-v2/               Tomi oficial: dibujo, cara, estados de actuación, timing, sincronía de labios
+      tomi-v1/               Tomi original (solo lo usan videos viejos)
+    subtitulos/              carril fijo abajo + componente CaptionsLayer
+    escenarios/
+      cafeteria/             set de cafetería y vasos (Cafe, CafeV2, Props)
+      mesa/                  "mesa de evidencia": paleta, tintas de prueba, fuentes (theme.ts)
+    componentes/
+      tarjetas/              tarjeta de palabra, ficha de cita, diagramas de explicación
+    sonidos/                 mapa tipado SONIDOS / MUSICA (generado)
+  videos/<nn-video>/         ← código de cada video
+    final/                   la versión que está en videosFinal
+    v1/, short-final/, historial/   versiones anteriores (se conservan, no se tocan)
+  laboratorio/               pruebas de diseño, hojas de personaje, herramientas de revisión
+  Root.tsx                   registro de todas las composiciones
+public/
+  biblioteca/                ← audios e imágenes reutilizables (ver §3)
+  videos/<nn-video>/         ← lo exclusivo de cada video: voz/ (narración + alineación) y sfx/ propios
+scripts/                     voz, mastering, efectos, catálogo, stills y QA
+out/                         renders de trabajo y pruebas (fuera de git)
+```
+
+**Regla de reutilización:** si algo puede servir para otro video (un personaje, un gesto, un sonido, un componente
+visual), va en `src/canal/` o `public/biblioteca/`. Si es exclusivo de un video, va en su carpeta de `videos/`.
+Para agregar una variante a algo compartido, se suma una prop con valor por defecto que deje lo anterior igual.
+
+### Piezas principales
+
+| Archivo | Qué es |
 |---|---|
-| `src/character/rig.ts` | Esqueleto: poses, FK, IK de 2 huesos, `Dims` (proporciones). |
-| `src/character/anim.ts` | `track`, easings, resortes (`springSeries`), parpadeos, trayectorias en arco. |
-| `src/character/feet.ts` | Pies plantados para caminar sin patinar (`footState`, `hipHeightFor`). |
-| `src/character/v2/style.ts` | **Tomi V2**: proporciones (`DIM_V2`), escala de cabeza, paleta, grosores. |
-| `src/character/v2/CharacterV2.tsx` | Dibujo de Tomi V2 (`frontProp` / `backProp` para objetos en las manos). |
-| `src/character/v2/HeadV2.tsx` | Cara paramétrica V2 (cejas con forma, sonrisa asimétrica con hoyuelo). |
-| `src/character/v2/acting.ts` | **Estados de actuación**: neutral, irónico, pensando, duda, firme, sorpresa, sospecha, incredulidad, eureka, celebración (`statePose`). |
-| `src/character/v2/lipsync.ts` | **Sincronía de labios** desde la alineación de ElevenLabs (`lipSeries`): apertura y ancho de boca por fotograma. Tomi habla cuando habla el narrador. |
-| `src/character/v2/motion2.ts` | Timing: `snap` (anticipación+overshoot+asentamiento), `pop`, `shake`, `pulse`, `beatPose` (línea de tiempo de estados). |
-| `src/final-v2/cafe.ts` | **Plantilla de escena**: objetos, cámara (`CAM_KEYS`, encuadres `PAIR`/`TRIO`), beats de actuación, mirada, caminata, zonas protegidas. |
-| `src/final-v2/CafeSceneV2.tsx` | Render de la escena (set, objetos, tiza, efectos breves). |
-| `src/final-v2/layout.ts` | Montaje entre escenas y mapa de zonas protegidas por fotograma. |
-| `src/final-v2/captions.ts` | **Subtítulos en carril fijo** (Viterbi + ocultamiento de último recurso). |
-| `src/final-v2/QA.tsx` | QA por fotograma: choques, % en el carril, saltos, hoja de contactos. |
-| `src/final-v2/EfectoSenueloTomiV2.tsx` | Composición final: escenas + título del gancho + subtítulos + audio. |
-| `src/scenes/decoy-v2/CafeV2.tsx` | Set de cafetería (pared, mostrador, lámparas, piso, exterior, etalonaje). |
-| `src/scenes/decoy/Props.tsx` | Vaso de café con squash & stretch. |
-| `src/short-final/CafeScene.tsx` | Piezas reutilizables: `Tag` (cartel de precio), `ChalkPath`, `ChalkText`, `Sparkle`, servilleta. |
-| `src/short-final/BoardScene.tsx` | Escena de pizarrón con tiza (`v2` para Tomi V2). |
-| `src/proposal-v2/` | Hojas de diseño (comparación V1/V2, estados de actuación) y el clip de prueba. |
-| `src/biblioteca/sonidos.ts` | Mapa tipado de sonidos y música (`SONIDOS`, `MUSICA`). |
+| `src/canal/personaje/rig.ts` | Esqueleto: poses, FK, IK de 2 huesos, `Dims` (proporciones). |
+| `src/canal/personaje/anim.ts` | `track`, easings, resortes (`springSeries`), parpadeos, trayectorias en arco. |
+| `src/canal/personaje/feet.ts` | Pies plantados para caminar sin patinar (`footState`, `hipHeightFor`). |
+| `src/canal/personaje/tomi-v2/style.ts` | Proporciones (`DIM_V2`), escala de cabeza, paleta, grosores. |
+| `src/canal/personaje/tomi-v2/CharacterV2.tsx` | Dibujo de Tomi (`frontProp` / `backProp` para objetos en las manos). |
+| `src/canal/personaje/tomi-v2/acting.ts` | **Estados de actuación**: neutral, irónico, pensando, duda, firme, sorpresa, sospecha, incredulidad, eureka, celebración (`statePose`). |
+| `src/canal/personaje/tomi-v2/motion2.ts` | Timing: `snap`, `pop`, `shake`, `pulse`, `beatPose` (línea de tiempo de estados). |
+| `src/canal/personaje/tomi-v2/lipsync.ts` | **Sincronía de labios** desde la alineación de ElevenLabs (`lipSeries`). |
+| `src/canal/subtitulos/` | Subtítulos en carril fijo (`captions.ts`) y su componente (`CaptionsLayer`). Opciones: zona segura, renglones, `oneLineMax`. |
+| `src/canal/escenarios/cafeteria/` | Set de cafetería y vaso con squash & stretch. |
+| `src/canal/escenarios/mesa/theme.ts` | Mesa oscura: colores, tintas sin verde (aptas para daltonismo), fuentes. |
+| `src/canal/componentes/tarjetas/` | `WordCard` (geometría configurable), `CitationCard`, `RaceExplainer` (dos procesos que compiten), `InterferenceDiagram`. |
+| `src/videos/01-efecto-senuelo/final/` | Plantilla de video en escenario: cámara (`frame()`, cortes), beats, mirada, zonas protegidas, QA. |
+| `src/videos/01-efecto-senuelo/short-final/` | `Tag`, `ChalkPath`, `ChalkText`, `Sparkle` (en `CafeScene.tsx`) y el pizarrón (`BoardScene.tsx`). |
+| `src/videos/02-stroop/final/` | Plantilla de video **interactivo**: ejemplo, cuenta regresiva, niveles, barra de tiempo, explicación, loop. |
 
 ---
 
-## 3. Recursos (`public/biblioteca/`)
+## 3. Recursos (`public/`)
 
 Catálogo completo con duración, descripción, origen y licencia: **`public/biblioteca/catalogo.json`**.
-Desde el código: `import { SONIDOS, MUSICA } from "../biblioteca/sonidos"` → `staticFile(SONIDOS.whip)`.
+Desde el código: `import { SONIDOS, MUSICA } from "…/canal/sonidos/sonidos"` → `staticFile(SONIDOS.whip)`.
 
 | Carpeta | Contenido |
 |---|---|
-| `sfx/transiciones/` | whoosh-suave, whoosh-corto, swish, whip, riser, zip |
-| `sfx/impactos/` | vaso-apoyo, thud, impact, low-hit, air-clack, crack, wood, paper-slap |
-| `sfx/enfasis/` | tic-precio, pop-aparicion, tick, price-pop, pluck, shimmer, click-close, flick |
-| `sfx/reacciones/` | sorpresa, revelacion |
-| `sfx/objetos/` | pasos, servilleta, coin-clink, coin-spin, creak, paper |
-| `sfx/ambiente/` | sala-cafe (room tone, 45 s) |
-| `musica/` | Investigations — Kevin MacLeod (CC BY 4.0, **crédito obligatorio**: `CREDITO-investigations.txt`) |
+| `biblioteca/sfx/transiciones/` | whoosh-suave, whoosh-corto, swish, whip, riser, zip |
+| `biblioteca/sfx/impactos/` | vaso-apoyo, thud, impact, low-hit, air-clack, crack, wood, paper-slap |
+| `biblioteca/sfx/enfasis/` | tic-precio, pop-aparicion, tick, price-pop, pluck, shimmer, click-close, flick |
+| `biblioteca/sfx/tics/` | tics de tarjeta: `tic-r1` (suave) y dos series que suben de tono (`tic-r2-1…8`, `tic-v2-1…9`) |
+| `biblioteca/sfx/reacciones/` | sorpresa, revelacion |
+| `biblioteca/sfx/objetos/` | pasos, servilleta, coin-clink, coin-spin, creak, paper |
+| `biblioteca/sfx/ambiente/` | sala-cafe (room tone, 45 s) |
+| `biblioteca/musica/` | Investigations — Kevin MacLeod (CC BY 4.0, **crédito obligatorio**: `CREDITO-investigations.txt`) |
+| `biblioteca/imagenes/` | imágenes y texturas reutilizables (vacía por ahora: todo se dibuja en SVG) |
+| `videos/01-efecto-senuelo/` | `voz/` narración Isaac + palabras · `sfx/` efectos propios del video |
+| `videos/02-stroop/` | `v1/voz/` y `final/voz/`: narración (mp3 crudo, masterizado y alineación por carácter) |
 
-- Los `.mp3` de efectos son de ElevenLabs Sound Effects; los `.wav`, sintetizados por nuestros scripts.
+- Los `.mp3` de efectos son de ElevenLabs Sound Effects; los `.wav`, sintetizados por nuestros scripts (gratis).
 - Al agregar un sonido: copiarlo a la categoría que corresponda y correr `node scripts/catalogo-biblioteca.mjs`.
-- Los videos ya hechos siguen usando sus rutas originales (`public/short-final/…`); no moverlas.
 
-**Voz (ElevenLabs):** Isaac – Friendly Young Male, Voice ID `QmPfzE500cXXHM9uQKGc` (español). Tiempos por palabra
-con ElevenLabs Scribe → `public/<video>/voz/palabras.json` → `words.ts`. La clave va solo por variable de entorno.
+**Voz (ElevenLabs):** Isaac – Friendly Young Male, Voice ID `QmPfzE500cXXHM9uQKGc` (español), `eleven_multilingual_v2`,
+**velocidad natural (1,0)** y mastering suave (`normalize-voice.mjs --drive 6`). Acelerarla la hace sonar forzada.
+`node --env-file=<.env> scripts/gen-voice.mjs --lines <voice-lines.json> --out public/videos/<video>/voz --budget <n>`.
+La clave va solo por variable de entorno.
 
 ---
 
 ## 4. Cómo hacer un video nuevo
 
-1. **Guion y voz.** Guion en `produccion/<video>/guion.txt` → voz ElevenLabs → tiempos por palabra.
-2. **Copiar la plantilla.** `src/final-v2/` → `src/<video>/`. Cambiar `WORDS` (palabras) y los `CUE` (fotogramas clave).
+1. **Guion y voz.** Guion en `produccion/<nn-video>/` → voz ElevenLabs en `public/videos/<nn-video>/voz/` (con alineación por carácter).
+2. **Copiar la plantilla.** `src/videos/<plantilla>/final/` → `src/videos/<nn-video>/final/`. Cambiar textos y tiempos (todo fotograma con nombre en `timeline.ts`).
 3. **Escena.** Reusar el set o armar uno nuevo; objetos en `cafe.ts` (posiciones, apariciones, carteles).
 4. **Cámara.** Encuadres con la función `frame(cx, cy, zoom)` para comparaciones centradas; cortes `cut: true`.
    Dejar libre el carril de subtítulos (nada clave entre y ≈ 1330 y 1536 dentro de x 60–900).
@@ -100,4 +133,5 @@ con ElevenLabs Scribe → `public/<video>/voz/palabras.json` → `words.ts`. La 
 - [ ] Ningún desenfoque sobre el dibujo.
 - [ ] QA de subtítulos en verde (0 choques, ≥ 95 % en el carril, sin saltos grandes).
 - [ ] Crédito de la música en la descripción (si se usa Investigations).
-- [ ] Render nuevo en una carpeta nueva de `out/` (nunca sobrescribir videos entregados).
+- [ ] Si es interactivo: regla clara antes de jugar, tiempo real para responder, colores verificados.
+- [ ] Render de trabajo en `out/`; la versión aprobada se copia a `videosFinal/` (nunca sobrescribir una existente) y se anota en su README.

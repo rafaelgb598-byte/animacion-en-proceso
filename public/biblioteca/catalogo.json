@@ -14,7 +14,7 @@
     "archivo": "biblioteca/sfx/ambiente/sala-cafe.wav",
     "duracion_s": 45,
     "descripcion": "ambiente de sala (room tone) para poner debajo de todo",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -23,7 +23,7 @@
     "archivo": "biblioteca/sfx/enfasis/click-close.wav",
     "duracion_s": 0.07,
     "descripcion": "clic de cierre / agarre",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -32,7 +32,7 @@
     "archivo": "biblioteca/sfx/enfasis/flick.wav",
     "duracion_s": 0.16,
     "descripcion": "toque leve (dar vuelta un ticket, señalar)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -41,7 +41,7 @@
     "archivo": "biblioteca/sfx/enfasis/pluck.wav",
     "duracion_s": 0.6,
     "descripcion": "pulsación tipo cuerda (conexión entre ideas)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -59,7 +59,7 @@
     "archivo": "biblioteca/sfx/enfasis/price-pop.wav",
     "duracion_s": 0.18,
     "descripcion": "pop brillante para carteles y precios",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -68,7 +68,7 @@
     "archivo": "biblioteca/sfx/enfasis/shimmer.wav",
     "duracion_s": 0.9,
     "descripcion": "brillo / destello ('esto es lo inteligente')",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -86,7 +86,7 @@
     "archivo": "biblioteca/sfx/enfasis/tick.wav",
     "duracion_s": 0.01,
     "descripcion": "tic de reloj / marcador muy corto",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -95,7 +95,7 @@
     "archivo": "biblioteca/sfx/impactos/air-clack.wav",
     "duracion_s": 0.45,
     "descripcion": "chasquido de aire (explosión de ideas, separación)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -104,7 +104,7 @@
     "archivo": "biblioteca/sfx/impactos/crack.wav",
     "duracion_s": 0.25,
     "descripcion": "crujido seco",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -113,7 +113,7 @@
     "archivo": "biblioteca/sfx/impactos/impact.wav",
     "duracion_s": 0.3,
     "descripcion": "impacto cartoon",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -122,7 +122,7 @@
     "archivo": "biblioteca/sfx/impactos/low-hit.wav",
     "duracion_s": 1.4,
     "descripcion": "golpe grave dramático (revelaciones)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -131,7 +131,7 @@
     "archivo": "biblioteca/sfx/impactos/paper-slap.wav",
     "duracion_s": 0.35,
     "descripcion": "papel que golpea la mesa",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -140,7 +140,7 @@
     "archivo": "biblioteca/sfx/impactos/thud.wav",
     "duracion_s": 0.2,
     "descripcion": "golpe sordo (caída, aterrizaje)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -158,7 +158,7 @@
     "archivo": "biblioteca/sfx/impactos/wood.wav",
     "duracion_s": 0.16,
     "descripcion": "golpe de madera",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -167,7 +167,7 @@
     "archivo": "biblioteca/sfx/objetos/coin-clink.wav",
     "duracion_s": 0.5,
     "descripcion": "moneda que tintinea",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -176,7 +176,7 @@
     "archivo": "biblioteca/sfx/objetos/coin-spin.wav",
     "duracion_s": 1.1,
     "descripcion": "moneda girando hasta frenar",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -185,7 +185,7 @@
     "archivo": "biblioteca/sfx/objetos/creak.wav",
     "duracion_s": 0.55,
     "descripcion": "crujido de madera / balanza",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -194,7 +194,7 @@
     "archivo": "biblioteca/sfx/objetos/paper.wav",
     "duracion_s": 0.6,
     "descripcion": "manipular papel",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -234,12 +234,174 @@
     "licencia": "uso según los términos de ElevenLabs del plan"
   },
   {
+    "id": "tic-r1",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r1.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta suave (1,6 kHz, 12 ms): cuenta regresiva y nivel fácil",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-1",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-1.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (1/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-2",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-2.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (2/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-3",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-3.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (3/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-4",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-4.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (4/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-5",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-5.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (5/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-6",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-6.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (6/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-7",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-7.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (7/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-r2-8",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-r2-8.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 8 que sube de tono (8/8)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-1",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-1.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (1/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-2",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-2.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (2/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-3",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-3.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (3/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-4",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-4.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (4/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-5",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-5.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (5/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-6",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-6.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (6/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-7",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-7.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (7/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-8",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-8.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (8/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-v2-9",
+    "categoria": "tics",
+    "archivo": "biblioteca/sfx/tics/tic-v2-9.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de tarjeta, serie de 9 que sube de tono (9/9)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
     "id": "riser",
     "categoria": "transiciones",
     "archivo": "biblioteca/sfx/transiciones/riser.wav",
     "duracion_s": 1.1,
     "descripcion": "subida de tensión antes de una revelación",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -248,7 +410,7 @@
     "archivo": "biblioteca/sfx/transiciones/swish.wav",
     "duracion_s": 0.5,
     "descripcion": "roce rápido (entradas de objetos, manos)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -257,7 +419,7 @@
     "archivo": "biblioteca/sfx/transiciones/whip.wav",
     "duracion_s": 0.3,
     "descripcion": "látigo de cámara (whip-pan / corte rápido)",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -266,7 +428,7 @@
     "archivo": "biblioteca/sfx/transiciones/whoosh-corto.wav",
     "duracion_s": 0.65,
     "descripcion": "barrido corto y seco",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   },
   {
@@ -284,7 +446,7 @@
     "archivo": "biblioteca/sfx/transiciones/zip.wav",
     "duracion_s": 0.8,
     "descripcion": "cierre / deslizamiento rápido",
-    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "origen": "sintetizado por nuestros scripts (gen-sfx*.mjs)",
     "licencia": "propio, libre"
   }
 ]

@@ -1,25 +1,25 @@
 import { Composition, Folder, Still } from "remotion";
 import { MyComposition } from "./Composition";
-import { PoseSheet } from "./scenes/PoseSheet";
-import { DecoyScene, DECOY_FRAMES } from "./scenes/decoy/DecoyScene";
-import { DecoyV2, DECOY_V2_FRAMES } from "./scenes/decoy-v2/DecoyV2";
-import { DecoyV3, DECOY_V3_FRAMES } from "./scenes/decoy-v3/DecoyV3";
-import { COMPARE_H, COMPARE_W, CompareV1V2 } from "./scenes/CompareV1V2";
-import { COMPARE23_H, COMPARE23_W, CompareV2V3 } from "./scenes/CompareV2V3";
-import { FrameGrid, gridDefaults, gridMetadata } from "./scenes/inspect/FrameGrid";
-import { DiagFinal, DiagV2, DiagV3 } from "./scenes/inspect/DiagStills";
-import { EfectoSenueloFinal, FINAL_FRAMES } from "./short-final/EfectoSenueloFinal";
-import { PropuestaPersonaje, SHEET_H, SHEET_W } from "./proposal-v2/PropuestaPersonaje";
-import { ACT_H, ACT_W, HojaActuacion } from "./proposal-v2/HojaActuacion";
-import { PruebaAnimacionV2 } from "./proposal-v2/clip/PruebaAnimacionV2";
-import { CLIP_FRAMES } from "./proposal-v2/clip/timeline";
-import { QA_H, QA_W, QASubtitulos } from "./proposal-v2/clip/QA";
-import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./final-v2/EfectoSenueloTomiV2";
-import { QA2_H, QA2_W, QATomiV2 } from "./final-v2/QA";
-import { STROOP_FRAMES, StroopShort, stroopSchema } from "./stroop/StroopShort";
-import { QAS_H, QAS_W, QAStroop } from "./stroop/QAStroop";
-import { GIRODATO_STROOP_V2_FRAMES, GiroDatoStroopV2, giroDatoStroopV2Schema } from "./stroop-v2/GiroDatoStroopV2";
-import { QAV2_H, QAV2_W, QAStroopV2 } from "./stroop-v2/QAStroopV2";
+import { PoseSheet } from "./laboratorio/revision/PoseSheet";
+import { DecoyScene, DECOY_FRAMES } from "./videos/01-efecto-senuelo/historial/v1/DecoyScene";
+import { DecoyV2, DECOY_V2_FRAMES } from "./videos/01-efecto-senuelo/historial/v2/DecoyV2";
+import { DecoyV3, DECOY_V3_FRAMES } from "./videos/01-efecto-senuelo/historial/v3/DecoyV3";
+import { COMPARE_H, COMPARE_W, CompareV1V2 } from "./laboratorio/revision/CompareV1V2";
+import { COMPARE23_H, COMPARE23_W, CompareV2V3 } from "./laboratorio/revision/CompareV2V3";
+import { FrameGrid, gridDefaults, gridMetadata } from "./laboratorio/revision/FrameGrid";
+import { DiagFinal, DiagV2, DiagV3 } from "./laboratorio/revision/DiagStills";
+import { EfectoSenueloFinal, FINAL_FRAMES } from "./videos/01-efecto-senuelo/short-final/EfectoSenueloFinal";
+import { PropuestaPersonaje, SHEET_H, SHEET_W } from "./laboratorio/propuesta-tomi-v2/PropuestaPersonaje";
+import { ACT_H, ACT_W, HojaActuacion } from "./laboratorio/propuesta-tomi-v2/HojaActuacion";
+import { PruebaAnimacionV2 } from "./laboratorio/propuesta-tomi-v2/clip/PruebaAnimacionV2";
+import { CLIP_FRAMES } from "./laboratorio/propuesta-tomi-v2/clip/timeline";
+import { QA_H, QA_W, QASubtitulos } from "./laboratorio/propuesta-tomi-v2/clip/QA";
+import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./videos/01-efecto-senuelo/final/EfectoSenueloTomiV2";
+import { QA2_H, QA2_W, QATomiV2 } from "./videos/01-efecto-senuelo/final/QA";
+import { STROOP_FRAMES, StroopShort, stroopSchema } from "./videos/02-stroop/v1/StroopShort";
+import { QAS_H, QAS_W, QAStroop } from "./videos/02-stroop/v1/QAStroop";
+import { GIRODATO_STROOP_V2_FRAMES, GiroDatoStroopV2, giroDatoStroopV2Schema } from "./videos/02-stroop/final/GiroDatoStroopV2";
+import { QAV2_H, QAV2_W, QAStroopV2 } from "./videos/02-stroop/final/QAStroopV2";
 
 export const RemotionRoot: React.FC = () => {
   return (
