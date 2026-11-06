@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { captionReport } from "../final-v2/captions";
 import { WORD_COLOR } from "../stroop/script";
-import { TEXT_SAFE, V2_WORDS, v2Boxes } from "./GiroDatoStroopV2";
+import { CAPTION_OPTS, TEXT_SAFE, V2_WORDS, v2Boxes } from "./GiroDatoStroopV2";
 import { LEVELS } from "./script";
 import * as T from "./timeline";
 
@@ -11,13 +11,13 @@ import * as T from "./timeline";
 export const QAV2_W = 1500;
 export const QAV2_H = 1000;
 const FONT = "'Segoe UI', Arial, sans-serif";
-const OPTS = { safe: TEXT_SAFE, bases: [1410, 1320, 1230, 1140, 1050, 960] };
+const OPTS = CAPTION_OPTS;
 
 export const QAStroopV2: React.FC = () => {
   const l1ok = LEVELS[0].cards.every((c) => WORD_COLOR[c.word] === c.ink);
   const inc = [...LEVELS[1].cards, ...LEVELS[2].cards];
   const match = inc.filter((c) => WORD_COLOR[c.word] === c.ink).length;
-  const rep = inc.filter((c, i) => i > 0 && inc[i - 1].ink === c.ink).length + (LEVELS[0].cards[3].ink === inc[0].ink ? 1 : 0);
+  const rep = inc.filter((c, i) => i > 0 && inc[i - 1].ink === c.ink).length + (LEVELS[0].cards[LEVELS[0].cards.length - 1].ink === inc[0].ink ? 1 : 0);
   const first = T.STARTS[0][0];
   const { rows, jumps } = captionReport(T.DURATION, v2Boxes, V2_WORDS, OPTS);
   const shown = rows.filter((r) => r.has && !r.hidden);
@@ -39,7 +39,7 @@ export const QAStroopV2: React.FC = () => {
   const card = v2Boxes(T.L_START[2]).find((b) => b.name === "tarjeta");
   const cardOk = !!card && card.x0 >= 80 && card.x1 <= 941 && card.y0 >= 240 && card.y1 <= 1420;
   const lines: [string, boolean][] = [
-    [`Hook: primera palabra en f${first} (${(first / 30).toFixed(2)} s); instrucción visible desde f0`, first <= 36],
+    [`Hook: ejemplo + instrucción desde f0 · cuenta regresiva f${T.COUNT[0]} · primera tarjeta con tiempo f${first} (${(first / 30).toFixed(2)} s), después de la regla (voz hasta f${T.voiceEnd("v1")})`, first > T.voiceEnd("v1")],
     [`Nivel 1 coincide: ${l1ok ? "sí" : "NO"} · niveles 2–3: coincidencias ${match}, tinta repetida seguida ${rep}`, l1ok && match === 0 && rep === 0],
     [`Tiempos por tarjeta: ${LEVELS.map((l) => l.cards.map((c) => c.dur).join("·")).join(" | ")}`, true],
     [`Subtítulos: choques ${hard.length} · sobre la tarjeta ${overCard} · en carril ${lanePct.toFixed(1)} % · saltos > 200 px ${jumps.filter((j) => j.dy > 200).length} · ocultos ${hidden}`, hard.length === 0 && lanePct >= 95],

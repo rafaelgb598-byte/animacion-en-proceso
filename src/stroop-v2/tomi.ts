@@ -39,6 +39,16 @@ const FACEPALM: Pose = {
   armBack: { shoulder: 0, elbow: 10, wrist: 0, hand: "open", ik: { x: 22, y: -62, space: "chin", weight: 1, bend: -1 } },
 };
 const SHOCK: Pose = P("sorpresa", { hop: 0 });
+/** apertura: señala la tarjeta de ejemplo mientras explica la regla */
+const SHOW_EX: Pose = {
+  ...P("ironico", { face: { ...FACE.ironico, smile: 0.55, browLiftR: 0.8 }, headTilt: -2 }),
+  lean: 3,
+  armFront: { shoulder: 0, elbow: 10, wrist: 0, hand: "point", ik: { x: 470, y: 960, space: "scene", weight: 1, bend: 1 }, aim: { x: 510, y: 715, weight: 1 } },
+};
+/** «No leas la palabra»: índice arriba, advierte a cámara */
+const WARN: Pose = P("eureka", { face: { ...FACE.firme, smile: 0.35, browLiftL: 0.5, browLiftR: 0.6 } });
+/** cuenta regresiva: se prepara (puños, se inclina hacia la tarjeta) */
+const READY: Pose = P("firme", { face: { ...FACE.firme, smile: 0.45 } });
 /** presenta la explicación: palma abierta hacia el diagrama, la otra mano en la cintura (boca libre) */
 const PRESENT: Pose = {
   ...P("ironico", { face: { ...FACE.neutral, smile: 0.35, browLiftL: 0.25, browLiftR: 0.35 }, headTilt: -3 }),
@@ -53,6 +63,9 @@ const EFFORT: Pose = {
 
 const BEATS: Beat[] = [
   { at: 0, pose: P0 },
+  { at: 22, pose: SHOW_EX, dur: 12 }, // «Decí en voz alta el color» (señala el ejemplo)
+  { at: T.EX_HINT + 2, pose: WARN, dur: 8, ease: snap(0.15, 0.3) }, // «No leas la palabra»
+  { at: T.COUNT[0] + 6, pose: READY, dur: 10 }, // 3 · 2 · 1
   { at: T.L_START[1] + 12, pose: CONFIDENT, dur: 12 }, // confianza: lo dice sin esfuerzo
   { at: T.CLOSE1[0] + 6, pose: EASY, dur: 8, ease: snap(0.2, 0.3) }, // «Fácil.»
   { at: T.VOICE_AT.v2 + 28, pose: SERIOUS, dur: 10 }, // «Ahora en serio.»
@@ -109,7 +122,7 @@ const speak = (f: number) => {
 
 type Target = "cam" | "card" | "tokA" | "tokB" | "gate" | "stamp";
 const GAZE: [number, Target][] = [
-  [0, "cam"], [T.L_START[1] - 6, "card"], [T.CLOSE1[0] + 2, "cam"], [T.L_START[2] - 6, "card"],
+  [0, "cam"], [16, "card"], [T.EX_HINT, "cam"], [T.COUNT[0], "card"], [T.L_START[1] - 6, "card"], [T.CLOSE1[0] + 2, "cam"], [T.L_START[2] - 6, "card"],
   [T.MISTAKE + 12, "cam"], [T.MISTAKE + 18, "card"], [T.STARTS[2][4] + 10, "cam"], [T.STARTS[2][4] + 15, "card"], [T.CLOSE2[0], "cam"],
   [T.SPLIT + 6, "card"], [T.AUTO - 4, "tokA"], [T.NAME - 4, "tokB"], [T.CLASH - 6, "gate"], [T.WINNER + 10, "cam"],
   [T.HEAD_EFFECT - 4, "stamp"], [T.END_HEAD, "cam"],

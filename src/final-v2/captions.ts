@@ -33,7 +33,7 @@ const HIDE_COST = 90000;
 
 export type Page = { words: Word[]; start: number; end: number; lines: Word[][]; size: number; w: number; h: number; safe: typeof SAFE };
 
-const buildPages = (words: Word[], safe: typeof SAFE = SAFE): Page[] => {
+const buildPages = (words: Word[], safe: typeof SAFE = SAFE, oneLineMax = 14): Page[] => {
   const maxW = safe.right - safe.left - 40;
   const pages: Word[][] = [];
   let cur: Word[] = [];
@@ -51,7 +51,7 @@ const buildPages = (words: Word[], safe: typeof SAFE = SAFE): Page[] => {
     const end = next ? Math.min(next[0].s, ws[ws.length - 1].e + 0.6) : ws[ws.length - 1].e + 0.8;
     const text = ws.map((w) => w.t).join(" ");
     let lines: Word[][] = [ws];
-    if (text.length > 14 && ws.length > 1) {
+    if (text.length > oneLineMax && ws.length > 1) {
       let best = -1;
       let bestDiff = Infinity;
       for (let k = 1; k < ws.length; k++) {
@@ -85,7 +85,8 @@ const overlap = (a: { x0: number; y0: number; x1: number; y1: number }, b: Box) 
 export type Placed = Page & { f0: number; f1: number; slots: Slot[]; hidden: boolean[]; switches: number[] };
 
 /** Opciones de carril (por defecto, las del Short aprobado). */
-export type CaptionOpts = { safe?: typeof SAFE; bases?: number[] };
+/** oneLineMax: hasta cuántos caracteres una página va en un solo renglón (por defecto 14) */
+export type CaptionOpts = { safe?: typeof SAFE; bases?: number[]; oneLineMax?: number };
 const cache = new Map<unknown, { words: Word[]; key: string; placed: Placed[] }>();
 
 /** ubica todas las páginas (una vez); `boxesAt(f)` = zonas protegidas del fotograma f */
@@ -97,7 +98,7 @@ export const getCaptions = (frames: number, boxesAt: (f: number) => Box[], words
   const slotsAll: Slot[] = opts.bases
     ? [...opts.bases.map((base, row) => ({ x: "c" as const, base, row })), ...opts.bases.map((base, row) => ({ x: "l" as const, base, row }))]
     : SLOTS;
-  const pages = buildPages(words, safe);
+  const pages = buildPages(words, safe, opts.oneLineMax);
   let prev = 0;
   const placed = pages.map((p) => {
     const f0 = Math.max(0, Math.floor(p.start * FPS));

@@ -13,7 +13,7 @@ import { RaceExplainer, type RaceGeom } from "../components/stroop/RaceExplainer
 import { WordCard, wordSize, type CardGeom } from "../components/stroop/WordCard";
 import { blockWords, voiceSrc } from "./voice";
 import { FONTS, INK, STROOP } from "../stroop/theme";
-import { LAST_CARD, LEVELS } from "./script";
+import { EXAMPLE, LAST_CARD, LEVELS } from "./script";
 import * as T from "./timeline";
 import { getTomiV2, tomiBoxes } from "./tomi";
 
@@ -31,7 +31,7 @@ export const GIRODATO_STROOP_V2_FRAMES = T.DURATION;
 const W = 1080;
 const H = 1920;
 export const TEXT_SAFE = { left: 80, right: 900, top: 240, bottom: 1420 };
-const CAPTION_OPTS: CaptionOpts = { safe: TEXT_SAFE, bases: [1410, 1320, 1230, 1140, 1050, 960] };
+export const CAPTION_OPTS: CaptionOpts = { safe: TEXT_SAFE, bases: [1410, 1320, 1230, 1140, 1050, 960], oneLineMax: 20 };
 /** tarjeta del desafío: más grande y más arriba que en la V1 */
 export const CARD2: CardGeom = { cx: 510, cy: 715, w: 820, h: 350, fontSize: 200, maxText: 740 };
 /** el diagrama se dibuja 18 % más grande alrededor de este punto */
@@ -175,7 +175,8 @@ const LevelChip: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 const ALL_STARTS = T.STARTS.flat();
-const DOTS_Y = 925;
+const DOTS_Y = 945;
+const BAR_Y = 908;
 const DOTS_CX = 600;
 /** durante los primeros planos no se muestran los elementos de interfaz del juego */
 const inClose = (f: number) => (f >= T.CLOSE1[0] && f < T.CLOSE1[1]) || (f >= T.CLOSE2[0] && f < T.CLOSE2[1]);
@@ -188,7 +189,8 @@ const Progress: React.FC<{ f: number }> = ({ f }) => {
   return (
     <g opacity={o}>
       {ALL_STARTS.map((s, i) => {
-        const lv = i < 4 ? 0 : i < 7 ? 1 : 2;
+        const n1 = LEVELS[0].cards.length;
+        const lv = i < n1 ? 0 : i < n1 + LEVELS[1].cards.length ? 1 : 2;
         const done = f >= s;
         const pop = done ? 1 + 0.5 * Math.exp(-(f - s) / 3) : 1;
         return <circle key={i} cx={x0 + i * gap + (lv > 0 ? 8 : 0) + (lv > 1 ? 8 : 0)} cy={DOTS_Y} r={(done ? 8 : 6) * pop} fill={done ? STROOP.text : "none"} stroke={STROOP.textDim} strokeWidth={2} />;
@@ -245,6 +247,97 @@ const Stamp: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
+/* ── apertura: tarjeta de ejemplo (jugable desde el fotograma 0) ── */
+const EX_RETURN = T.RETURN[0] + 2;
+const ExampleCard: React.FC<{ f: number }> = ({ f }) => {
+  const opening = f < T.EX_OUT + 4;
+  const closing = f >= EX_RETURN;
+  if (!opening && !closing) return null;
+  // en la apertura ya está apoyada; en el cierre vuelve a aterrizar (loop)
+  // el último fotograma usa la tarjeta ya asentada: idéntico al fotograma 0
+  const settled = opening || f >= T.LAST - 1;
+  const start = settled ? -200 : EX_RETURN;
+  const dur = opening ? T.EX_OUT - start : 100000;
+  return <WordCard f={f} word={EXAMPLE.word} ink={INK[EXAMPLE.ink]} start={start} dur={dur} exits={opening} geom={CARD2} />;
+};
+/** «DECÍ: AZUL ✔ · ROJO ✘» */
+const ExampleHint: React.FC<{ f: number }> = ({ f }) => {
+  if (f < T.EX_HINT || f >= T.EX_OUT + 4) return null;
+  const s = spring({ frame: f - T.EX_HINT, fps: T.FPS, config: { damping: 12, stiffness: 260, mass: 0.5 } });
+  const o = Math.min(1, s * 2) * (1 - Math.max(0, (f - T.EX_OUT) / 4));
+  const strike = Math.min(1, Math.max(0, (f - T.EX_HINT - 6) / 6));
+  return (
+    <g opacity={o} transform={`translate(${CARD2.cx + 40},${CARD2.cy + 128}) scale(${0.7 + 0.3 * s})`}>
+      <text x={-30} y={12} textAnchor="end" fontFamily={FONTS.display} fontWeight={900} fontSize={40} fill={STROOP.text}>
+        DECÍ: <tspan fill={INK[EXAMPLE.ink]}>{EXAMPLE.answer}</tspan> ✔
+      </text>
+      <text x={30} y={12} fontFamily={FONTS.display} fontWeight={900} fontSize={40} fill={STROOP.textDim}>
+        {EXAMPLE.word}
+      </text>
+      <line x1={26} x2={26 + 116 * strike} y1={-2} y2={-2} stroke="#F0443A" strokeWidth={6} strokeLinecap="round" />
+    </g>
+  );
+};
+/** cuenta regresiva 3 · 2 · 1 en el lugar de la tarjeta */
+const Countdown: React.FC<{ f: number }> = ({ f }) => {
+  for (let i = 0; i < 3; i++) {
+    const at = T.COUNT[i];
+    if (f >= at && f < at + T.COUNT_STEP) {
+      const t = f - at;
+      const s = spring({ frame: t, fps: T.FPS, config: { damping: 10, stiffness: 320, mass: 0.5 } });
+      const o = Math.min(1, t / 2) * (1 - Math.max(0, (t - (T.COUNT_STEP - 3)) / 3));
+      return (
+        <g opacity={o} transform={`translate(${CARD2.cx},${CARD2.cy}) scale(${1.35 - 0.35 * s})`}>
+          <circle r={128} fill={STROOP.card} stroke={STROOP.cardEdge} strokeWidth={5} />
+          <circle r={128} fill="none" stroke={STROOP.text} strokeWidth={8} strokeDasharray={`${804 * (1 - t / T.COUNT_STEP)} 804`} transform="rotate(-90)" opacity={0.8} />
+          <text y={58} textAnchor="middle" fontFamily={FONTS.display} fontWeight={900} fontSize={170} fill={STROOP.text}>
+            {3 - i}
+          </text>
+        </g>
+      );
+    }
+  }
+  return null;
+};
+/** barra de tiempo de la tarjeta actual (cuánto queda para responder) */
+const TimerBar: React.FC<{ f: number }> = ({ f }) => {
+  if (inClose(f) || f >= T.FREEZE) return null;
+  for (let li = 0; li < LEVELS.length; li++) {
+    for (let ci = 0; ci < LEVELS[li].cards.length; ci++) {
+      const at = T.STARTS[li][ci];
+      const dur = LEVELS[li].cards[ci].dur;
+      if (f >= at && f < at + dur) {
+        const left = 1 - (f - at) / dur;
+        const w = 360;
+        const col = left < 0.3 ? "#F0443A" : STROOP.text;
+        return (
+          <g transform={`translate(${DOTS_CX - w / 2},${BAR_Y})`}>
+            <rect width={w} height={10} rx={5} fill="#23252B" />
+            <rect width={w * left} height={10} rx={5} fill={col} opacity={0.9} />
+          </g>
+        );
+      }
+    }
+  }
+  return null;
+};
+/** llamada a comentar en el cierre */
+const CTA: React.FC<{ f: number }> = ({ f }) => {
+  const a = T.END_HEAD + 6;
+  const b = T.RETURN[0];
+  if (f < a || f >= b + 6) return null;
+  const s = spring({ frame: f - a, fps: T.FPS, config: { damping: 12, stiffness: 220, mass: 0.6 } });
+  const o = Math.min(1, s * 2) * (1 - Math.max(0, (f - b) / 6));
+  return (
+    <g opacity={o} transform={`translate(${HEAD_X},${CHIP_Y + 2}) scale(${0.8 + 0.2 * s})`}>
+      <rect x={-300} y={-30} width={600} height={60} rx={30} fill={STROOP.card} stroke={STROOP.textDim} strokeWidth={3} />
+      <text y={11} textAnchor="middle" fontFamily={FONTS.mono} fontSize={28} fill={STROOP.text}>
+        💬 comentá en cuál te trabaste
+      </text>
+    </g>
+  );
+};
+
 /* ── adelanto del cierre: la prueba otra vez, más rápido ── */
 const TEASE = [...LEVELS[2].cards, ...LEVELS[1].cards];
 const Teaser: React.FC<{ f: number }> = ({ f }) => {
@@ -272,7 +365,10 @@ export const v2Boxes = (f: number): Box[] => {
   };
   if (((f >= T.L_START[1] && f < T.SPLIT + 8) || (f >= T.TEASER[0] && f < T.TEASER[1])) && !(f >= T.CLOSE1[0] + 2 && f < T.CLOSE1[1])) out.push(rect(CARD2.cx - CARD2.w / 2, CARD2.cy - CARD2.h / 2, CARD2.cx + CARD2.w / 2, CARD2.cy + CARD2.h / 2, "tarjeta"));
   if (levelAt(f) >= 0 && f < T.FREEZE && !(f >= T.CLOSE1[0] && f < T.CLOSE1[1] - 8)) out.push({ x0: CARD2.cx - 220, y0: CHIP_Y - 32, x1: CARD2.cx + 220, y1: CHIP_Y + 32, kind: "hard", name: "nivel" });
-  if (f >= T.L_START[1] - 4 && f < T.FREEZE + 6 && !inClose(f)) out.push(rect(DOTS_CX - 220, DOTS_Y - 14, DOTS_CX + 220, DOTS_Y + 14, "progreso"));
+  if (f >= T.L_START[1] - 4 && f < T.FREEZE + 6 && !inClose(f)) out.push(rect(DOTS_CX - 220, BAR_Y - 6, DOTS_CX + 220, DOTS_Y + 14, "progreso"));
+  if (f < T.EX_OUT + 4 || f >= EX_RETURN) out.push(rect(CARD2.cx - CARD2.w / 2, CARD2.cy - CARD2.h / 2, CARD2.cx + CARD2.w / 2, CARD2.cy + CARD2.h / 2, "ejemplo"));
+  if (f >= T.COUNT[0] && f < T.COUNT[2] + T.COUNT_STEP) out.push(rect(CARD2.cx - 175, CARD2.cy - 175, CARD2.cx + 175, CARD2.cy + 175, "cuenta"));
+  if (f >= T.END_HEAD + 6 && f < T.RETURN[0] + 6) out.push({ x0: HEAD_X - 305, y0: CHIP_Y - 30, x1: HEAD_X + 305, y1: CHIP_Y + 34, kind: "hard", name: "cta" });
   if (f >= T.SPLIT && f < T.EXPLAIN_OUT + 10) {
     const rr = (x0: number, y0: number, x1: number, y1: number, name: string) => {
       const a = rs({ x: x0, y: y0 });
@@ -368,6 +464,9 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> 
               );
             }),
           )}
+          <ExampleCard f={f} />
+          <Countdown f={f} />
+          <TimerBar f={f} />
           <Progress f={f} />
           <g transform={raceTf}>
           <RaceExplainer
@@ -380,11 +479,13 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> 
           </g>
           <Stamp f={f} />
           <Teaser f={f} />
+          <ExampleHint f={f} />
           <CharacterV2 pose={pose} rig={rig} uid="gdTomi" />
           <TableLip />
         </g>
 
         <LevelChip f={f} />
+        <CTA f={f} />
         <Citation f={f} />
         <Headline f={f} />
         <CaptionsLayer f={f} frames={T.DURATION} boxesAt={v2Boxes} words={V2_WORDS} opts={CAPTION_OPTS} italic={["automatico", "stroop"]} visible={(fr) => fr >= T.VOICE_AT.v1} />
@@ -413,6 +514,8 @@ const CUES: Cue[] = [
   // tics: uno por tarjeta (nivel 1 suave; niveles 2 y 3 cada vez más agudos)
   ...T.STARTS[0].map((at) => ({ src: "stroop/sfx/tic-r1.wav", at, vol: 0.28 })),
   ...[...T.STARTS[1], ...T.STARTS[2]].map((at, k) => ({ src: `stroop/sfx/tic-v2-${k + 1}.wav`, at, vol: 0.5 })),
+  // cuenta regresiva
+  ...T.COUNT.map((at, i) => ({ src: "stroop/sfx/tic-r1.wav", at, vol: i === 2 ? 0.45 : 0.35 })),
   // pops de nivel
   { src: SONIDOS["price-pop"], at: T.L_START[1] - 8, vol: 0.3 },
   { src: SONIDOS["price-pop"], at: T.L_START[2] - 8, vol: 0.35 },
