@@ -16,6 +16,7 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - Videos interactivos: la regla se entiende antes de jugar (ejemplo + cuenta regresiva) y hay tiempo real para responder.
 
 ## Trabajo
-- Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Renders de trabajo en `out/`; los aprobados se copian a `videosFinal/` (no sobrescribir).
+- Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Renders de trabajo en `out/`; los aprobados se copian a `videosFinal/<canal>/` (no sobrescribir).
+- `videosFinal/` tiene 4 carpetas: `GiroDato`, `MilAños`, `Ciberseguridad`, `Otro`. **Los videos de Tomi (como el efecto señuelo y el Stroop) van siempre a `GiroDato/`.** Para otros tipos de video, preguntar al usuario dónde van.
 - No regenerar voces ni gastar créditos de APIs (ElevenLabs) sin autorización. La clave va solo por variable de entorno.
 - Render: `npx remotion render <Comp> out/<video>/<nombre>.mp4 --gl=angle` · stills: `node scripts/stills.mjs`.

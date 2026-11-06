@@ -3,7 +3,7 @@
 Este repo es la **base de todos los Shorts**: personaje, animación, dinámica, subtítulos y recursos.
 Plantillas aprobadas: **`EfectoSenueloTomiV2`** (`src/videos/01-efecto-senuelo/final/`, escena con cámara y comparaciones)
 y **`GiroDatoStroopV2`** (`src/videos/02-stroop/final/`, desafío interactivo). Cada video nuevo se arma copiando la
-que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a `videosFinal/`.
+que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a `videosFinal/GiroDato/`.
 
 ---
 
@@ -29,7 +29,9 @@ que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a 
 ## 2. Organización del repo
 
 ```
-videosFinal/                 ← SOLO las versiones finales, listas para subir (+ títulos y descripciones)
+videosFinal/                 ← SOLO las versiones finales, listas para subir, por canal:
+  GiroDato/                  videos de Tomi (psicología, curiosidades) → todos los de este tipo van acá
+  MilAños/  Ciberseguridad/  Otro/   (qué va en cada una lo define el usuario)
 produccion/<nn-video>/       ← guiones, prompts, planes y notas de cada video
 src/
   canal/                     ← TODO lo reutilizable entre videos
@@ -134,4 +136,4 @@ La clave va solo por variable de entorno.
 - [ ] QA de subtítulos en verde (0 choques, ≥ 95 % en el carril, sin saltos grandes).
 - [ ] Crédito de la música en la descripción (si se usa Investigations).
 - [ ] Si es interactivo: regla clara antes de jugar, tiempo real para responder, colores verificados.
-- [ ] Render de trabajo en `out/`; la versión aprobada se copia a `videosFinal/` (nunca sobrescribir una existente) y se anota en su README.
+- [ ] Render de trabajo en `out/`; la versión aprobada se copia a `videosFinal/GiroDato/` (nunca sobrescribir una existente).
