@@ -11,7 +11,7 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - La comparación clave va **grande y centrada** en la zona segura.
 - Subtítulos (`src/canal/subtitulos/`, reglas en `BIBLIOTECA.md` § Subtítulos; medidas en `src/canal/zonaSegura.ts`): centrados en x = 540, ancho ≤ 720, carril fijo con base en y = 1500 (crecen hacia arriba, nunca suben).
   Páginas cortadas por frase (nunca en «de», «la», «que»…, sin palabras huérfanas). Amarillo solo para la palabra clave (`enfasis`, máx. 1 por página).
-  El subtítulo no esquiva nada: el encuadre deja el carril libre de Tomi, objetos y textos.
+  El subtítulo no esquiva nada: el encuadre deja el carril libre de Tomi, objetos y textos (en el 01 el usuario permitió el torso y las piernas de Tomi; nunca su cara ni sus manos que gesticulan). No poner franjas fijas grandes en primer plano para tapar el carril: el usuario las rechazó.
   Antes de entregar: `npm run qa:subs -- <Composición>` con **0 fallas** (mide los píxeles del render).
 - Nunca mostrar ni decir el tercer apellido del estudio de 1982; la cita es «Huber et al. · 1982» (lista en `src/canal/qa/prohibidas.ts`).
 - Zona segura Shorts: nada clave bajo y = 1536 ni a la derecha de x = 900.

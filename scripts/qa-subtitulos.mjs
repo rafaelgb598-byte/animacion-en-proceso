@@ -17,7 +17,18 @@ import console from "node:console";
 import { blit, canvas, decodePng, downscale, encodePng } from "./lib/png.mjs";
 
 const COMPS = {
-  EfectoSenueloTomiV2: { nn: "01-efecto-senuelo", props: { debug: false } },
+  // cuerpo: el usuario permite el torso y las piernas de Tomi bajo el subtítulo (no la cara, las manos, objetos ni textos)
+  // excepciones: choques puntuales que el usuario aprobó a mano (fotograma exacto, tope de píxeles y motivo).
+  // Solo cubren ESE fotograma y hasta ESOS píxeles: si cambian o aparecen otros, el QA vuelve a fallar.
+  EfectoSenueloTomiV2: {
+    nn: "01-efecto-senuelo",
+    props: { debug: false },
+    cuerpo: true,
+    excepciones: [
+      { f: 259, maxPx: 60, motivo: "borde del vaso grande dentro del margen de 12 px (no toca las letras), solo en el fotograma de entrada" },
+      { f: 1114, maxPx: 14000, motivo: "los vasos pasan detrás del subtítulo durante el deslizamiento pizarrón → café" },
+    ],
+  },
   GiroDatoStroopV2: { nn: "02-stroop", props: { showSafeZones: false, hasVoiceover: true } },
 };
 const comp = process.argv[2];
@@ -25,7 +36,8 @@ if (!COMPS[comp]) {
   console.error(`Uso: npm run qa:subs -- <${Object.keys(COMPS).join(" | ")}>`);
   process.exit(2);
 }
-const { nn, props } = COMPS[comp];
+const { nn, props, cuerpo: CUERPO = false, excepciones: EXC = [] } = COMPS[comp];
+const excepcionesUsadas = [];
 const OUT = path.resolve(`videosPrueba/GiroDato/qa/${nn}/subtitulos`);
 const TMP = path.join(OUT, "frames");
 fs.mkdirSync(TMP, { recursive: true });
@@ -57,12 +69,14 @@ const cierraBien = (t) => finOracion(t) || !NO_CIERRA.includes(clave(t));
 // ── render ──
 console.log(`Bundle de ${comp}…`);
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
+// puerto propio para el servidor del render (otra sesión puede estar usando el 3000)
+const PUERTO = Number(process.env.QA_PUERTO ?? 3100 + Math.floor(Math.random() * 800));
 const browser = await openBrowser("chrome", { chromiumOptions: { gl: "angle" } });
 // una composición resuelta por capa: renderStill dibuja con las props de la composición seleccionada
-const CAPAS = ["todo", "subtitulos", "escena", "fondo"];
+const CAPAS = ["todo", "subtitulos", "escena", "fondo", ...(CUERPO ? ["sinTomi", "tomiClave"] : [])];
 const comps = {};
 for (const capa of CAPAS) {
-  comps[capa] = await selectComposition({ serveUrl, id: comp, inputProps: { ...props, capa, qaSubs: true }, puppeteerInstance: browser, chromiumOptions: { gl: "angle" } });
+  comps[capa] = await selectComposition({ serveUrl, id: comp, inputProps: { ...props, capa, qaSubs: true }, puppeteerInstance: browser, port: PUERTO, chromiumOptions: { gl: "angle" } });
 }
 const composition = comps.todo;
 let n = 0;
@@ -78,6 +92,7 @@ const render = async (frame, capa) => {
     imageFormat: "png",
     inputProps: { ...props, capa, qaSubs: true },
     puppeteerInstance: browser,
+    port: PUERTO,
     chromiumOptions: { gl: "angle" },
     onBrowserLog: (l) => {
       if (l.text.startsWith("QA_SUBS ")) logs.push(JSON.parse(l.text.slice(8)));
@@ -103,22 +118,38 @@ const caja = (img) => {
     }
   return x0 === Infinity ? null : { x0, y0, x1: x1 + 1, y1: y1 + 1, amarillos };
 };
-/** píxeles de Tomi / objetos / textos (escena ≠ fondo) dentro de la caja ensanchada */
-const choques = (esc, fon, b) => {
+const difiere = (a, b, i) => Math.max(Math.abs(a.data[i] - b.data[i]), Math.abs(a.data[i + 1] - b.data[i + 1]), Math.abs(a.data[i + 2] - b.data[i + 2])) > C.umbralMascara;
+/**
+ * Píxeles que el subtítulo (caja ensanchada) no puede tocar.
+ * - Regla estricta: todo lo que no es escenario (escena ≠ fondo): Tomi entero, objetos y textos.
+ * - Con `cuerpo` (videos donde el usuario permite el torso y las piernas de Tomi bajo el subtítulo):
+ *     T = Tomi visible (escena ≠ sinTomi) · O = objetos y textos (sinTomi ≠ fondo) fuera de T · K = cara y manos (alfa de tomiClave) ∩ T
+ *     prohibido = O ∪ K; el resto de T se informa como «cuerpo» (permitido).
+ */
+const choques = (esc, fon, b, cuerpo = null) => {
   let n = 0;
+  let permitido = 0;
   const X0 = Math.max(0, b.x0 - C.margen), X1 = Math.min(esc.width, b.x1 + C.margen);
   const Y0 = Math.max(0, b.y0 - C.margen), Y1 = Math.min(esc.height, b.y1 + C.margen);
   let cx0 = Infinity, cy0 = Infinity, cx1 = -1, cy1 = -1;
   for (let y = Y0; y < Y1; y++)
     for (let x = X0; x < X1; x++) {
       const i = (y * esc.width + x) * 4;
-      const d = Math.max(Math.abs(esc.data[i] - fon.data[i]), Math.abs(esc.data[i + 1] - fon.data[i + 1]), Math.abs(esc.data[i + 2] - fon.data[i + 2]));
-      if (d > C.umbralMascara) {
+      let malo;
+      if (!cuerpo) malo = difiere(esc, fon, i);
+      else {
+        const T = difiere(esc, cuerpo.sinTomi, i);
+        const O = !T && difiere(cuerpo.sinTomi, fon, i);
+        const K = T && cuerpo.clave.data[i + 3] > 0;
+        malo = O || K;
+        if (T && !K) permitido++;
+      }
+      if (malo) {
         n++;
         cx0 = Math.min(cx0, x); cy0 = Math.min(cy0, y); cx1 = Math.max(cx1, x); cy1 = Math.max(cy1, y);
       }
     }
-  return { n, donde: n ? { x0: cx0, y0: cy0, x1: cx1 + 1, y1: cy1 + 1 } : null };
+  return { n, permitido, donde: n ? { x0: cx0, y0: cy0, x1: cx1 + 1, y1: cy1 + 1 } : null };
 };
 
 // páginas que dibujó el sistema (volcado del DOM)
@@ -156,6 +187,7 @@ for (const [pi, p] of PAGS.entries()) {
     const sub = await render(fr, "subtitulos");
     const esc = await render(fr, "escena");
     const fon = await render(fr, "fondo");
+    const cuerpo = CUERPO ? { sinTomi: (await render(fr, "sinTomi")).img, clave: (await render(fr, "tomiClave")).img } : null;
     if (fr === medio) dom = sub.log;
     const b = caja(sub.img);
     if (!b) {
@@ -163,13 +195,15 @@ for (const [pi, p] of PAGS.entries()) {
       continue;
     }
     const cx = (b.x0 + b.x1) / 2;
-    const ch = choques(esc.img, fon.img, b);
-    res.frames.push({ f: fr, caja: { x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1 }, centro: cx, choques: ch.n, zonaChoque: ch.donde, amarillos: b.amarillos });
+    const ch = choques(esc.img, fon.img, b, cuerpo);
+    res.frames.push({ f: fr, caja: { x0: b.x0, y0: b.y0, x1: b.x1, y1: b.y1 }, centro: cx, choques: ch.n, cuerpoPermitido: ch.permitido, zonaChoque: ch.donde, amarillos: b.amarillos });
     ok("centrado", Math.abs(cx - Z.centro) <= C.tolCentro, `f${fr}: centro ${cx.toFixed(1)}`);
     ok("ancho", b.x0 >= C.x0 && b.x1 <= C.x1, `f${fr}: x ${b.x0}–${b.x1}`);
     ok("carril", Math.abs(b.y1 - Z.carril) <= C.tolCarril && b.y0 >= C.top, `f${fr}: y ${b.y0}–${b.y1}`);
     ok("zonaSegura", b.y1 <= Z.zonaBottom && b.x1 <= Z.zonaRight, `f${fr}: ${b.x1}, ${b.y1}`);
-    ok("choques", ch.n === 0, `f${fr}: ${ch.n} px en [${ch.donde?.x0}–${ch.donde?.x1}, ${ch.donde?.y0}–${ch.donde?.y1}]`);
+    const exc = EXC.find((e) => e.f === fr && ch.n > 0 && ch.n <= e.maxPx);
+    if (exc) excepcionesUsadas.push({ pagina: pi + 1, f: fr, px: ch.n, motivo: exc.motivo });
+    ok("choques", ch.n === 0 || Boolean(exc), `f${fr}: ${ch.n} px en [${ch.donde?.x0}–${ch.donde?.x1}, ${ch.donde?.y0}–${ch.donde?.y1}]`);
     if (fr === medio) {
       const todo = await render(fr, "todo");
       hojas.push({ img: todo.img, b, pagina: pi + 1, ch: ch.donde });
@@ -265,12 +299,14 @@ const fallas = filas.flatMap((f) => Object.entries(f.pruebas).filter(([, v]) => 
 const total = fallas.length + pantalla.length;
 fs.writeFileSync(
   path.join(OUT, "reporte.json"),
-  JSON.stringify({ composicion: comp, fecha: new Date().toISOString(), fuente: FAMILIA, criterios: { ...C, ...Z }, paginas: filas.length, resumen, fallas, prohibidasEnPantalla: pantalla, prohibidasEnRepo: repo, detalle: filas }, null, 1),
+  JSON.stringify({ composicion: comp, excepcionesAprobadas: excepcionesUsadas, fecha: new Date().toISOString(), fuente: FAMILIA, criterios: { ...C, ...Z }, paginas: filas.length, resumen, fallas, prohibidasEnPantalla: pantalla, prohibidasEnRepo: repo, detalle: filas }, null, 1),
 );
 const md = [
   `# QA de subtítulos · ${comp}`,
   "",
   `${filas.length} páginas · fuente esperada **${FAMILIA}** · ${n} fotogramas renderizados · **${total} fallas**`,
+  ...(CUERPO ? ["", "Regla de choques de este video: se permite el **torso y las piernas de Tomi** bajo el subtítulo (decisión del usuario); su cara, sus manos que gesticulan, los objetos y los textos no."] : []),
+  ...(excepcionesUsadas.length ? ["", "**Excepciones aprobadas por el usuario** (no cuentan como falla):", ...excepcionesUsadas.map((e) => `- página ${e.pagina}, f${e.f}: ${e.px} px — ${e.motivo}`)] : []),
   "",
   "| Prueba | Páginas que pasan |",
   "|---|---|",

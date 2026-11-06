@@ -18,6 +18,7 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - **No mezclar escalas** (contador «1.000 años» y voz «un millón»). *(03 V2)*
 
 - **Subtítulos: el QA no puede aprobarse a sí mismo.** En 01 y 02 los subtítulos quedaban corridos (centro x ≈ 485, no 540), pisaban el cuerpo de Tomi, se cortaban a mitad de frase («AHORA MIRÁ LO QUE»), dejaban palabras sueltas («MÁS!»), pintaban de amarillo palabras sin peso («POR») y cambiaban de altura entre escenas. El QA pasaba igual porque usaba la misma caja (subestimada) que el sistema y no miraba centrado, cortes ni resaltado. Regla nueva: carril fijo (base y = 1500, centro 540, ≤ 720 px), páginas por frase, amarillo solo para la palabra clave, y `npm run qa:subs` que mide los píxeles del render (0 fallas). *(01, 02)*
+- **Para liberar el carril, nada de franjas fijas grandes.** Un mostrador en primer plano fijo (borde en y = 1288) dejaba el QA en 0, pero tapaba ~40 % del cuadro todo el tiempo y el usuario lo descartó en el señuelo. En el Stroop una mesa sí funcionó (ya había mesa). Mejor: encuadrar desde el guion dejando abajo un piso o mostrador que ya sea parte de la escena; si no, preguntar si se permite el cuerpo de Tomi (en el 01 sí: torso y piernas, nunca cara ni manos que gesticulan). *(01, 02)*
 
 ## Voz (ElevenLabs)
 

@@ -34,7 +34,9 @@ const ArmV2: React.FC<{
   prop?: React.ReactNode;
   handNext?: HandShape;
   handMix?: number;
-}> = ({ rig, hand, shade, side, prop, handNext, handMix = 0 }) => {
+  /** solo la mano (y lo que sostiene), sin brazo ni manga: QA de subtítulos */
+  soloMano?: boolean;
+}> = ({ rig, hand, shade, side, prop, handNext, handMix = 0, soloMano = false }) => {
   const skin = shade ? C.skinShade : C.skin;
   const shirt = shade ? C.shirtShade : C.shirt;
   const path = poly([rig.sh, rig.el, rig.wr]);
@@ -43,10 +45,14 @@ const ArmV2: React.FC<{
   const handTf = `translate(${rig.wr.x},${rig.wr.y}) rotate(${-rig.handAng})`;
   return (
     <g>
-      <path d={path} stroke={C.line} strokeWidth={20 + OUT} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={path} stroke={skin} strokeWidth={20} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={sleeve} stroke={C.line} strokeWidth={31 + OUT} fill="none" strokeLinecap="round" />
-      <path d={sleeve} stroke={shirt} strokeWidth={31} fill="none" strokeLinecap="round" />
+      {soloMano ? null : (
+        <>
+          <path d={path} stroke={C.line} strokeWidth={20 + OUT} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={path} stroke={skin} strokeWidth={20} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={sleeve} stroke={C.line} strokeWidth={31 + OUT} fill="none" strokeLinecap="round" />
+          <path d={sleeve} stroke={shirt} strokeWidth={31} fill="none" strokeLinecap="round" />
+        </>
+      )}
       <g transform={handTf}>
         {handNext && handMix > 0.001 ? (
           <>
@@ -118,7 +124,13 @@ export const CharacterV2: React.FC<{
   /** objeto en la mano de atrás (alcanza más lejos en tres cuartos) */
   backProp?: React.ReactNode;
   rig?: Rig;
-}> = ({ pose: p, uid, frontProp, backProp, rig: given }) => {
+  /** "clave": dibuja solo la cara (con pelo) y las manos; lo usa el QA de subtítulos para separar cara/manos del cuerpo */
+  zona?: "todo" | "clave";
+  /** en modo "clave": qué manos cuentan (las que gesticulan); por defecto, las dos */
+  manosClave?: { front: boolean; back: boolean };
+}> = ({ pose: p, uid, frontProp, backProp, rig: given, zona = "todo", manosClave = { front: true, back: true } }) => {
+  const clave = zona === "clave";
+  /** regla del canal (CLAUDE.md): cuentan las manos que gesticulan: a la altura del pecho o más arriba, o que señalan, alcanzan, sostienen o tocan el mentón */
   const rig = given ?? rigV2(p);
   const fs = p.flip ? -1 : 1;
   const t = p.bodyTurn;
@@ -129,10 +141,13 @@ export const CharacterV2: React.FC<{
 
   return (
     <g transform={`translate(${p.x},${p.y}) scale(${p.scale * fs},${p.scale})`}>
-      <ArmV2 rig={rig.back} hand={p.armBack.hand} handNext={p.armBack.handNext} handMix={p.armBack.handMix} shade side={-1} prop={backProp} />
-      <LegV2 rig={rig.legB} foot={p.legBack.foot} shade />
-      <LegV2 rig={rig.legF} foot={p.legFront.foot} />
+      {clave && !manosClave.back ? null : (
+        <ArmV2 rig={rig.back} hand={p.armBack.hand} handNext={p.armBack.handNext} handMix={p.armBack.handMix} shade side={-1} prop={backProp} soloMano={clave} />
+      )}
+      {clave ? null : <LegV2 rig={rig.legB} foot={p.legBack.foot} shade />}
+      {clave ? null : <LegV2 rig={rig.legF} foot={p.legFront.foot} />}
 
+      {clave ? null : (
       <g transform={torsoTf}>
         <defs>
           <clipPath id={`${uid}-torso`}>
@@ -165,12 +180,15 @@ export const CharacterV2: React.FC<{
         <path d={`M ${placket - 17} -166 Q ${placket} -150 ${placket + 17} -166`} stroke={C.shirtShade} strokeWidth={3} fill="none" strokeLinecap="round" />
         <path d={TORSO} fill="none" stroke={C.line} strokeWidth={LW} strokeLinejoin="round" />
       </g>
+      )}
 
       <g transform={headTf}>
         <HeadV2 uid={uid} face={p.face} turn={p.headTurn} blink={p.blink} hairLag={p.hairLag} />
       </g>
 
-      <ArmV2 rig={rig.front} hand={p.armFront.hand} handNext={p.armFront.handNext} handMix={p.armFront.handMix} side={1} prop={frontProp} />
+      {clave && !manosClave.front ? null : (
+        <ArmV2 rig={rig.front} hand={p.armFront.hand} handNext={p.armFront.handNext} handMix={p.armFront.handMix} side={1} prop={frontProp} soloMano={clave} />
+      )}
     </g>
   );
 };

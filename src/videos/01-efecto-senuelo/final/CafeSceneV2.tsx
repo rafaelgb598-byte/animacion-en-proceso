@@ -83,7 +83,14 @@ const Snap: React.FC<{ x: number; y: number; t: number }> = ({ x, y, t }) =>
   );
 
 /** `soloFondo`: solo el escenario (afuera, paredes, lámparas, piso, mostrador, luz): máscara de choques del QA de subtítulos. */
-export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boolean; primerPlano?: boolean }> = ({ f, inst = "", soloFondo = false, primerPlano = true }) => {
+/** `tomi`: "si" (normal) · "no" (la escena sin Tomi) · "clave" (SOLO la cara y las manos de Tomi, sin escena): capas del QA de subtítulos */
+export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boolean; primerPlano?: boolean; tomi?: "si" | "no" | "clave" }> = ({
+  f,
+  inst = "",
+  soloFondo = false,
+  primerPlano = true,
+  tomi = "si",
+}) => {
   const fr = clamp(f, 0, N - 1);
   const { pose, rig, head } = getCafeV2()[fr];
   const cam = camAt(fr);
@@ -107,6 +114,21 @@ export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boole
   const mGlow = FX.mGlow(fr);
   const lSpark = FX.lSparkle(fr);
   const mShadow = mv ? clamp(1 + mY / 700, 0, 1) * clamp(1 - mY / 40, 0, 1) : 0;
+
+  if (tomi === "clave") {
+    // QA de subtítulos: solo la cara y las manos QUE GESTICULAN de Tomi (mismo encuadre), sobre transparente
+    const enEscena = (y: number) => pose.y + y * 1.5;
+    const pecho = (enEscena(rig.neck.y) + enEscena(rig.legF.hip.y)) / 2;
+    const gesto = (wrY: number, mano: string | undefined) => enEscena(wrY) < pecho || mano === "point" || mano === "reach" || mano === "hold" || mano === "chin";
+    const manosClave = { front: gesto(rig.front.wr.y, pose.armFront.hand), back: gesto(rig.back.wr.y, pose.armBack.hand) };
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
+        <g transform={camTf(cam)}>
+          <CharacterV2 pose={pose} rig={rig} uid={`cv2k${inst}`} backProp={napkinHeld(fr) ? <NapkinHeld /> : undefined} zona="clave" manosClave={manosClave} />
+        </g>
+      </svg>
+    );
+  }
 
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
@@ -241,8 +263,8 @@ export const CafeSceneV2: React.FC<{ f: number; inst?: string; soloFondo?: boole
         <g opacity={0.6}>
           <Sunbeams f={fr} />
         </g>
-        <ellipse cx={pose.x + 10} cy={FLOOR + 8} rx={95 * (1 - pose.hop / 120)} ry={18} fill="#2A1408" opacity={0.2} />
-        <CharacterV2 pose={pose} rig={rig} uid={`cv2t${inst}`} backProp={napkinHeld(fr) ? <NapkinHeld /> : undefined} />
+        {tomi === "si" ? <ellipse cx={pose.x + 10} cy={FLOOR + 8} rx={95 * (1 - pose.hop / 120)} ry={18} fill="#2A1408" opacity={0.2} /> : null}
+        {tomi === "si" ? <CharacterV2 pose={pose} rig={rig} uid={`cv2t${inst}`} backProp={napkinHeld(fr) ? <NapkinHeld /> : undefined} /> : null}
         </>
         )}
       </g>

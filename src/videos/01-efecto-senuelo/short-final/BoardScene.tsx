@@ -1,7 +1,7 @@
 import React from "react";
 import { clamp, ease, lerp, poseTrack, smooth, track, type Key, type PoseKey } from "../../../canal/personaje/anim";
 import { Character } from "../../../canal/personaje/tomi-v1/Character";
-import { CharacterV2 } from "../../../canal/personaje/tomi-v2/CharacterV2";
+import { CharacterV2, rigV2 } from "../../../canal/personaje/tomi-v2/CharacterV2";
 import { arm, FACES, FACES_V2, standing } from "../../../canal/personaje/presets";
 import { blink as blinkAt } from "../../../canal/personaje/anim";
 import type { FacePose, HandShape, Pose } from "../../../canal/personaje/rig";
@@ -208,19 +208,28 @@ const Plan: React.FC<{ x: number; y: number; name: string; decoy?: boolean; star
   </g>
 );
 
+/** manos del presentador que gesticulan (por encima del pecho), para el QA de subtítulos */
+const manosPresentador = (pose: Pose) => {
+  const r = rigV2(pose);
+  const pecho = (r.neck.y + r.legF.hip.y) / 2;
+  return { front: r.front.wr.y < pecho, back: r.back.wr.y < pecho };
+};
+
 /* ------------------------------ escena ------------------------------ */
 
 /** `v2`: dibuja a Tomi V2 (mismas poses y tiempos); por defecto, el Tomi original. */
 /**
  * `soloFondo`: solo pared, piso y pizarrón vacío (máscara de choques del QA de subtítulos).
  * `presentadorDx`: corre al presentador (y su sombra) en x sin cambiar su actuación, para dejar libre el carril de subtítulos.
+ * `tomi`: "si" (normal) · "no" (sin presentador) · "clave" (SOLO su cara y sus manos, sin escena): capas del QA de subtítulos.
  */
-export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean; soloFondo?: boolean; presentadorDx?: number }> = ({
+export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean; soloFondo?: boolean; presentadorDx?: number; tomi?: "si" | "no" | "clave" }> = ({
   f,
   inst = "",
   v2 = false,
   soloFondo = false,
   presentadorDx = 0,
+  tomi = "si",
 }) => {
   const b = f - SCENE.boardIn;
   const id = (n: string) => `bd${n}${inst}`;
@@ -236,6 +245,16 @@ export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean; solo
   const tCafe = reveal(b, CUE.cafes - 8, 10);
   const tCine = reveal(b, CUE.entradas - 4, 12);
   const tSubs = reveal(b, CUE.suscripciones - 4, 12);
+
+  if (tomi === "clave") {
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
+        <g transform={presentadorDx ? `translate(${presentadorDx},0)` : undefined}>
+          {v2 ? <CharacterV2 pose={pose} uid={`bdk2${inst}`} zona="clave" manosClave={manosPresentador(pose)} /> : <Character pose={pose} uid={`bdk${inst}`} />}
+        </g>
+      </svg>
+    );
+  }
 
   return (
     <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
@@ -326,8 +345,8 @@ export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean; solo
 
       {/* sombra y presentador */}
       <g transform={presentadorDx ? `translate(${presentadorDx},0)` : undefined}>
-        <ellipse cx={TX + 10} cy={FLOOR_Y + 6} rx={110} ry={20} fill="#2A1408" opacity={0.22} />
-        {v2 ? <CharacterV2 pose={pose} uid={`bdt2${inst}`} /> : <Character pose={pose} uid={`bdt${inst}`} />}
+        {tomi === "si" ? <ellipse cx={TX + 10} cy={FLOOR_Y + 6} rx={110} ry={20} fill="#2A1408" opacity={0.22} /> : null}
+        {tomi === "no" ? null : v2 ? <CharacterV2 pose={pose} uid={`bdt2${inst}`} /> : <Character pose={pose} uid={`bdt${inst}`} />}
       </g>
       </>
       )}

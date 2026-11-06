@@ -162,11 +162,20 @@ se marca sin color: escala 1,04 y opacidad 100 % (el resto, 78 %). `italicas` = 
 se corre: no hay optimizador de alturas. La animación de entrada escala desde la base (540, 1500). Si en un fotograma con subtítulo
 Tomi, un objeto o un texto entra al carril, se arregla la escena, en este orden:
 (1) **mostrador o mesa en primer plano** (`src/canal/escenarios/PrimerPlano.tsx`, capa escenario, fijo en pantalla para todo
-el video, borde superior en y ≤ 1288): tapa el cuerpo de Tomi sin moverlo a él ni a la cámara; es lo que usan 01 y 02
-(`PRIMER_PLANO_CAFE`, `PRIMER_PLANO_MESA`; la prop `primerPlano` de la composición lo apaga para comparar);
+el video, borde superior en y ≤ 1288): tapa el cuerpo de Tomi sin moverlo a él ni a la cámara. Lo usa el 02 (`PRIMER_PLANO_MESA`).
+**Ojo: en el 01 el usuario lo descartó** (un mostrador fijo tapaba ~40 % del cuadro todo el tiempo): usarlo solo si tapa poco
+(una mesa que ya existe en la escena), nunca como franja fija grande. La prop `primerPlano` lo prende o apaga para comparar;
 (2) si no alcanza, un solo ajuste fijo para toda la escena (subir o achicar), nunca solo en los fotogramas con subtítulos;
 (3) si tampoco, consultar. Todo Tomi es «duro» (no hay zonas blandas).
-Para comparar contra el video aprobado: `node scripts/qa-antes-despues.mjs <Composición> <mp4> <dir> <f1,f2,…>`.
+Para comparar contra el video aprobado: `node scripts/qa-antes-despues.mjs <Composición> <mp4> <dir> <f1,f2,…>` y
+`node scripts/qa-regresion.mjs <mp4 aprobado> <mp4 nuevo> <dir>` (MP4 contra MP4: el ruido de compresión no infla la cuenta).
+
+**Regla por video (decisión del usuario).** En el **01 (señuelo)** se permite el **torso y las piernas de Tomi** bajo el subtítulo;
+su cara, sus manos que gesticulan (a la altura del pecho o más arriba, o que señalan, alcanzan, sostienen o tocan el mentón),
+los objetos y los textos no. El QA lo mide con dos capas más (`sinTomi`: la escena sin Tomi; `tomiClave`: solo su cara y sus manos
+que gesticulan) y lo activa `cuerpo: true` en `scripts/qa-subtitulos.mjs`. Ahí mismo, `excepciones` guarda los choques puntuales
+que el usuario aprobó (fotograma exacto, tope de píxeles y motivo); el reporte los lista aparte. El 02 sigue con la regla estricta.
+`node scripts/qa-mascara.mjs <Composición> <dir> <f1,…> --cuerpo` pinta qué toca el subtítulo (azul objetos, rojo cara/manos, verde cuerpo).
 
 **Usarlo en un video nuevo:**
 ```tsx
