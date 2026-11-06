@@ -33,7 +33,7 @@
     "qa:subs": "node scripts/qa-subtitulos.mjs",
     "stills": "node scripts/stills.mjs",
     "render:prueba": "remotion render --gl=angle",
-    "test": "node --test scripts/tests/"
+    "test": "node --test \"scripts/tests/*.test.mjs\""
   },
   "allowScripts": {
     "esbuild": false

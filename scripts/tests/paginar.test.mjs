@@ -1,5 +1,5 @@
 // Pruebas de la paginación de subtítulos (casos reales que fallaron en 01 y 02).
-// Uso: node --test scripts/tests/   (Node ≥ 23.6 ejecuta el .ts sin compilar)
+// Uso: npm test   (Node ≥ 23.6 ejecuta el .ts sin compilar)
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
