@@ -108,5 +108,7 @@ export type Episodio = {
   subtitulos: { enfasis: string[]; remates: string[]; visible: (f: number) => boolean };
   sfx: CueSfx[];
   ambiente: { archivo: string; volumen: number };
+  /** ganancia de la voz en la mezcla (objetivo ≈ −14 LUFS integrados, medido en el MP4) */
+  vozVolumen: number;
   sponsor: { nombre: string; claim: string; activo: boolean; f: number; hasta: number; etiqueta: string; plantilla: string };
 };

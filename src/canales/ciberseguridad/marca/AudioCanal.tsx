@@ -15,7 +15,7 @@ export const AudioCanal: React.FC<{ ep: Episodio }> = ({ ep }) => (
     {ep.voz.map((b) =>
       b.audio ? (
         <Sequence key={b.id} from={b.f} layout="none" name={`voz ${b.id}`}>
-          <Audio src={staticFile(b.audio)} />
+          <Audio src={staticFile(b.audio)} volume={ep.vozVolumen} />
         </Sequence>
       ) : null,
     )}

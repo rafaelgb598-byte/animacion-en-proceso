@@ -34,6 +34,7 @@ import {
   ESTAFA_CODIGO_FRAMES,
   EstafaCodigo,
   EstafaCodigoHojaContactos,
+  HOJA_DURACION as ESTAFA_HOJA_DURACION,
   HOJA_H as ESTAFA_HOJA_H,
   HOJA_W as ESTAFA_HOJA_W,
   estafaCodigoMetadata,
@@ -177,7 +178,7 @@ export const RemotionRoot: React.FC = () => {
           component={EstafaCodigoHojaContactos}
           schema={estafaHojaSchema}
           defaultProps={{ lang: "es" as const }}
-          durationInFrames={ESTAFA_CODIGO_FRAMES}
+          durationInFrames={ESTAFA_HOJA_DURACION}
           fps={ESTAFA_CODIGO_FPS}
           width={ESTAFA_HOJA_W}
           height={ESTAFA_HOJA_H}
