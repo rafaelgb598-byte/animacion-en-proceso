@@ -20,6 +20,12 @@ import { STROOP_FRAMES, StroopShort, stroopSchema } from "./videos/02-stroop/v1/
 import { QAS_H, QAS_W, QAStroop } from "./videos/02-stroop/v1/QAStroop";
 import { GIRODATO_STROOP_V2_FRAMES, GiroDatoStroopV2, giroDatoStroopV2Schema } from "./videos/02-stroop/final/GiroDatoStroopV2";
 import { QAV2_H, QAV2_W, QAStroopV2 } from "./videos/02-stroop/final/QAStroopV2";
+import { MilAnosCelularV2, milAnosV2Schema } from "./videos/03-1000-anos/v2/UltimoEnPie";
+import { DURATION as MIL_V2_DURATION, FPS as MIL_V2_FPS } from "./videos/03-1000-anos/v2/timeline";
+import { ContactSheet as MilAnosV2Sheet, UEP_SHEET_H, UEP_SHEET_W } from "./videos/03-1000-anos/v2/componentes/debug/ContactSheet";
+import { MilAnosCelularV3, milAnosV3Schema } from "./videos/03-1000-anos/final/MilAnosCelularV3";
+import { DURATION as MIL_V3_DURATION, FPS as MIL_V3_FPS } from "./videos/03-1000-anos/final/timeline";
+import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -92,6 +98,38 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ showSafeZones: false, hasVoiceover: true }}
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
+      <Folder name="1000-anos">
+        <Composition
+          id="MilAnosCelularV3"
+          component={MilAnosCelularV3}
+          schema={milAnosV3Schema}
+          durationInFrames={MIL_V3_DURATION}
+          fps={MIL_V3_FPS}
+          width={1080}
+          height={1920}
+          defaultProps={{ showSafeZones: false, showYear: false }}
+        />
+        <Composition
+          id="MilAnosCelularV2"
+          component={MilAnosCelularV2}
+          schema={milAnosV2Schema}
+          durationInFrames={MIL_V2_DURATION}
+          fps={MIL_V2_FPS}
+          width={1080}
+          height={1920}
+          defaultProps={{ showSafeZones: false, showYear: false }}
+        />
+        <Still
+          id="MilAnosV3HojaContactos"
+          component={MilAnosV3Sheet}
+          schema={milAnosSheetSchema}
+          defaultProps={{ frames: [0], prefix: "MilAnosCelularV3" }}
+          calculateMetadata={({ props }) => milAnosSheetSize(props.frames.length)}
+          width={2584}
+          height={690}
+        />
+        <Still id="MilAnosV2HojaContactos" component={MilAnosV2Sheet} width={UEP_SHEET_W} height={UEP_SHEET_H} />
+      </Folder>
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />
         <Still id="ActuacionV2" component={HojaActuacion} width={ACT_W} height={ACT_H} />

@@ -1,0 +1,13 @@
+{
+  "voz": "Isaac – Friendly Young Male (QmPfzE500cXXHM9uQKGc)",
+  "modelo": "eleven_multilingual_v2",
+  "nota": "Líneas nuevas de la V3. Las de época (year1, year10, year50, year200, year1000) se reutilizan de la V2 (public/videos/03-1000-anos/v2/voz).",
+  "segmentos": [
+    { "id": "v3hook", "texto": "¿Qué quedaría de tu celular después de mil años?" },
+    { "id": "v3power", "texto": "Se corta la luz. En unos días, la batería se agota… pero la foto sigue ahí adentro." },
+    { "id": "v3remains", "texto": "Todavía quedan restos: vidrio, metal, plástico.", "splitComma": true, "maxPause": 0.22 },
+    { "id": "v3before", "texto": "Pero hay algo que probablemente desapareció mucho antes." },
+    { "id": "v3photo", "texto": "La foto. Sin energía, la memoria del celular puede perder sus datos en años o décadas." },
+    { "id": "v3close", "texto": "Los restos duran siglos. Tus recuerdos, solo si tienen copia.", "maxPause": 0.22 }
+  ]
+}

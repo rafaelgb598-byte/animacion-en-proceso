@@ -1,0 +1,16 @@
+{
+  "voz": "Isaac – Friendly Young Male (QmPfzE500cXXHM9uQKGc)",
+  "modelo": "eleven_multilingual_v2",
+  "nota": "Un segmento por hito; cada uno arranca en su frame de VOICE_CUES (src/videos/03-1000-anos/v2/timeline.ts) y debe caber en su ventana. Solo se dicen las tres cifras con fuente.",
+  "segmentos": [
+    { "id": "hook", "texto": "Lo dejás cargando. Nunca volvés.", "ventana_s": 2.4 },
+    { "id": "week", "texto": "Una semana. Se corta la luz.", "ventana_s": 3.2 },
+    { "id": "year1", "texto": "Un año. El papel amarillea. La tela se mancha.", "ventana_s": 3.9 },
+    { "id": "year10", "texto": "Diez años. Se rompe la ventana. La batería puede hincharse.", "ventana_s": 4.9 },
+    { "id": "year50", "texto": "Cincuenta. La mesa se deshace. El libro ya no está.", "ventana_s": 4.9 },
+    { "id": "year200", "texto": "Doscientos años. El cobre, verde. La botella, deformada… pero entera.", "ventana_s": 4.9 },
+    { "id": "year1000", "texto": "Mil años. Aluminio: doscientos a quinientos. Plástico: cuatrocientos cincuenta.", "ventana_s": 3.9 },
+    { "id": "winner", "texto": "Queda el vidrio de la pantalla. Un millón de años.", "ventana_s": 2.6 },
+    { "id": "photo", "texto": "La foto, no.", "ventana_s": 1.6 }
+  ]
+}

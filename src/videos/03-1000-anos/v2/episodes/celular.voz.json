@@ -1,0 +1,161 @@
+{
+ "hook": {
+  "text": "Lo dejás cargando. Nunca volvés.",
+  "duration": 2.322,
+  "phrases": [
+   {
+    "text": "Lo dejás cargando.",
+    "start": 0.07,
+    "end": 1.06
+   },
+   {
+    "text": "Nunca volvés.",
+    "start": 1.06,
+    "end": 2.04
+   }
+  ]
+ },
+ "week": {
+  "text": "Una semana. Se corta la luz.",
+  "duration": 2.136,
+  "phrases": [
+   {
+    "text": "Una semana.",
+    "start": 0.04,
+    "end": 0.85
+   },
+   {
+    "text": "Se corta la luz.",
+    "start": 0.85,
+    "end": 1.85
+   }
+  ]
+ },
+ "year1": {
+  "text": "Un año. El papel amarillea. La tela se mancha.",
+  "duration": 3.715,
+  "phrases": [
+   {
+    "text": "Un año.",
+    "start": 0.03,
+    "end": 0.73
+   },
+   {
+    "text": "El papel amarillea.",
+    "start": 0.73,
+    "end": 2.15
+   },
+   {
+    "text": "La tela se mancha.",
+    "start": 2.15,
+    "end": 3.44
+   }
+  ]
+ },
+ "year10": {
+  "text": "Diez años. Se rompe la ventana. La batería puede hincharse.",
+  "duration": 3.576,
+  "phrases": [
+   {
+    "text": "Diez años.",
+    "start": 0.01,
+    "end": 0.622
+   },
+   {
+    "text": "Se rompe la ventana.",
+    "start": 0.622,
+    "end": 1.847
+   },
+   {
+    "text": "La batería puede hincharse.",
+    "start": 1.847,
+    "end": 3.5
+   }
+  ]
+ },
+ "year50": {
+  "text": "Cincuenta. La mesa se deshace. El libro ya no está.",
+  "duration": 3.947,
+  "phrases": [
+   {
+    "text": "Cincuenta.",
+    "start": 0.02,
+    "end": 0.87
+   },
+   {
+    "text": "La mesa se deshace.",
+    "start": 0.87,
+    "end": 2.26
+   },
+   {
+    "text": "El libro ya no está.",
+    "start": 2.26,
+    "end": 3.6
+   }
+  ]
+ },
+ "year200": {
+  "text": "Doscientos años. El cobre, verde. La botella, deformada… pero entera.",
+  "duration": 5.526,
+  "phrases": [
+   {
+    "text": "Doscientos años.",
+    "start": 0.04,
+    "end": 1.32
+   },
+   {
+    "text": "El cobre, verde.",
+    "start": 1.32,
+    "end": 2.8
+   },
+   {
+    "text": "La botella, deformada…",
+    "start": 2.8,
+    "end": 4.55
+   },
+   {
+    "text": "pero entera.",
+    "start": 4.55,
+    "end": 5.21
+   }
+  ]
+ },
+ "year1000": {
+  "text": "Mil años.",
+  "duration": 0.76,
+  "phrases": [
+   {
+    "text": "Mil años.",
+    "start": 0,
+    "end": 0.64
+   }
+  ]
+ },
+ "winner": {
+  "text": "Queda el vidrio de la pantalla. Un millón de años.",
+  "duration": 3.158,
+  "phrases": [
+   {
+    "text": "Queda el vidrio de la pantalla.",
+    "start": 0.09,
+    "end": 1.62
+   },
+   {
+    "text": "Un millón de años.",
+    "start": 1.62,
+    "end": 2.9
+   }
+  ]
+ },
+ "photo": {
+  "text": "La foto, no.",
+  "duration": 0.836,
+  "phrases": [
+   {
+    "text": "La foto, no.",
+    "start": 0,
+    "end": 0.82
+   }
+  ]
+ }
+}

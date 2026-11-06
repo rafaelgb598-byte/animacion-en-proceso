@@ -1,0 +1,103 @@
+{
+ "v3hook": {
+  "text": "¿Qué quedaría de tu celular después de mil años?",
+  "duration": 2.647,
+  "phrases": [
+   {
+    "text": "¿Qué quedaría de tu celular después de mil años?",
+    "start": 0.09,
+    "end": 2.38
+   }
+  ]
+ },
+ "v3power": {
+  "text": "Se corta la luz. En unos días, la batería se agota… pero la foto sigue ahí adentro.",
+  "duration": 5.201,
+  "phrases": [
+   {
+    "text": "Se corta la luz.",
+    "start": 0,
+    "end": 1.017
+   },
+   {
+    "text": "En unos días, la batería se agota…",
+    "start": 1.017,
+    "end": 3.245
+   },
+   {
+    "text": "pero la foto sigue ahí adentro.",
+    "start": 3.245,
+    "end": 5.15
+   }
+  ]
+ },
+ "v3remains": {
+  "text": "Todavía quedan restos: vidrio, metal, plástico.",
+  "duration": 3.57,
+  "phrases": [
+   {
+    "text": "Todavía quedan restos:",
+    "start": 0.1,
+    "end": 1.22
+   },
+   {
+    "text": "vidrio,",
+    "start": 1.22,
+    "end": 1.9
+   },
+   {
+    "text": "metal,",
+    "start": 1.9,
+    "end": 2.62
+   },
+   {
+    "text": "plástico.",
+    "start": 2.62,
+    "end": 3.24
+   }
+  ]
+ },
+ "v3before": {
+  "text": "Pero hay algo que probablemente desapareció mucho antes.",
+  "duration": 3.251,
+  "phrases": [
+   {
+    "text": "Pero hay algo que probablemente desapareció mucho antes.",
+    "start": 0.1,
+    "end": 2.99
+   }
+  ]
+ },
+ "v3photo": {
+  "text": "La foto. Sin energía, la memoria del celular puede perder sus datos en años o décadas.",
+  "duration": 5.48,
+  "phrases": [
+   {
+    "text": "La foto.",
+    "start": 0,
+    "end": 0.514
+   },
+   {
+    "text": "Sin energía, la memoria del celular puede perder sus datos en años o décadas.",
+    "start": 0.514,
+    "end": 5.46
+   }
+  ]
+ },
+ "v3close": {
+  "text": "Los restos duran siglos. Tus recuerdos, solo si tienen copia.",
+  "duration": 3.867,
+  "phrases": [
+   {
+    "text": "Los restos duran siglos.",
+    "start": 0.06,
+    "end": 1.34
+   },
+   {
+    "text": "Tus recuerdos, solo si tienen copia.",
+    "start": 1.34,
+    "end": 3.57
+   }
+  ]
+ }
+}

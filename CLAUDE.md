@@ -17,6 +17,6 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 
 ## Trabajo
 - Ramas nuevas para cada cambio y merge a `main` cuando el usuario lo apruebe. Cada render de video de prueba va a `videosPrueba/` (no sobrescribir: numerar `-v2`, `-v3`…). Solo cuando el usuario dice que es la versión final, se decide con él y se mueve a `videosFinal/<canal>/`. Stills, hojas de contacto y QA siguen en `out/`.
-- `videosFinal/` tiene 4 carpetas: `GiroDato`, `MilAños`, `Ciberseguridad`, `Otro`. **Los videos de Tomi (como el efecto señuelo y el Stroop) van siempre a `GiroDato/`.** Para otros tipos de video, preguntar al usuario dónde van.
+- `videosFinal/` tiene 4 carpetas: `GiroDato`, `MilAños`, `Ciberseguridad`, `Otro`. **Los videos de Tomi (como el efecto señuelo y el Stroop) van siempre a `GiroDato/`.** Los videos de la serie **«1000 años»** (sin Tomi: objetos que envejecen; código en `src/videos/03-1000-anos/`, composiciones `MilAnos…`) van a `MilAños/`. Para otros tipos de video, preguntar al usuario dónde van.
 - No regenerar voces ni gastar créditos de APIs (ElevenLabs) sin autorización. La clave va solo por variable de entorno.
 - Render de prueba: `npx remotion render <Comp> videosPrueba/<nombre>.mp4 --gl=angle` · stills: `node scripts/stills.mjs`.

@@ -32,7 +32,8 @@ que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a 
 videosPrueba/                ← renders de prueba de video, hasta que el usuario apruebe la versión final (no se sube a git)
 videosFinal/                 ← SOLO las versiones finales, listas para subir, por canal:
   GiroDato/                  videos de Tomi (psicología, curiosidades) → todos los de este tipo van acá
-  MilAños/  Ciberseguridad/  Otro/   (qué va en cada una lo define el usuario)
+  MilAños/                   serie «1000 años» (sin Tomi: qué queda de un objeto con el paso de los siglos)
+  Ciberseguridad/  Otro/     (qué va en cada una lo define el usuario)
 produccion/<nn-video>/       ← guiones, prompts, planes y notas de cada video
 src/
   canal/                     ← TODO lo reutilizable entre videos
@@ -81,6 +82,7 @@ Para agregar una variante a algo compartido, se suma una prop con valor por defe
 | `src/videos/01-efecto-senuelo/final/` | Plantilla de video en escenario: cámara (`frame()`, cortes), beats, mirada, zonas protegidas, QA. |
 | `src/videos/01-efecto-senuelo/short-final/` | `Tag`, `ChalkPath`, `ChalkText`, `Sparkle` (en `CafeScene.tsx`) y el pizarrón (`BoardScene.tsx`). |
 | `src/videos/02-stroop/final/` | Plantilla de video **interactivo**: ejemplo, cuenta regresiva, niveles, barra de tiempo, explicación, loop. |
+| `src/videos/03-1000-anos/final/` | Serie **«1000 años»** (`MilAnosCelularV3`): deterioro de materiales función del año (`decay.ts`), línea de tiempo frame → año, cámara por planos (`shots.ts`), planos macro del objeto, contador y barra logarítmica. `v2/` es la versión anterior (`MilAnosCelularV2`). Todo dibujado en SVG/CSS 3D, efectos sintetizados (`scripts/gen-sfx-1000-anos-*.mjs`). |
 
 ---
 
@@ -102,6 +104,7 @@ Desde el código: `import { SONIDOS, MUSICA } from "…/canal/sonidos/sonidos"` 
 | `biblioteca/imagenes/` | imágenes y texturas reutilizables (vacía por ahora: todo se dibuja en SVG) |
 | `videos/01-efecto-senuelo/` | `voz/` narración Isaac + palabras · `sfx/` efectos propios del video |
 | `videos/02-stroop/` | `v1/voz/` y `final/voz/`: narración (mp3 crudo, masterizado y alineación por carácter) |
+| `videos/03-1000-anos/` | `v2/` y `final/`: `voz/` (Isaac, wav editados) y `sfx/` (sintetizados por código). Tomas originales en `produccion/03-1000-anos/*/voz-original/`. |
 
 - Los `.mp3` de efectos son de ElevenLabs Sound Effects; los `.wav`, sintetizados por nuestros scripts (gratis).
 - Al agregar un sonido: copiarlo a la categoría que corresponda y correr `node scripts/catalogo-biblioteca.mjs`.
