@@ -6,6 +6,25 @@ import { CHALK } from "../decoy/Cafe";
  * Capas (de atrás hacia adelante): exterior → pared → lámparas → mostrador/personaje → primer término.
  */
 
+export type CafePalette = {
+  wall: string; stripe: string; wainscot: string; trim: string; panel: string; awning: string;
+  boardFrame: string; board: string; accent: string; lamp: string; machineTop: string;
+  counterTop: string; counterFront: string; counterPanel: string; counterPanelLine: string; counterBase: string;
+  band?: string;
+};
+export const PAL_DEFAULT: CafePalette = {
+  wall: "#F2DDBA", stripe: "#EBD2AA", wainscot: "#A8653E", trim: "#7E4528", panel: "#8C4F2E", awning: "#2BB3A3",
+  boardFrame: "#7A4D33", board: "#2F3B36", accent: "#E24E5A", lamp: "#2BB3A3", machineTop: "#E24E5A",
+  counterTop: "#F1E4CF", counterFront: "#9C5B34", counterPanel: "#8A4E2C", counterPanelLine: "#6E3C21", counterBase: "#5E3420",
+};
+/** cadena de cafeterías "verde" genérica: madera oscura, verde profundo, sin marcas ni logos */
+export const PAL_CHAIN: CafePalette = {
+  wall: "#EFE7D8", stripe: "#E6DCC9", wainscot: "#4A3326", trim: "#2E1F17", panel: "#5A4031", awning: "#0F6B47",
+  boardFrame: "#1E1C1B", board: "#262A28", accent: "#0F6B47", lamp: "#0F6B47", machineTop: "#2B2B2B",
+  counterTop: "#E9E6E0", counterFront: "#4E3224", counterPanel: "#5A3B2B", counterPanelLine: "#3A261B", counterBase: "#2A1B13",
+  band: "#0F6B47",
+};
+
 export const FLOOR = 1650;
 export const COUNTER_TOP = 1300;
 const L = "#2A2024";
@@ -73,7 +92,7 @@ export const Outside: React.FC<{ f: number }> = ({ f }) => {
 
 /* ------------------------------ pared ------------------------------ */
 
-export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
+export const BackWallV2: React.FC<{ f: number; pal?: CafePalette }> = ({ f, pal: P = PAL_DEFAULT }) => {
   const sec = (f / 30) * 6; // segundero
   return (
     <g>
@@ -90,16 +109,17 @@ export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
       </defs>
 
       <g mask="url(#v2holes)">
-        <rect x={-800} y={-600} width={4000} height={FLOOR + 600} fill="#F2DDBA" />
+        <rect x={-800} y={-600} width={4000} height={FLOOR + 600} fill={P.wall} />
         {Array.from({ length: 70 }).map((_, i) => (
-          <rect key={i} x={-800 + i * 60} y={-600} width={26} height={FLOOR + 600} fill="#EBD2AA" opacity={0.6} />
+          <rect key={i} x={-800 + i * 60} y={-600} width={26} height={FLOOR + 600} fill={P.stripe} opacity={0.6} />
         ))}
         {/* sombra del techo: la pared se oscurece hacia arriba */}
         <rect x={-800} y={-600} width={4000} height={1500} fill="url(#v2wallShade)" />
-        <rect x={-800} y={1240} width={4000} height={FLOOR - 1240} fill="#A8653E" />
-        <rect x={-800} y={1232} width={4000} height={16} fill="#7E4528" />
+        <rect x={-800} y={1240} width={4000} height={FLOOR - 1240} fill={P.wainscot} />
+        {P.band ? <rect x={-800} y={1150} width={4000} height={82} fill={P.band} /> : null}
+        <rect x={-800} y={1232} width={4000} height={16} fill={P.trim} />
         {Array.from({ length: 22 }).map((_, i) => (
-          <rect key={i} x={-760 + i * 190} y={1290} width={150} height={300} rx={8} fill="none" stroke="#8C4F2E" strokeWidth={6} />
+          <rect key={i} x={-760 + i * 190} y={1290} width={150} height={300} rx={8} fill="none" stroke={P.panel} strokeWidth={6} />
         ))}
       </g>
 
@@ -121,7 +141,7 @@ export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
       <rect x={526} y={1146} width={328} height={20} rx={6} fill="#7E4528" stroke={L} strokeWidth={5} />
       {/* toldito */}
       {Array.from({ length: 6 }).map((_, i) => (
-        <path key={i} d={`M ${520 + i * 57} 790 L ${577 + i * 57} 790 L ${570 + i * 57} 830 Q ${548 + i * 57} 846 ${527 + i * 57} 830 Z`} fill={i % 2 ? "#F7F3E8" : "#2BB3A3"} stroke={L} strokeWidth={4} />
+        <path key={i} d={`M ${520 + i * 57} 790 L ${577 + i * 57} 790 L ${570 + i * 57} 830 Q ${548 + i * 57} 846 ${527 + i * 57} 830 Z`} fill={i % 2 ? "#F7F3E8" : P.awning} stroke={L} strokeWidth={4} />
       ))}
 
       {/* reloj */}
@@ -138,8 +158,8 @@ export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
 
       {/* pizarra del menú (igual que la V1) */}
       <g transform="translate(1000,470)">
-        <rect x={0} y={0} width={720} height={420} rx={18} fill="#7A4D33" stroke={L} strokeWidth={7} />
-        <rect x={22} y={22} width={676} height={376} rx={8} fill="#2F3B36" />
+        <rect x={0} y={0} width={720} height={420} rx={18} fill={P.boardFrame} stroke={L} strokeWidth={7} />
+        <rect x={22} y={22} width={676} height={376} rx={8} fill={P.board} />
         <text x={360} y={112} textAnchor="middle" fontFamily={CHALK} fontWeight={700} fontSize={78} fill="#F4EFE3">
           CAFÉ
         </text>
@@ -153,7 +173,7 @@ export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
           </g>
         ))}
         <circle cx={60} cy={360} r={8} fill="#E9B44C" />
-        <circle cx={660} cy={60} r={8} fill="#E24E5A" />
+        <circle cx={660} cy={60} r={8} fill={P.accent} />
       </g>
 
       {/* estante con frascos */}
@@ -186,7 +206,7 @@ export const BackWallV2: React.FC<{ f: number }> = ({ f }) => {
 
 /* --------------------------- lámparas ------------------------------ */
 
-export const Lamps: React.FC<{ f: number }> = ({ f }) => (
+export const Lamps: React.FC<{ f: number; pal?: CafePalette }> = ({ f, pal: P = PAL_DEFAULT }) => (
   <g>
     <defs>
       <radialGradient id="v2lampGlow">
@@ -200,7 +220,7 @@ export const Lamps: React.FC<{ f: number }> = ({ f }) => (
         <g key={i} transform={`rotate(${sway} ${x} -400)`}>
           <circle cx={x} cy={520} r={280} fill="url(#v2lampGlow)" opacity={0.5} />
           <line x1={x} x2={x} y1={-400} y2={360} stroke={L} strokeWidth={5} />
-          <path d={`M ${x - 70} 440 Q ${x - 64} 360 ${x} 356 Q ${x + 64} 360 ${x + 70} 440 Z`} fill="#2BB3A3" stroke={L} strokeWidth={6} strokeLinejoin="round" />
+          <path d={`M ${x - 70} 440 Q ${x - 64} 360 ${x} 356 Q ${x + 64} 360 ${x + 70} 440 Z`} fill={P.lamp} stroke={L} strokeWidth={6} strokeLinejoin="round" />
           <ellipse cx={x} cy={444} rx={26} ry={14} fill="#FFF1C2" stroke={L} strokeWidth={5} />
         </g>
       );
@@ -262,12 +282,12 @@ const SteamPuff: React.FC<{ f: number; x: number; y: number; period: number; see
   );
 };
 
-export const CounterV2: React.FC<{ f: number }> = ({ f }) => (
+export const CounterV2: React.FC<{ f: number; pal?: CafePalette }> = ({ f, pal: P = PAL_DEFAULT }) => (
   <g>
     {/* máquina de espresso con vapor */}
     <g transform={`translate(1900,${COUNTER_TOP})`}>
       <rect x={-150} y={-250} width={300} height={250} rx={24} fill="#C9CDD2" stroke={L} strokeWidth={7} />
-      <rect x={-150} y={-250} width={300} height={60} rx={20} fill="#E24E5A" stroke={L} strokeWidth={7} />
+      <rect x={-150} y={-250} width={300} height={60} rx={20} fill={P.machineTop} stroke={L} strokeWidth={7} />
       <rect x={-128} y={-176} width={50} height={150} rx={10} fill="#fff" opacity={0.35} />
       <circle cx={-70} cy={-140} r={26} fill="#F4F6F8" stroke={L} strokeWidth={6} />
       <circle cx={10} cy={-140} r={26} fill="#F4F6F8" stroke={L} strokeWidth={6} />
@@ -278,15 +298,16 @@ export const CounterV2: React.FC<{ f: number }> = ({ f }) => (
       <SteamPuff f={f} x={-90} y={-260} period={70} seed={4} />
     </g>
     {/* tapa y frente del mostrador */}
-    <rect x={720} y={COUNTER_TOP - 6} width={2600} height={34} rx={8} fill="#F1E4CF" stroke={L} strokeWidth={7} />
+    <rect x={720} y={COUNTER_TOP - 6} width={2600} height={34} rx={8} fill={P.counterTop} stroke={L} strokeWidth={7} />
     <rect x={720} y={COUNTER_TOP + 3} width={2600} height={8} fill="#fff" opacity={0.5} />
-    <rect x={740} y={COUNTER_TOP + 28} width={2600} height={FLOOR - COUNTER_TOP - 28} fill="#9C5B34" stroke={L} strokeWidth={7} />
+    <rect x={740} y={COUNTER_TOP + 28} width={2600} height={FLOOR - COUNTER_TOP - 28} fill={P.counterFront} stroke={L} strokeWidth={7} />
     <rect x={740} y={COUNTER_TOP + 28} width={2600} height={26} fill="#5E3420" opacity={0.35} />
     {Array.from({ length: 12 }).map((_, i) => (
-      <rect key={i} x={780 + i * 220} y={COUNTER_TOP + 70} width={180} height={FLOOR - COUNTER_TOP - 120} rx={10} fill="#8A4E2C" stroke="#6E3C21" strokeWidth={6} />
+      <rect key={i} x={780 + i * 220} y={COUNTER_TOP + 70} width={180} height={FLOOR - COUNTER_TOP - 120} rx={10} fill={P.counterPanel} stroke={P.counterPanelLine} strokeWidth={6} />
     ))}
     {/* zócalo del mostrador */}
-    <rect x={740} y={FLOOR - 26} width={2600} height={26} fill="#5E3420" />
+    <rect x={740} y={FLOOR - 26} width={2600} height={26} fill={P.counterBase} />
+    {P.band ? <rect x={740} y={COUNTER_TOP + 30} width={2600} height={14} fill={P.band} /> : null}
     {/* objetos sobre el mostrador */}
     <g transform={`translate(1600,${COUNTER_TOP})`}>
       <rect x={-40} y={-70} width={80} height={70} rx={8} fill="#C9CDD2" stroke={L} strokeWidth={5} />

@@ -16,7 +16,9 @@ export const Cup: React.FC<{
   sleeve?: string;
   dim?: number; // 0..1 lo "apaga" (desplazado visualmente)
   steam?: number; // fotograma para animar el vapor; undefined = sin vapor
-}> = ({ h, letter, sx = 1, sy = 1, rot = 0, sleeve = "#B5835A", dim = 0, steam }) => {
+  /** sello circular liso (estilo cadena, sin logo) */
+  badge?: string;
+}> = ({ h, letter, sx = 1, sy = 1, rot = 0, sleeve = "#B5835A", dim = 0, steam, badge }) => {
   const top = h * 0.36;
   const bot = h * 0.26;
   const bodyH = h * 0.86;
@@ -58,6 +60,12 @@ export const Cup: React.FC<{
       >
         {letter}
       </text>
+      {badge ? (
+        <g transform={`translate(0,${-bodyH * 0.79})`}>
+          <circle r={h * 0.105} fill={badge} stroke={L} strokeWidth={4.5} />
+          <circle r={h * 0.075} fill="none" stroke="#FBF7F0" strokeWidth={2.5} opacity={0.9} />
+        </g>
+      ) : null}
       {/* tapa */}
       <rect x={-top - 7} y={-bodyH - 16} width={top * 2 + 14} height={18} rx={8} fill="#F1ECE4" stroke={L} strokeWidth={5.5} />
       <path

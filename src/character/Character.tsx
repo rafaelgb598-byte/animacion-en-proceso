@@ -30,7 +30,7 @@ export const Character: React.FC<{
 
   return (
     <g transform={`translate(${p.x},${p.y}) scale(${p.scale * fs},${p.scale})`}>
-      <Arm rig={rig.back} hand={p.armBack.hand} shade side={-1} />
+      <Arm rig={rig.back} hand={p.armBack.hand} handNext={p.armBack.handNext} handMix={p.armBack.handMix} shade side={-1} />
       <Leg rig={rig.legB} foot={p.legBack.foot} shade />
       <Leg rig={rig.legF} foot={p.legFront.foot} />
 
@@ -70,7 +70,7 @@ export const Character: React.FC<{
         <Head uid={uid} face={p.face} turn={p.headTurn} blink={p.blink} hairLag={p.hairLag} />
       </g>
 
-      <Arm rig={rig.front} hand={p.armFront.hand} side={1} prop={frontProp} />
+      <Arm rig={rig.front} hand={p.armFront.hand} handNext={p.armFront.handNext} handMix={p.armFront.handMix} side={1} prop={frontProp} />
     </g>
   );
 };

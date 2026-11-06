@@ -33,7 +33,7 @@ export const Hand: React.FC<{
       </g>
     );
   }
-  if (layer === "front") return null;
+  if (layer === "front" || shape === "none") return null;
   if (shape === "fist") {
     return (
       <g>
@@ -91,7 +91,10 @@ export const Arm: React.FC<{
   side: 1 | -1;
   /** objeto sostenido, dibujado entre la palma y los dedos (coordenadas locales del personaje) */
   prop?: React.ReactNode;
-}> = ({ rig, hand, shade, side, prop }) => {
+  /** V3: transición suave hacia otra forma de mano */
+  handNext?: HandShape;
+  handMix?: number;
+}> = ({ rig, hand, shade, side, prop, handNext, handMix = 0 }) => {
   const skin = shade ? C.skinShade : C.skin;
   const shirt = shade ? C.shirtShade : C.shirt;
   const path = poly([rig.sh, rig.el, rig.wr]);
@@ -105,7 +108,18 @@ export const Arm: React.FC<{
       <path d={sleeve} stroke={C.line} strokeWidth={34 + OUT} fill="none" strokeLinecap="round" />
       <path d={sleeve} stroke={shirt} strokeWidth={34} fill="none" strokeLinecap="round" />
       <g transform={handTf}>
-        <Hand shape={hand} side={side} shade={shade} layer="back" />
+        {handNext && handMix > 0.001 ? (
+          <>
+            <g opacity={handMix > 0.8 ? (1 - handMix) * 5 : 1}>
+              <Hand shape={hand} side={side} shade={shade} layer="back" />
+            </g>
+            <g opacity={Math.min(1, handMix * 1.6)} transform={`scale(${0.9 + 0.1 * handMix})`}>
+              <Hand shape={handNext} side={side} shade={shade} layer="back" />
+            </g>
+          </>
+        ) : (
+          <Hand shape={hand} side={side} shade={shade} layer="back" />
+        )}
       </g>
       {prop ? <g transform={`translate(${rig.palm.x},${rig.palm.y})`}>{prop}</g> : null}
       {hand === "hold" ? (

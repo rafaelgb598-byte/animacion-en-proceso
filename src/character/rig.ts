@@ -28,7 +28,7 @@ export const DIM = {
 
 export type Vec = { x: number; y: number };
 
-export type HandShape = "relaxed" | "open" | "fist" | "point" | "chin" | "hold" | "reach";
+export type HandShape = "relaxed" | "open" | "fist" | "point" | "chin" | "hold" | "reach" | "none";
 
 export type IKTarget = {
   x: number;
@@ -49,9 +49,18 @@ export type ArmPose = {
   aim?: { x: number; y: number; weight: number };
   /** V2: arrastre de la muñeca agregado después de la IK (follow-through). */
   wristDrag?: number;
+  /** V3: forma de mano siguiente y mezcla 0..1 (transición suave entre gestos). */
+  handNext?: HandShape;
+  handMix?: number;
 };
 
-export type LegPose = { hip: number; knee: number; foot: number };
+export type LegPose = {
+  hip: number;
+  knee: number;
+  foot: number;
+  /** V3: tobillo plantado en coordenadas de escena (IK de pierna: el pie no patina). */
+  ik?: { x: number; y: number };
+};
 
 export type FacePose = {
   lookX: number; // -1..1
@@ -79,6 +88,8 @@ export type Pose = {
   scale: number;
   flip?: boolean;
   hop: number; // despegue del piso (unidades locales)
+  /** V3: altura de la cadera sobre el piso (unidades locales). Si existe, reemplaza el apoyo automático. */
+  hipHeight?: number;
   lean: number;
   squash: number; // 1 neutro, <1 aplastado, >1 estirado
   bodyTurn: number; // 0 de frente, 1 tres cuartos
@@ -169,10 +180,21 @@ export const computeRig = (p: Pose): Rig => {
 
   // El pie más bajo toca el piso: agacharse baja el cuerpo automáticamente
   // y al caminar el rebote vertical aparece solo.
-  const ground = -(Math.max(lf0.ankle.y, lb0.ankle.y) + DIM.sole) - p.hop;
+  // V3: con hipHeight la altura de la cadera es explícita y los pies se resuelven con IK.
+  const ground =
+    p.hipHeight !== undefined ? -p.hipHeight - p.hop : -(Math.max(lf0.ankle.y, lb0.ankle.y) + DIM.sole) - p.hop;
   const G = (v: Vec): Vec => ({ x: v.x, y: v.y + ground });
-  const legF = { hip: G(lf0.hip), knee: G(lf0.knee), ankle: G(lf0.ankle) };
-  const legB = { hip: G(lb0.hip), knee: G(lb0.knee), ankle: G(lb0.ankle) };
+  const legIK = (l0: LegRig, lp: LegPose): LegRig => {
+    const hip = G(l0.hip);
+    if (!lp.ik) return { hip, knee: G(l0.knee), ankle: G(l0.ankle) };
+    const target = sceneToLocal(p, lp.ik);
+    const sol = solveIK(hip, target, DIM.thigh, DIM.shin, -1);
+    const knee = add(hip, dir(sol.tu), DIM.thigh);
+    const ankle = add(knee, dir(sol.tf), DIM.shin);
+    return { hip, knee, ankle };
+  };
+  const legF = legIK(lf0, p.legFront);
+  const legB = legIK(lb0, p.legBack);
 
   // --- Torso con squash & stretch que conserva el volumen
   const sy = p.squash;
