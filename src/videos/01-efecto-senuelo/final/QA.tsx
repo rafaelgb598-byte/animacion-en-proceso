@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import { DURATION } from "../short-final/timing";
-import { captionReport } from "../../../canal/subtitulos/captions";
+import { captionReport } from "../historial/subtitulos-v1/captions";
 import { frameBoxes } from "./layout";
 import { TomiV2Visual } from "./EfectoSenueloTomiV2";
 

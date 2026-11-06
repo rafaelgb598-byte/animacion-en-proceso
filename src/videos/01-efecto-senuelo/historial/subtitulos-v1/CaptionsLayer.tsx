@@ -1,8 +1,8 @@
 import React from "react";
-import { clamp } from "../personaje/anim";
-import { snap } from "../personaje/tomi-v2/motion2";
-import type { Word } from "../../videos/01-efecto-senuelo/short-final/words";
-import type { Box } from "../../videos/01-efecto-senuelo/final/cafe";
+import { clamp } from "../../../../canal/personaje/anim";
+import { snap } from "../../../../canal/personaje/tomi-v2/motion2";
+import type { Word } from "../../short-final/words";
+import type { Box } from "../../final/cafe";
 import { captionRect, centerY, getCaptions, hideFade, pageAt, slotAt, slotX, type CaptionOpts } from "./captions";
 
 /**

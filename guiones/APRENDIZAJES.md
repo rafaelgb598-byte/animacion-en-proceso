@@ -13,9 +13,11 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - **Jerarquía de lectura:** título/contador arriba, subtítulo en el carril fijo abajo, como mucho una indicación junto al objeto. *(03 V2)*
 - **Plantar y pagar:** lo que el remate usa («la foto») se nombra antes («la foto sigue ahí adentro»). *(03 V3)*
 - **El loop tiene que cerrar la idea**, no solo empalmar el fotograma: terminar en el plano del inicio con una frase que vuelva a la pregunta. *(03 V2 → V3)*
-- **Rigor:** nada de cifras sin fuente («~1.000.000 de años»); mejor una frase cualitativa verificable. Citar el estudio en pantalla (Huber, Payne & Puto 1982). *(01, 03)*
+- **Rigor:** nada de cifras sin fuente («~1.000.000 de años»); mejor una frase cualitativa verificable. Citar el estudio en pantalla como «Huber et al. · 1982» (nunca el tercer apellido). *(01, 03)*
 - **Cierre útil > golpe triste:** «Tus recuerdos, solo si tienen copia» deja algo para hacer. *(03 V3)*
 - **No mezclar escalas** (contador «1.000 años» y voz «un millón»). *(03 V2)*
+
+- **Subtítulos: el QA no puede aprobarse a sí mismo.** En 01 y 02 los subtítulos quedaban corridos (centro x ≈ 485, no 540), pisaban el cuerpo de Tomi, se cortaban a mitad de frase («AHORA MIRÁ LO QUE»), dejaban palabras sueltas («MÁS!»), pintaban de amarillo palabras sin peso («POR») y cambiaban de altura entre escenas. El QA pasaba igual porque usaba la misma caja (subestimada) que el sistema y no miraba centrado, cortes ni resaltado. Regla nueva: carril fijo (base y = 1500, centro 540, ≤ 720 px), páginas por frase, amarillo solo para la palabra clave, y `npm run qa:subs` que mide los píxeles del render (0 fallas). *(01, 02)*
 
 ## Voz (ElevenLabs)
 

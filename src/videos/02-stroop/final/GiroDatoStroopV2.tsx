@@ -6,8 +6,8 @@ import { CharacterV2 } from "../../../canal/personaje/tomi-v2/CharacterV2";
 import { snap } from "../../../canal/personaje/tomi-v2/motion2";
 import { SONIDOS } from "../../../canal/sonidos/sonidos";
 import type { Box } from "../../01-efecto-senuelo/final/cafe";
-import { CaptionsLayer } from "../../../canal/subtitulos/CaptionsLayer";
-import type { CaptionOpts } from "../../../canal/subtitulos/captions";
+import { Subtitulos } from "../../../canal/subtitulos/Subtitulos";
+import type { CaptionOpts } from "../../01-efecto-senuelo/historial/subtitulos-v1/captions";
 import type { Word } from "../../01-efecto-senuelo/short-final/words";
 import { RaceExplainer, type RaceGeom } from "../../../canal/componentes/tarjetas/RaceExplainer";
 import { WordCard, wordSize, type CardGeom } from "../../../canal/componentes/tarjetas/WordCard";
@@ -24,13 +24,17 @@ import { getTomiV2, tomiBoxes } from "./tomi";
  * explicación animada como una carrera entre dos procesos y loop sin costura.
  */
 
-export const giroDatoStroopV2Schema = z.object({ showSafeZones: z.boolean(), hasVoiceover: z.boolean() });
+/** capa: "todo" (video) · "subtitulos" (solo subtítulos, fondo transparente) · "escena" (todo menos subtítulos)
+ *  · "fondo" (solo mesa, borde, viñeta y grano: con "escena" el QA saca la máscara de Tomi, objetos y textos) */
+export const CAPAS_STROOP = ["todo", "subtitulos", "escena", "fondo"] as const;
+export const giroDatoStroopV2Schema = z.object({ showSafeZones: z.boolean(), hasVoiceover: z.boolean(), capa: z.enum(CAPAS_STROOP).default("todo") });
 export type GiroDatoStroopV2Props = z.infer<typeof giroDatoStroopV2Schema>;
 export const GIRODATO_STROOP_V2_FRAMES = T.DURATION;
 
 const W = 1080;
 const H = 1920;
 export const TEXT_SAFE = { left: 80, right: 900, top: 240, bottom: 1420 };
+/** carril VIEJO (solo lo usa el QA legado QAStroopV2); los subtítulos nuevos usan src/canal/zonaSegura.ts */
 export const CAPTION_OPTS: CaptionOpts = { safe: TEXT_SAFE, bases: [1410, 1320, 1230, 1140, 1050, 960], oneLineMax: 20 };
 /** tarjeta del desafío: más grande y más arriba que en la V1 */
 export const CARD2: CardGeom = { cx: 510, cy: 715, w: 820, h: 350, fontSize: 200, maxText: 740 };
@@ -93,6 +97,14 @@ const camPoint = (f: number) => {
 /* ── subtítulos: los cinco bloques de voz ── */
 const shift = (ws: Word[], at: number): Word[] => ws.map((w) => ({ ...w, s: w.s + at / T.FPS, e: w.e + at / T.FPS }));
 export const V2_WORDS: Word[] = (Object.keys(T.VOICE_AT) as T.VoiceId[]).flatMap((id) => shift(blockWords(id), T.VOICE_AT[id]));
+/** subtítulos: palabras clave en amarillo (máx. 1 por página), itálicas y rangos ocultos (durante las rondas no hay voz) */
+export const SUBS_STROOP = {
+  palabras: V2_WORDS,
+  enfasis: ["automático", "Stroop", "chocan", "color"],
+  remates: [] as string[],
+  italicas: ["automático", "Stroop"],
+  visible: (fr: number) => fr >= T.VOICE_AT.v1,
+};
 
 /* ── cabeceras ── */
 type Head = { from: number; to: number; big?: boolean; lines: React.ReactNode[]; compactAt?: readonly [number, number] };
@@ -406,13 +418,16 @@ const TableLip: React.FC = () => (
   </g>
 );
 
-export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> = ({ f, showSafeZones = false }) => {
+export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean; capa?: (typeof CAPAS_STROOP)[number] }> = ({ f, showSafeZones = false, capa = "todo" }) => {
+  const escena = capa !== "subtitulos";
+  const obj = capa === "todo" || capa === "escena";
+  const subs = capa === "todo" || capa === "subtitulos";
   const c = camAt(f);
   const { pose, rig } = getTomiV2()[Math.min(T.LAST, Math.max(0, f))];
   const camTf = `translate(${540 + c.dx},${960 + c.dy}) scale(${c.z}) translate(${-c.cx},${-c.cy})`;
   const grainSeed = f === T.LAST ? 0 : f % 8;
   return (
-    <AbsoluteFill style={{ backgroundColor: STROOP.bg }}>
+    <AbsoluteFill style={{ backgroundColor: escena ? STROOP.bg : undefined }}>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <defs>
           <radialGradient id="gdSpot">
@@ -445,8 +460,11 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> 
           </filter>
         </defs>
 
+        {escena ? (
         <g transform={camTf}>
           <Table />
+          {obj ? (
+          <>
           {LEVELS.map((lv, li) =>
             lv.cards.map((cd, ci) => {
               const last = li === 2 && ci === lv.cards.length - 1;
@@ -481,17 +499,28 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> 
           <Teaser f={f} />
           <ExampleHint f={f} />
           <CharacterV2 pose={pose} rig={rig} uid="gdTomi" />
+          </>
+          ) : null}
           <TableLip />
         </g>
+        ) : null}
 
-        <LevelChip f={f} />
-        <CTA f={f} />
-        <Citation f={f} />
-        <Headline f={f} />
-        <CaptionsLayer f={f} frames={T.DURATION} boxesAt={v2Boxes} words={V2_WORDS} opts={CAPTION_OPTS} italic={["automatico", "stroop"]} visible={(fr) => fr >= T.VOICE_AT.v1} />
+        {obj ? (
+          <>
+            <LevelChip f={f} />
+            <CTA f={f} />
+            <Citation f={f} />
+            <Headline f={f} />
+          </>
+        ) : null}
+        {subs ? <Subtitulos f={f} {...SUBS_STROOP} debug={showSafeZones} /> : null}
 
-        <rect x={0} y={0} width={W} height={H} fill="url(#gdVignette)" />
-        <rect x={0} y={0} width={W} height={H} filter="url(#gdGrain)" opacity={0.55} />
+        {escena ? (
+          <>
+            <rect x={0} y={0} width={W} height={H} fill="url(#gdVignette)" />
+            <rect x={0} y={0} width={W} height={H} filter="url(#gdGrain)" opacity={0.55} />
+          </>
+        ) : null}
 
         {showSafeZones ? (
           <g>
@@ -539,11 +568,11 @@ const CUES: Cue[] = [
   { src: SONIDOS["whoosh-suave"], at: T.RETURN[0] - 6, vol: 0.22 },
 ];
 
-export const GiroDatoStroopV2: React.FC<GiroDatoStroopV2Props> = ({ showSafeZones, hasVoiceover }) => {
+export const GiroDatoStroopV2: React.FC<GiroDatoStroopV2Props> = ({ showSafeZones, hasVoiceover, capa = "todo" }) => {
   const f = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <GiroDatoV2Visual f={f} showSafeZones={showSafeZones} />
+      <GiroDatoV2Visual f={f} showSafeZones={showSafeZones} capa={capa} />
       <Audio src={staticFile(SONIDOS["sala-cafe"])} volume={0.05} durationInFrames={T.DURATION} />
       {hasVoiceover
         ? (Object.keys(T.VOICE_AT) as T.VoiceId[]).map((id) => (

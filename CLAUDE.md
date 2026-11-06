@@ -9,7 +9,11 @@ Este repo es la base de todos los YouTube Shorts del canal. **Antes de hacer cua
 - El dibujo **siempre nítido** (sin desenfoque sobre personaje u objetos).
 - Gancho con **pregunta directa** y opciones/precios visibles desde el fotograma 0.
 - La comparación clave va **grande y centrada** en la zona segura.
-- Subtítulos en **carril fijo abajo**; nunca tapan cara, manos que gesticulan, objetos ni textos; nunca saltan arriba. Correr el QA (0 choques, ≥95 % en carril).
+- Subtítulos (`src/canal/subtitulos/`, reglas en `BIBLIOTECA.md` § Subtítulos; medidas en `src/canal/zonaSegura.ts`): centrados en x = 540, ancho ≤ 720, carril fijo con base en y = 1500 (crecen hacia arriba, nunca suben).
+  Páginas cortadas por frase (nunca en «de», «la», «que»…, sin palabras huérfanas). Amarillo solo para la palabra clave (`enfasis`, máx. 1 por página).
+  El subtítulo no esquiva nada: el encuadre deja el carril libre de Tomi, objetos y textos.
+  Antes de entregar: `npm run qa:subs -- <Composición>` con **0 fallas** (mide los píxeles del render).
+- Nunca mostrar ni decir el tercer apellido del estudio de 1982; la cita es «Huber et al. · 1982» (lista en `src/canal/qa/prohibidas.ts`).
 - Zona segura Shorts: nada clave bajo y = 1536 ni a la derecha de x = 900.
 - Lo reutilizable va en `src/canal/` (código) y `public/biblioteca/` (audios, imágenes; `catalogo.json`). Lo exclusivo de un video, en `src/videos/<nn-video>/` y `public/videos/<nn-video>/`. Música CC BY: poner el crédito.
 - Voz a velocidad natural (1,0), mastering suave. Tomi mueve la boca con la voz (`lipsync.ts`).

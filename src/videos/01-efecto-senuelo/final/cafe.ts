@@ -71,8 +71,9 @@ export type Cam = { x: number; y: number; zoom: number };
 export type CamF = Cam & { sx: number; sy: number };
 type CamKey = { at: number; cam: Cam; dur: number; ease?: (t: number) => number; cut?: boolean };
 
-const SAFE_CX = 480;
-const frame = (cx: number, cy: number, zoom: number): Cam => ({ x: cx + (540 - SAFE_CX) / zoom, y: cy, zoom });
+/** centro de ENCUADRE de la cámara (aprobado): no es el centro de los textos, que es CENTRO_X = 540 (src/canal/zonaSegura.ts) */
+const CAMARA_CX = 480;
+const frame = (cx: number, cy: number, zoom: number): Cam => ({ x: cx + (540 - CAMARA_CX) / zoom, y: cy, zoom });
 /** chico + grande con sus precios, grandes y centrados (gancho y loop) */
 export const PAIR = frame(1292 + CUPS_DX, 1255, 1.65);
 /** los tres vasos con sus precios, grandes y centrados */
@@ -368,22 +369,20 @@ export const cafeBoxes = (f: number, dy = 0): Box[] => {
   const out: Box[] = [];
   const r = 92 * HEAD_SCALE * S;
   out.push(box(c, { x: head.x - r * 1.05, y: head.y - r * 1.12 }, { x: head.x + r * 1.05, y: head.y + r * 1.15 }, "hard", "cara", dy));
-  out.push(box(c, { x: head.x - r * 0.6, y: head.y - r * 1.6 }, { x: head.x + r * 0.6, y: head.y - r * 1.12 }, "soft", "mechón", dy));
+  out.push(box(c, { x: head.x - r * 0.6, y: head.y - r * 1.6 }, { x: head.x + r * 0.6, y: head.y - r * 1.12 }, "hard", "mechón", dy));
   const Lc = (v: Vec): Vec => ({ x: pose.x + v.x * S, y: pose.y + v.y * S });
-  // una mano es clave si gesticula a la altura del pecho o más arriba, o si señala / agarra / sostiene
-  const chestY = (Lc(rig.neck).y + Lc(rig.legF.hip).y) / 2;
-  const key = (h: string | undefined) => h === "point" || h === "reach" || h === "hold" || h === "chin";
-  for (const [name, a, hand] of [["mano", rig.front, pose.armFront.hand], ["mano2", rig.back, pose.armBack.hand]] as const) {
+  // todo Tomi (cara, mechón, manos y cuerpo) es duro para el subtítulo: el carril se deja libre desde el encuadre
+  for (const [name, a] of [["mano", rig.front], ["mano2", rig.back]] as const) {
     const w = Lc(a.wr);
     const p = Lc(a.palm);
     const x0 = Math.min(w.x, p.x) - 24 * S;
     const x1 = Math.max(w.x, p.x) + 24 * S;
     const y0 = Math.min(w.y, p.y) - 24 * S;
     const y1 = Math.max(w.y, p.y) + 30 * S;
-    out.push(box(c, { x: x0, y: y0 }, { x: x1, y: y1 }, w.y < chestY || key(hand) ? "hard" : "soft", name, dy));
+    out.push(box(c, { x: x0, y: y0 }, { x: x1, y: y1 }, "hard", name, dy));
   }
   const neck = Lc(rig.neck);
-  out.push(box(c, { x: neck.x - 64 * S, y: neck.y }, { x: neck.x + 64 * S, y: FLOOR }, "soft", "cuerpo", dy));
+  out.push(box(c, { x: neck.x - 64 * S, y: neck.y }, { x: neck.x + 64 * S, y: FLOOR }, "hard", "cuerpo", dy));
   const cup = (x: number, h: number, name: string, ddy = 0) =>
     out.push(box(c, { x: x - h * 0.4 - 8, y: COUNTER_TOP - h - 40 + ddy }, { x: x + h * 0.4 + 8, y: Math.min(COUNTER_TOP, COUNTER_TOP + ddy) }, "hard", name, dy));
   const tag = (x: number, name: string) => out.push(box(c, { x: x - 92, y: COUNTER_TOP + 14 }, { x: x + 92, y: COUNTER_TOP + 150 }, "hard", name, dy));

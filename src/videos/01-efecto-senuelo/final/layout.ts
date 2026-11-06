@@ -66,18 +66,18 @@ export const boardBoxes = (f: number, dy = 0): Box[] => {
   if (rv(b, CUE.entradas - 4, 12) > 0.02) out.push(rect(410, 470, 1000, 765, "cine", dy));
   if (rv(b, CUE.suscripciones - 4, 12) > 0.02) out.push(rect(410, 750, 1000, 1015, "suscripciones", dy));
   // Tomi presentador (V2)
-  const p = presenter(Math.max(0, b));
+  const p0 = presenter(Math.max(0, b));
+  const p = { ...p0, x: p0.x - 125 }; // PRESENTADOR_DX de EfectoSenueloTomiV2
   const r = rigV2(p);
   const hx = p.x + r.headCenter.x * p.scale;
   const hy = p.y + r.headCenter.y * p.scale;
   const hr = 92 * HEAD_SCALE * p.scale;
   out.push(rect(hx - hr * 1.05, hy - hr * 1.12, hx + hr * 1.05, hy + hr * 1.15, "cara", dy));
-  const chestY = p.y + ((r.neck.y + r.legF.hip.y) / 2) * p.scale;
   for (const [name, w] of [["mano", r.back.wr], ["mano2", r.front.wr]] as const) {
     const hand = { x: p.x + w.x * p.scale, y: p.y + w.y * p.scale };
-    out.push(rect(hand.x - 50, hand.y - 50, hand.x + 50, hand.y + 60, name, dy, hand.y < chestY ? "hard" : "soft"));
+    out.push(rect(hand.x - 50, hand.y - 50, hand.x + 50, hand.y + 60, name, dy, "hard"));
   }
-  out.push(rect(hx - 100, hy + hr, hx + 100, 1760, "cuerpo", dy, "soft"));
+  out.push(rect(hx - 100, hy + hr, hx + 100, 1760, "cuerpo", dy, "hard"));
   return out;
 };
 

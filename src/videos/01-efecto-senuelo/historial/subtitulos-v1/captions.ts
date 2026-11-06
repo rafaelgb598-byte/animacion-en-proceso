@@ -1,5 +1,5 @@
-import { WORDS, type Word } from "../../videos/01-efecto-senuelo/short-final/words";
-import type { Box } from "../../videos/01-efecto-senuelo/final/cafe";
+import { WORDS, type Word } from "../../short-final/words";
+import type { Box } from "../../final/cafe";
 
 /**
  * Subtítulos del Short V2: viven en un CARRIL FIJO abajo (justo encima de la UI de Shorts).

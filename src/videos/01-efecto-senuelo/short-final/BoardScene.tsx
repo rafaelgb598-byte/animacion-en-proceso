@@ -211,7 +211,17 @@ const Plan: React.FC<{ x: number; y: number; name: string; decoy?: boolean; star
 /* ------------------------------ escena ------------------------------ */
 
 /** `v2`: dibuja a Tomi V2 (mismas poses y tiempos); por defecto, el Tomi original. */
-export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean }> = ({ f, inst = "", v2 = false }) => {
+/**
+ * `soloFondo`: solo pared, piso y pizarrón vacío (máscara de choques del QA de subtítulos).
+ * `presentadorDx`: corre al presentador (y su sombra) en x sin cambiar su actuación, para dejar libre el carril de subtítulos.
+ */
+export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean; soloFondo?: boolean; presentadorDx?: number }> = ({
+  f,
+  inst = "",
+  v2 = false,
+  soloFondo = false,
+  presentadorDx = 0,
+}) => {
   const b = f - SCENE.boardIn;
   const id = (n: string) => `bd${n}${inst}`;
   const pose = presenter(b);
@@ -246,6 +256,8 @@ export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean }> = 
         <path key={i} d={`M ${120 + i * 96} ${260 + (i % 3) * 330} q 40 -18 80 0`} stroke={CH} strokeWidth={10} opacity={0.05} strokeLinecap="round" />
       ))}
       <rect x={60} y={1344} width={960} height={18} fill="#5B3A29" />
+      {soloFondo ? null : (
+      <>
 
       <ChalkWrite id={id("t1")} x={560} y={262} size={84} t={tTitle} color={YEL}>
         EFECTO SEÑUELO
@@ -263,7 +275,7 @@ export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean }> = 
             <rect x={-300} y={-74} width={600} height={148} rx={8} fill="#FBF3DF" stroke={LINE} strokeWidth={4} />
             <rect x={-40} y={-80} width={80} height={26} fill="#F2E6B8" opacity={0.85} />
             <text x={0} y={-12} textAnchor="middle" fontFamily="Georgia, serif" fontWeight={700} fontSize={36} fill="#2A2024">
-              Huber, Payne &amp; Puto (1982)
+              Huber et al. · 1982
             </text>
             <text x={0} y={38} textAnchor="middle" fontFamily="Georgia, serif" fontStyle="italic" fontSize={32} fill="#4A3C36">
               Journal of Consumer Research
@@ -313,8 +325,12 @@ export const BoardScene: React.FC<{ f: number; inst?: string; v2?: boolean }> = 
       ) : null}
 
       {/* sombra y presentador */}
-      <ellipse cx={TX + 10} cy={FLOOR_Y + 6} rx={110} ry={20} fill="#2A1408" opacity={0.22} />
-      {v2 ? <CharacterV2 pose={pose} uid={`bdt2${inst}`} /> : <Character pose={pose} uid={`bdt${inst}`} />}
+      <g transform={presentadorDx ? `translate(${presentadorDx},0)` : undefined}>
+        <ellipse cx={TX + 10} cy={FLOOR_Y + 6} rx={110} ry={20} fill="#2A1408" opacity={0.22} />
+        {v2 ? <CharacterV2 pose={pose} uid={`bdt2${inst}`} /> : <Character pose={pose} uid={`bdt${inst}`} />}
+      </g>
+      </>
+      )}
     </svg>
   );
 };

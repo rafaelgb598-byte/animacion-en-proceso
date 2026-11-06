@@ -23,7 +23,7 @@ El truco es simple: la opción del medio hace que otra parezca mucho mejor.
 Ahora tapá el mediano.
 ¿Seguís queriendo el grande?
 
-(La referencia completa — Huber, Payne & Puto (1982), *Journal of Consumer Research* — aparece en pantalla.)
+(La referencia aparece en pantalla como «Huber et al. · 1982 · *Journal of Consumer Research*».)
 
 ## Efectos (ElevenLabs Sound Effects, `public/short-final/sfx/`)
 | Archivo | Uso |

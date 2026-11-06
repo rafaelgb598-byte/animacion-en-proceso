@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
-import { captionReport } from "../../../canal/subtitulos/captions";
+import { captionReport } from "../../01-efecto-senuelo/historial/subtitulos-v1/captions";
 import { WORD_COLOR } from "../v1/script";
 import { CAPTION_OPTS, TEXT_SAFE, V2_WORDS, v2Boxes } from "./GiroDatoStroopV2";
 import { LEVELS } from "./script";

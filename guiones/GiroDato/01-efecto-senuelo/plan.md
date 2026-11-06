@@ -30,7 +30,7 @@ Ajustes iniciales: stability 0.42 · similarity 0.8 · style 0.35 · speaker boo
 | 5 | "Pero el precio… nunca cambió." | Va a agarrar el grande, se congela. Primer plano. El cartel $7 se ilumina: el número no se mueve; antes/después lado a lado. |
 | 6 | "Cambió contra qué lo comparás." | La "regla" de comparación se desliza del chico al mediano. |
 | 7 | "Esto se llama efecto señuelo." | Cambio de contexto: pizarra de la cafetería se vuelve el escenario de la explicación. Tomi como "profesor" con un puntero. |
-| 8 | "En 1982, Huber, Payne y Puto…" | Ficha de estudio estilo fichero: "Huber, Payne & Puto · 1982 · Journal of Consumer Research". Tres "tarjetas" de opciones con el señuelo resaltado. |
+| 8 | "En 1982, Joel Huber y sus colegas…" | Ficha de estudio estilo fichero: "Huber et al. · 1982 · Journal of Consumer Research". Tres "tarjetas" de opciones con el señuelo resaltado. |
 | 9 | "…entradas de cine o suscripciones." | Dos mini-viñetas rápidas (combo de pochoclos / 3 planes de suscripción) con el mismo patrón visual. |
 | 10 | "El truco… parezca mucho mejor." | Vuelta a la cafetería; el mediano "empuja" visualmente al grande. |
 | 11 | "Ahora tapá el mediano." | Tomi tapa el mediano con una servilleta. |
