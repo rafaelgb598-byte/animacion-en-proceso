@@ -2,7 +2,7 @@ import React from "react";
 import { Hand } from "../Limbs";
 import { computeRig, type ArmRig, type HandShape, type LegRig, type Pose, type Rig, type Vec } from "../rig";
 import { HeadV2 } from "./HeadV2";
-import { COLORS_V2 as C, DIM_V2, HEAD_SCALE, LINE } from "./style";
+import { COLORS_V2 as C, DIM_V2, HEAD_SCALE, HEAD_SX, LINE } from "./style";
 
 /**
  * Tomi V2 — mismo rig y mismas poses que la V1 (Pose), con el diseño evolucionado:
@@ -123,7 +123,7 @@ export const CharacterV2: React.FC<{
   const placket = 16 * t;
   const torsoTf = `translate(0,${rig.ground}) rotate(${p.lean}) scale(${rig.sx},${rig.sy})`;
   const hs = 1 + (p.squash - 1) * 0.5;
-  const headTf = `translate(${rig.neck.x},${rig.neck.y}) rotate(${rig.headAngle}) translate(0,${DIM_V2.headCenter}) scale(${HEAD_SCALE / Math.sqrt(hs)},${HEAD_SCALE * hs})`;
+  const headTf = `translate(${rig.neck.x},${rig.neck.y}) rotate(${rig.headAngle}) translate(0,${DIM_V2.headCenter}) scale(${(HEAD_SCALE * HEAD_SX) / Math.sqrt(hs)},${HEAD_SCALE * hs})`;
 
   return (
     <g transform={`translate(${p.x},${p.y}) scale(${p.scale * fs},${p.scale})`}>
@@ -138,8 +138,8 @@ export const CharacterV2: React.FC<{
           </clipPath>
         </defs>
         {/* cuello: más largo y fino que la V1 */}
-        <rect x={-13} y={-194} width={26} height={36} rx={8} fill={C.skin} stroke={C.line} strokeWidth={LW - 0.5} />
-        <rect x={-10} y={-178} width={20} height={12} fill={C.skinShade} opacity={0.6} />
+        <rect x={-12} y={-204} width={24} height={46} rx={8} fill={C.skin} stroke={C.line} strokeWidth={LW - 0.5} />
+        <rect x={-9} y={-184} width={18} height={16} fill={C.skinShade} opacity={0.6} />
         <path d={TORSO} fill={C.shirt} />
         <g clipPath={`url(#${uid}-torso)`}>
           {/* volumen: luz en el pecho, sombra lateral y bajo el pecho */}

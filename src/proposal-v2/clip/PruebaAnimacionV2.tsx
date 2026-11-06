@@ -92,12 +92,10 @@ const HookTitle: React.FC<{ f: number }> = ({ f }) => {
   const jolt = f >= CUE.rapido && f < CUE.rapido + 10 ? Math.sin((f - CUE.rapido) * 2.6) * 4 * (1 - (f - CUE.rapido) / 10) : 0;
   return (
     <g opacity={1 - leave} transform={`translate(${540 + jolt},${294 - leave * 160}) scale(${sc}) rotate(${-2 + jolt * 0.4})`}>
-      <rect x={-460} y={-86} width={920} height={144} rx={26} fill="#FFFFFF" stroke={LINE} strokeWidth={9} />
-      <text x={0} y={16} textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize={80} letterSpacing={-2}>
-        <tspan fill={LINE}>¿</tspan>
-        <tspan fill="#E24E5A">CHICO</tspan>
-        <tspan fill={LINE}> O </tspan>
-        <tspan fill="#2BB3A3">GRANDE</tspan>
+      <rect x={-470} y={-86} width={940} height={144} rx={26} fill="#FFFFFF" stroke={LINE} strokeWidth={9} />
+      <text x={0} y={16} textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize={76} letterSpacing={-2}>
+        <tspan fill={LINE}>¿CUÁL </tspan>
+        <tspan fill="#2BB3A3">COMPRARÍAS</tspan>
         <tspan fill={LINE}>?</tspan>
       </text>
     </g>
@@ -168,8 +166,10 @@ export const PruebaVisual: React.FC<{ f: number; debug?: boolean }> = ({ f, debu
   const fr = clamp(f, 0, CLIP_FRAMES - 1);
   const { pose, rig, head } = getClip()[fr];
   const cam = camAt(fr);
-  const blur = camBlur(fr);
-  const dof = clamp((cam.zoom - 1.4) * 1.6, 0, 4);
+  // el dibujo siempre nítido: solo el fondo recibe un desenfoque leve (profundidad + movimiento)
+  const mb = camBlur(fr) * 0.22;
+  const dof = clamp((cam.zoom - 1.5) * 0.6, 0, 0.8);
+  const bgSoft = dof + mb;
   const lx = cupLx(fr);
   const sx = cupSx(fr);
   const mv = mVisible(fr);
@@ -185,14 +185,14 @@ export const PruebaVisual: React.FC<{ f: number; debug?: boolean }> = ({ f, debu
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#F2DDBA" }}>
-      <AbsoluteFill style={{ filter: blur > 0.3 ? `blur(${blur}px)` : undefined }}>
+      <AbsoluteFill>
         <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
           <defs>
             <filter id={id("far")} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation={dof * 1.6 + 1.2} />
+              <feGaussianBlur stdDeviation={0.8 + bgSoft} />
             </filter>
             <filter id={id("wall")} x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation={dof} />
+              <feGaussianBlur stdDeviation={bgSoft} />
             </filter>
             <filter id={id("soft")} x="-50%" y="-200%" width="200%" height="500%">
               <feGaussianBlur stdDeviation={4} />
@@ -208,11 +208,11 @@ export const PruebaVisual: React.FC<{ f: number; debug?: boolean }> = ({ f, debu
           <g transform={camTf(cam, 0.55)} filter={`url(#${id("far")})`}>
             <Outside f={fr} />
           </g>
-          <g transform={camTf(cam, 0.85)} filter={dof > 0.05 ? `url(#${id("wall")})` : undefined}>
+          <g transform={camTf(cam, 0.85)} filter={bgSoft > 0.15 ? `url(#${id("wall")})` : undefined}>
             <BackWallV2 f={fr} pal={PAL_CHAIN} />
             <rect x={-800} y={-600} width={4000} height={2400} fill="#F7EBD8" opacity={0.12} />
           </g>
-          <g transform={camTf(cam, 0.92)} filter={dof > 0.05 ? `url(#${id("wall")})` : undefined}>
+          <g transform={camTf(cam, 0.92)} filter={bgSoft > 0.15 ? `url(#${id("wall")})` : undefined}>
             <Lamps f={fr} pal={PAL_CHAIN} />
           </g>
 

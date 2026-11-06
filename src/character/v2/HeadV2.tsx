@@ -19,10 +19,11 @@ const skull = (turn: number) => {
   const jl = 64 - Math.max(0, -turn) * 6;
   return [
     "M 0 -84",
-    "C 52 -84, 88 -54, 88 -8",
-    `C 88 30, ${jr + 4} 58, ${32 + c} 78`,
-    `Q ${c} 92, ${-32 + c} 78`,
-    `C ${-jl - 4} 58, -88 30, -88 -8`,
+    "C 52 -84, 88 -54, 88 -10",
+    `C 88 26, ${jr + 8} 54, ${jr - 6} 72`,
+    `Q ${30 + c} 98, ${c} 100`,
+    `Q ${-30 + c} 98, ${-jl + 6} 72`,
+    `C ${-jl - 8} 54, -88 26, -88 -10`,
     "C -88 -54, -52 -84, 0 -84 Z",
   ].join(" ");
 };
@@ -43,7 +44,7 @@ type EyeProps = {
 };
 
 const Eye: React.FC<EyeProps> = ({ id, x, y, rx, ry, lookX, lookY, pupil, lid, lidAngle, lowerLid, side }) => {
-  const pr = 8.4 * pupil;
+  const pr = 7.2 * pupil;
   const px = lookX * (rx - pr) * 0.82;
   const py = lookY * (ry - pr) * 0.78;
   const lidY = -ry + lid * ry * 2;
@@ -60,7 +61,7 @@ const Eye: React.FC<EyeProps> = ({ id, x, y, rx, ry, lookX, lookY, pupil, lid, l
         {/* iris marrón oscuro + pupila: mirada más "adulta" que el punto negro plano */}
         <circle cx={px} cy={py} r={pr * 1.02} fill="#3B2A24" />
         <circle cx={px} cy={py} r={pr * 0.62} fill={C.line} />
-        <circle cx={px + 3} cy={py - 3.4} r={2.8 * pupil} fill="#fff" />
+        <circle cx={px + 2.6} cy={py - 2.8} r={2.2 * pupil} fill="#fff" />
         {/* sombra del párpado sobre el ojo */}
         <ellipse cx={0} cy={-ry - 2 + lid * ry * 2} rx={rx * 1.3} ry={6} fill="#000" opacity={0.08} />
         <g transform={`rotate(${lidAngle} 0 ${lidY})`}>
@@ -80,7 +81,7 @@ const Eye: React.FC<EyeProps> = ({ id, x, y, rx, ry, lookX, lookY, pupil, lid, l
         d={`M ${-rx * 0.98} ${-ry * 0.12} Q ${-rx * 0.7} ${-ry * 1.08} 0 ${-ry * 1.0} Q ${rx * 0.8} ${-ry * 1.04} ${rx * 1.04} ${-ry * 0.18}`}
         transform={`scale(${side},1)`}
         stroke={C.line}
-        strokeWidth={LW + 1.5}
+        strokeWidth={LW}
         fill="none"
         strokeLinecap="round"
         opacity={blinkFade(ry)}
@@ -166,23 +167,24 @@ const Ear: React.FC<{ x: number; flip?: boolean }> = ({ x, flip }) => (
 const HAIR =
   "M -92 0 C -100 -66, -52 -104, 4 -104 C 60 -104, 100 -70, 92 -2 C 90 -28, 84 -44, 72 -54 C 68 -40, 56 -34, 42 -36 C 46 -46, 44 -54, 38 -60 C 30 -46, 12 -42, -6 -46 C 0 -52, 0 -60, -4 -64 C -18 -50, -40 -46, -58 -50 C -70 -40, -80 -24, -82 -2 L -84 18 Q -90 14 -92 0 Z";
 const HAIR_SHINE = "M -52 -82 Q -10 -98 34 -88";
-const TUFT = "M 0 4 C -6 -22, 12 -46, 32 -40 C 45 -36, 42 -18, 28 -19";
+/** jopo: mechón levantado y peinado hacia atrás (identidad, sin rulito infantil) */
+const TUFT = "M -26 10 C -30 -12, -10 -36, 22 -40 C 12 -30, 10 -20, 14 -8 C 4 -2, -12 4, -26 10 Z";
 
 export type HeadV2Props = { uid: string; face: FacePose; turn: number; blink: number; hairLag: number };
 
 export const HeadV2: React.FC<HeadV2Props> = ({ uid, face: f, turn, blink, hairLag }) => {
   const fx = turn * 22;
-  const spread = 30 * (1 - 0.16 * Math.abs(turn));
-  const eyeRx = 15 * f.eyeScale;
-  const eyeRy = 19.5 * f.eyeScale * blink;
+  const spread = 29 * (1 - 0.16 * Math.abs(turn));
+  const eyeRx = 13 * f.eyeScale;
+  const eyeRy = 14.5 * f.eyeScale * blink;
   const farR = 1 - 0.24 * Math.max(0, turn);
   const farL = 1 - 0.24 * Math.max(0, -turn);
   const lEarX = -84 + 40 * Math.max(0, -turn) + 30 * Math.max(0, turn);
   const rEarX = 84 - 40 * Math.max(0, turn) - 30 * Math.max(0, -turn);
   const hx = turn * 8;
-  const eyeY = -8;
-  const browY = -42;
-  const browLift = (l: number) => browY - l * 14 - (f.eyeScale - 1) * 18;
+  const eyeY = -10;
+  const browY = -33;
+  const browLift = (l: number) => browY - l * 13 - (f.eyeScale - 1) * 14;
   const sk = skull(turn);
   return (
     <g>
@@ -190,9 +192,9 @@ export const HeadV2: React.FC<HeadV2Props> = ({ uid, face: f, turn, blink, hairL
       {turn >= -0.15 ? <Ear x={rEarX} flip /> : null}
 
       {/* mechón levantado (identidad), con follow-through */}
-      <g transform={`translate(${hx - 6},-94) rotate(${hairLag})`}>
-        <path d={TUFT} stroke={C.line} strokeWidth={17} fill="none" strokeLinecap="round" />
-        <path d={TUFT} stroke={C.hair} strokeWidth={7.5} fill="none" strokeLinecap="round" />
+      <g transform={`translate(${hx + 4},-90) rotate(${hairLag * 0.7})`}>
+        <path d={TUFT} fill={C.hair} stroke={C.line} strokeWidth={LW} strokeLinejoin="round" />
+        <path d="M -14 0 C -14 -14, -2 -28, 14 -33" stroke={C.hairLight} strokeWidth={4} fill="none" strokeLinecap="round" opacity={0.8} />
       </g>
 
       <defs>
@@ -217,18 +219,18 @@ export const HeadV2: React.FC<HeadV2Props> = ({ uid, face: f, turn, blink, hairL
       </g>
 
       {/* rubor suave (mucho menos que la V1) */}
-      <ellipse cx={fx - spread - 14} cy={26} rx={11 * farL} ry={5.5} fill={C.cheek} opacity={f.blush * 0.38} />
-      <ellipse cx={fx + spread + 14} cy={26} rx={11 * farR} ry={5.5} fill={C.cheek} opacity={f.blush * 0.38} />
+      <ellipse cx={fx - spread - 12} cy={28} rx={10 * farL} ry={5} fill={C.cheek} opacity={f.blush * 0.25} />
+      <ellipse cx={fx + spread + 12} cy={28} rx={10 * farR} ry={5} fill={C.cheek} opacity={f.blush * 0.25} />
 
       <Eye id={`${uid}-eyeL`} x={fx - spread} y={eyeY} rx={eyeRx * farL} ry={eyeRy} lookX={f.lookX} lookY={f.lookY} pupil={f.pupil} lid={f.lidL} lidAngle={f.lidAngle} lowerLid={f.lowerLid} side={-1} />
       <Eye id={`${uid}-eyeR`} x={fx + spread} y={eyeY} rx={eyeRx * farR} ry={eyeRy} lookX={f.lookX} lookY={f.lookY} pupil={f.pupil} lid={f.lidR} lidAngle={-f.lidAngle} lowerLid={f.lowerLid} side={1} />
 
-      <Brow x={fx - spread} y={browLift(f.browLiftL)} angle={f.browAngleL} side={1} w={16 * farL} />
-      <Brow x={fx + spread} y={browLift(f.browLiftR)} angle={f.browAngleR} side={-1} w={16 * farR} />
+      <Brow x={fx - spread} y={browLift(f.browLiftL)} angle={f.browAngleL} side={1} w={17 * farL} />
+      <Brow x={fx + spread} y={browLift(f.browLiftR)} angle={f.browAngleR} side={-1} w={17 * farR} />
 
       {/* nariz: puente corto + punta, más definida */}
       <path
-        d={`M ${fx + turn * 16 - 2} 8 Q ${fx + turn * 16 + 9 + turn * 6} 24 ${fx + turn * 16 - 3} 30 Q ${fx + turn * 16 - 8} 30 ${fx + turn * 16 - 9} 27`}
+        d={`M ${fx + turn * 16 - 2} 6 Q ${fx + turn * 17 + 10 + turn * 6} 28 ${fx + turn * 16 - 3} 35 Q ${fx + turn * 16 - 9} 35 ${fx + turn * 16 - 10} 31`}
         stroke={C.line}
         strokeWidth={IN}
         fill="none"
@@ -236,7 +238,7 @@ export const HeadV2: React.FC<HeadV2Props> = ({ uid, face: f, turn, blink, hairL
         strokeLinejoin="round"
       />
 
-      <Mouth id={`${uid}-mouth`} x={fx + turn * 10} y={52} f={f} />
+      <Mouth id={`${uid}-mouth`} x={fx + turn * 10} y={60} f={f} />
     </g>
   );
 };

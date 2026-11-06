@@ -20,9 +20,11 @@ export const ROOT = 830;
 /* ------------------------------ vasos ------------------------------ */
 
 export const CUP_H = { L: 185, M: 155, S: 120 };
-export const M_X = 1270;
-export const cupLx = (f: number) => track(f, [[0, 1120], [226, 1120], [238, 1080, snap(0.15)]]);
-export const cupSx = (f: number) => track(f, [[0, 1420], [226, 1420], [238, 1460, snap(0.15)]]);
+/** los vasos se corren 40 px respecto del Short para que Tomi no asome en los planos de comparación */
+const CUPS_DX = 40;
+export const M_X = 1270 + CUPS_DX;
+export const cupLx = (f: number) => track(f, [[0, 1120 + CUPS_DX], [226, 1120 + CUPS_DX], [238, 1080 + CUPS_DX, snap(0.15)]]);
+export const cupSx = (f: number) => track(f, [[0, 1420 + CUPS_DX], [226, 1420 + CUPS_DX], [238, 1460 + CUPS_DX, snap(0.15)]]);
 export const mVisible = (f: number) => f >= 224;
 export const mDropY = (f: number) => track(f, [[224, -1000], [CUE.mediano + 2, 0, ease.in]]);
 export const mSquash = (f: number) =>
@@ -38,17 +40,26 @@ export const tagPulse = { S: (f: number) => pulse(f, CUE.tres, 0.14), L: (f: num
 export type Cam = { x: number; y: number; zoom: number };
 /** cut: whip-cut (la cámara apenas arranca, salta a mitad del tramo con desenfoque y se asienta) */
 type CamKey = { at: number; cam: Cam; dur: number; ease?: (t: number) => number; cut?: boolean };
-const OPEN: Cam = { x: 1085, y: 1170, zoom: 1.36 };
+/**
+ * Encuadres que ponen la opción a comparar grande y centrada en la zona segura (centro x ≈ 480,
+ * lejos de la columna de botones). PAIR: chico + grande con sus precios. TRIO: los tres vasos.
+ */
+const SAFE_CX = 480;
+const frame = (cx: number, cy: number, zoom: number): Cam => ({ x: cx + (540 - SAFE_CX) / zoom, y: cy, zoom });
+const PAIR = frame(1292 + CUPS_DX, 1255, 1.65);
+const TRIO = frame(M_X, 1262, 1.48);
+const TWO_SHOT: Cam = { x: 1195, y: 1160, zoom: 1.15 }; // Tomi + los dos precios completos
 const CAM_KEYS: CamKey[] = [
-  { at: 0, cam: { ...OPEN, zoom: 1.28 }, dur: 1 },
-  { at: 10, cam: OPEN, dur: 10, ease: snap(0, 0.01, 4.5, 1.6 * Math.PI) }, // punch-in del gancho
+  { at: 0, cam: { ...PAIR, zoom: 1.56 }, dur: 1 },
+  { at: 10, cam: PAIR, dur: 10, ease: snap(0, 0.01, 4.5, 1.6 * Math.PI) }, // gancho: «¿Cuál comprarías?» + precios
+  { at: 34, cam: TWO_SHOT, dur: 9, ease: snap(0.08, 0.2) }, // se abre y aparece Tomi justo antes de «¡Rápido!»
   { at: 75, cam: { x: 960, y: 1000, zoom: 1.66 }, dur: 8 }, // se acerca: pensando (aire arriba para el subtítulo)
-  { at: CUE.tres, cam: { x: 1290, y: 1285, zoom: 1.98 }, dur: 8, cut: true }, // barrido a los precios
+  { at: CUE.tres, cam: PAIR, dur: 8, cut: true }, // corte a los precios
   { at: 158, cam: { x: 950, y: 995, zoom: 1.64 }, dur: 8, cut: true }, // vuelve a Tomi: decide
-  { at: 230, cam: { x: 1060, y: 1120, zoom: 1.3 }, dur: 8 }, // abre para la caída del mediano (Tomi en cuadro)
-  { at: 252, cam: { x: 890, y: 960, zoom: 1.92 }, dur: 6 }, // punch a la reacción
-  { at: CUE.seis, cam: { x: 1120, y: 1105, zoom: 1.45 }, dur: 7 }, // plano de dos: precio nuevo
-  { at: 300, cam: { x: 1125, y: 1100, zoom: 1.52 }, dur: 34, ease: ease.inOut },
+  { at: 230, cam: TRIO, dur: 8 }, // cae el mediano: los tres vasos grandes y centrados
+  { at: 252, cam: { x: 890, y: 960, zoom: 1.92 }, dur: 6, cut: true }, // reacción de Tomi
+  { at: CUE.seis, cam: TRIO, dur: 7, cut: true }, // vuelve al trío: precio nuevo
+  { at: 300, cam: { ...TRIO, zoom: 1.5, x: TRIO.x - 0.5 }, dur: 34, ease: ease.inOut },
 ];
 const camBase = (f: number): Cam => {
   let i = 0;
@@ -73,7 +84,7 @@ export const camAt = (f: number): Cam & { sx: number; sy: number } => {
   const drift = { x: 2.2 * Math.sin(f * 0.031), y: 1.6 * Math.sin(f * 0.023 + 1) };
   return { ...c, zoom: z, sx: s1.x + s2.x + drift.x, sy: s1.y + s2.y + drift.y };
 };
-/** desenfoque de movimiento durante los barridos (px de pantalla por fotograma) */
+/** intensidad de movimiento de cámara (0..14); se usa como desenfoque LEVE solo del fondo */
 export const camBlur = (f: number) => {
   if (f <= 0) return 0;
   for (const k of CAM_KEYS)
@@ -113,7 +124,8 @@ const squashMul = (f: number) =>
     [CUE.rapido + 8, 1], [CUE.rapido + 10, 0.95], [CUE.rapido + 15, 1],
     [CUE.mediano + 11, 1], [CUE.mediano + 13, 0.92], [CUE.mediano + 18, 1.03], [CUE.mediano + 22, 1],
   ]);
-const xOff = (f: number) => track(f, [[CUE.mediano + 2, 0], [CUE.mediano + 12, -38, ease.out]]);
+/** después del salto; durante el corte al trío Tomi queda fuera de cuadro (la comparación va limpia) */
+const xOff = (f: number) => track(f, [[CUE.mediano + 2, 0], [CUE.mediano + 12, -38, ease.out], [262, -38], [263, -120]]);
 
 /* ------------------------------ mirada ------------------------------ */
 
@@ -214,7 +226,7 @@ export const titleBox = (f: number): Box | null => {
   if (leave > 0.6) return null;
   const sc = 1 - 0.25 * leave;
   const cy = 294 - leave * 160;
-  return { x0: 540 - 480 * sc, y0: cy - 98 * sc, x1: 540 + 480 * sc, y1: cy + 70 * sc, kind: "hard", name: "título" };
+  return { x0: 540 - 490 * sc, y0: cy - 98 * sc, x1: 540 + 490 * sc, y1: cy + 70 * sc, kind: "hard", name: "título" };
 };
 
 /** cajas en pantalla que el subtítulo nunca debe tapar (hard) o conviene evitar (soft) */

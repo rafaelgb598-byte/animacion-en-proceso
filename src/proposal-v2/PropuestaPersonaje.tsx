@@ -87,11 +87,13 @@ const Bust: React.FC<{ v: Variant; pose: Pose; x: number; y: number; uid: string
 const Full: React.FC<{ v: Variant; pose: Pose; x: number; y: number; uid: string }> = ({ v, pose, x, y, uid }) => {
   const rig = rigOf(v, pose);
   // altura total en unidades locales (piso = 0): cabeza arriba del todo
-  const headR = v === "v1" ? 84 : 84 * HEAD_SCALE;
-  const top = rig.headCenter.y - headR - 40;
+  // altura real de la cabeza (pelo arriba → mentón), en unidades locales
+  const headTop = v === "v1" ? 100 : 104 * HEAD_SCALE;
+  const headBot = v === "v1" ? 84 : 100 * HEAD_SCALE;
+  const top = rig.headCenter.y - headTop - 40;
   const s = 1.32;
   const floorY = y + ROW_H - 40;
-  const headH = headR * 2 * s;
+  const headH = (headTop + headBot) * s;
   const totalH = -top * s - 40 * s;
   return (
     <g>
@@ -101,7 +103,7 @@ const Full: React.FC<{ v: Variant; pose: Pose; x: number; y: number; uid: string
       </g>
       {/* guía de "cabezas": proporción cabeza / altura total */}
       <g opacity={0.55}>
-        {Array.from({ length: Math.ceil(totalH / headH) + 1 }, (_, i) => (
+        {Array.from({ length: Math.floor(totalH / headH + 0.05) + 1 }, (_, i) => (
           <line key={i} x1={x + 30} x2={x + 70} y1={floorY - i * headH} y2={floorY - i * headH} stroke={INK} strokeWidth={3} />
         ))}
         <line x1={x + 50} x2={x + 50} y1={floorY} y2={floorY - totalH} stroke={INK} strokeWidth={2} strokeDasharray="6 6" />

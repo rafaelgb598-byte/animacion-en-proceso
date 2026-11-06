@@ -7,21 +7,22 @@ import { COLORS } from "../presets";
  * ojos grandes, contorno oscuro. Cambian proporciones, rasgos y zapatillas.
  */
 
-/** Cabeza ~9 % más chica respecto del cuerpo (0,92 × y cuerpo/piernas más largos). */
-export const HEAD_SCALE = 0.92;
+/** Cabeza ~16 % más chica respecto del cuerpo y algo más angosta: lectura de joven adulto. */
+export const HEAD_SCALE = 0.86;
+export const HEAD_SX = 0.95;
 
 export const DIM_V2: Dims = {
   ...DIM,
-  thigh: 98,
-  shin: 95,
+  thigh: 101,
+  shin: 98,
   upperArm: 80,
   foreArm: 74,
-  neckY: -164,
-  shoulderY: -136,
-  headCenter: -74,
+  neckY: -168,
+  shoulderY: -140,
+  headCenter: -88,
   shoulderX: 44,
   hipX: 23,
-  chinY: 70,
+  chinY: 72,
 };
 
 export const COLORS_V2 = {
