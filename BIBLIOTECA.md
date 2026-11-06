@@ -195,6 +195,17 @@ Salida en `videosPrueba/<canal>/qa/<nn-video>/subtitulos/`: `reporte.json`, `rep
 
 ---
 
+## Canal Ciberseguridad («Anatomía de una estafa»)
+
+Otro canal, con identidad propia (oscuro «expediente nocturno», Archivo + Space Mono, marcadores amarillos numerados). No usa Tomi ni la estética de §1.
+Comparte con el resto la zona segura, los subtítulos (con `fuente` = Archivo 900 y `colorEnfasis` = amarillo evidencia) y el QA.
+- Marca y plantilla `AnatomiaEstafa`: `src/canales/ciberseguridad/marca/`. Episodio = carpeta de datos `src/canales/ciberseguridad/episodios/<nn>/` (`timeline.ts`, `escena.ts`, `i18n/{es,en}.ts`).
+- Efectos de la serie: `node scripts/gen-sfx-ciberseguridad.mjs` → `public/videos/ciberseguridad/sfx/`. Líneas de voz desde el i18n: `node scripts/voz-lineas-ciberseguridad.mjs <nn>`.
+- Voz propia (`--voice-env ELEVENLABS_VOICE_ID_CIBER` en `gen-voice.mjs`). Marcas reales prohibidas en pantalla: `PROHIBIDAS_PANTALLA.ciberseguridad`.
+- Reglas completas y cómo crear un episodio: `guiones/Ciberseguridad/README.md`.
+
+---
+
 ## 5. Checklist antes de entregar
 
 - [ ] Gancho con pregunta directa y opciones visibles en el fotograma 0.

@@ -16,10 +16,14 @@ guiones/
 
 ## Índice
 
-| Canal | Video | Gancho | Voz | Estado |
-|---|---|---|---|---|
-| GiroDato | [01 · Efecto señuelo](GiroDato/01-efecto-senuelo/guion.txt) | «Elegí uno. Rápido. ¿Chico por tres dólares… o grande por siete?» | Isaac · ≈ 904 créditos | ✅ final |
-| GiroDato | [02 · Stroop](GiroDato/02-stroop/guion.md) | «Decí en voz alta el color. No leas la palabra.» | Isaac · 957 créditos | ✅ final |
-| MilAños | [03 · Celular](<MilAños/03-1000-anos/final/guion.json>) | «¿Qué quedaría de tu celular después de mil años?» | Isaac · 426 + 381 créditos | 🧪 V3 en prueba |
+| Canal | Video | Gancho | Voz | Estado | Videos (final · pruebas) |
+|---|---|---|---|---|---|
+| GiroDato | [01 · Efecto señuelo](GiroDato/01-efecto-senuelo/guion.txt) | «Elegí uno. Rápido. ¿Chico por tres dólares… o grande por siete?» | Isaac · ≈ 904 créditos | ✅ final (v3: subtítulos nuevos, sin mostrador) | `videosFinal/GiroDato/01-efecto-senuelo.mp4` · `videosPrueba/GiroDato/01-efecto-senuelo-{prueba-animacion, v1 (final anterior), v2 (con mostrador, descartada)}.mp4` |
+| GiroDato | [02 · Stroop](GiroDato/02-stroop/guion.md) | «Decí en voz alta el color. No leas la palabra.» | Isaac · 957 créditos | ✅ final (v5: subtítulos nuevos, mesa en primer plano) | `videosFinal/GiroDato/02-stroop-deci-el-color.mp4` · `videosPrueba/GiroDato/02-stroop-{v1, v2-voz-acelerada, v3-inicio-rapido, v4 (final anterior)}.mp4` |
+| MilAños | [03 · Celular](<MilAños/03-1000-anos/final/guion.json>) | «¿Qué quedaría de tu celular después de mil años?» | Isaac · 426 + 381 créditos | 🧪 v4 en prueba (guion en `MilAños/03-1000-anos/v4/`) | todavía sin final · `videosPrueba/MilAños/03-1000-anos-celular-{v2, v3, v4}.mp4` |
+| Ciberseguridad | [01 · Te mandé un código por error](Ciberseguridad/01-codigo-por-error/guion.json) (serie [«Anatomía de una estafa»](Ciberseguridad/README.md), ES + EN) | «¿SE LO PASAS?» + PASAR / NO | Donovan · 0 créditos (voz pendiente) | 🧪 v2 borrador sin voz | todavía sin final · `videosPrueba/Ciberseguridad/01-codigo-por-error-es-{v1, v2}-borrador-sin-voz.mp4` |
+| Ciberseguridad | [02 · Hola, cambié de número](Ciberseguridad/04-hola-mama/prompt-v1.md) | — | — | 📝 plan viejo (numerado 04 por error): pasa a ser el **episodio 02**; hay que adaptar su prompt a la plantilla del 01 | — |
 
-Al terminar cada video: sumar su fila acá y lo aprendido en `APRENDIZAJES.md`.
+Al terminar cada video: sumar su fila acá y lo aprendido en `APRENDIZAJES.md`. Cuando el usuario aprueba una versión como final,
+se mueve a `videosFinal/<canal>/` y la final anterior queda en `videosPrueba/<canal>/` con su número de versión (nada se borra).
+Todo (renders de prueba y finales) se sube a `main`; solo `videosPrueba/<canal>/qa/` queda en la compu (se regenera con los scripts).

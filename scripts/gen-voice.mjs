@@ -37,8 +37,12 @@ const BUDGET = Number(opt("budget", 6000));
 const MAX_ATTEMPTS_PER_SCENE = 3; // first try + 2 retries
 const MAX_INNER_GAP_S = 0.8;
 
+// Variable de entorno con el ID de la voz (por defecto la de GiroDato; Ciberseguridad pasa ELEVENLABS_VOICE_ID_CIBER)
+const VOICE_ENV = opt("voice-env", "ELEVENLABS_VOICE_ID");
+
 // ── args ────────────────────────────────────────────────────────
-const args = process.argv.slice(2).filter((a, i, all) => !["--lines", "--out", "--budget"].includes(a) && !["--lines", "--out", "--budget"].includes(all[i - 1]));
+const CON_VALOR = ["--lines", "--out", "--budget", "--voice-env"];
+const args = process.argv.slice(2).filter((a, i, all) => !CON_VALOR.includes(a) && !CON_VALOR.includes(all[i - 1]));
 const force = new Set();
 const speeds = {};
 let dryRun = false;
@@ -51,9 +55,9 @@ for (let i = 0; i < args.length; i++) {
 }
 
 const apiKey = process.env.ELEVENLABS_API_KEY;
-const voiceId = process.env.ELEVENLABS_VOICE_ID;
+const voiceId = process.env[VOICE_ENV];
 if (!apiKey || !voiceId) {
-  console.error("Missing ELEVENLABS_API_KEY or ELEVENLABS_VOICE_ID (values not shown).");
+  console.error(`Missing ELEVENLABS_API_KEY or ${VOICE_ENV} (values not shown).`);
   process.exit(1);
 }
 
