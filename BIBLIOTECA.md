@@ -160,8 +160,13 @@ se marca sin color: escala 1,04 y opacidad 100 % (el resto, 78 %). `italicas` = 
 
 **Carril fijo.** El bloque apoya su tinta en y = 1500, centrado en x = 540, y crece hacia arriba hasta 2 renglones. Nunca sube ni
 se corre: no hay optimizador de alturas. La animación de entrada escala desde la base (540, 1500). Si en un fotograma con subtítulo
-Tomi, un objeto o un texto entra al carril, se arregla la escena: (1) correr o subir lo que estorba sin cambiar la actuación;
-(2) abrir ese plano; (3) si no alcanza, consultar. Todo Tomi es «duro» (no hay zonas blandas).
+Tomi, un objeto o un texto entra al carril, se arregla la escena, en este orden:
+(1) **mostrador o mesa en primer plano** (`src/canal/escenarios/PrimerPlano.tsx`, capa escenario, fijo en pantalla para todo
+el video, borde superior en y ≤ 1288): tapa el cuerpo de Tomi sin moverlo a él ni a la cámara; es lo que usan 01 y 02
+(`PRIMER_PLANO_CAFE`, `PRIMER_PLANO_MESA`; la prop `primerPlano` de la composición lo apaga para comparar);
+(2) si no alcanza, un solo ajuste fijo para toda la escena (subir o achicar), nunca solo en los fotogramas con subtítulos;
+(3) si tampoco, consultar. Todo Tomi es «duro» (no hay zonas blandas).
+Para comparar contra el video aprobado: `node scripts/qa-antes-despues.mjs <Composición> <mp4> <dir> <f1,f2,…>`.
 
 **Usarlo en un video nuevo:**
 ```tsx
