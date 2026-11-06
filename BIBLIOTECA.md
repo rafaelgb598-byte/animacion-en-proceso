@@ -36,6 +36,7 @@ se arma copiando esa carpeta y cambiando guion, voz, escena y tiempos.
 | `src/character/v2/CharacterV2.tsx` | Dibujo de Tomi V2 (`frontProp` / `backProp` para objetos en las manos). |
 | `src/character/v2/HeadV2.tsx` | Cara paramétrica V2 (cejas con forma, sonrisa asimétrica con hoyuelo). |
 | `src/character/v2/acting.ts` | **Estados de actuación**: neutral, irónico, pensando, duda, firme, sorpresa, sospecha, incredulidad, eureka, celebración (`statePose`). |
+| `src/character/v2/lipsync.ts` | **Sincronía de labios** desde la alineación de ElevenLabs (`lipSeries`): apertura y ancho de boca por fotograma. Tomi habla cuando habla el narrador. |
 | `src/character/v2/motion2.ts` | Timing: `snap` (anticipación+overshoot+asentamiento), `pop`, `shake`, `pulse`, `beatPose` (línea de tiempo de estados). |
 | `src/final-v2/cafe.ts` | **Plantilla de escena**: objetos, cámara (`CAM_KEYS`, encuadres `PAIR`/`TRIO`), beats de actuación, mirada, caminata, zonas protegidas. |
 | `src/final-v2/CafeSceneV2.tsx` | Render de la escena (set, objetos, tiza, efectos breves). |

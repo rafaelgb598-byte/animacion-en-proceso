@@ -1,0 +1,136 @@
+{
+  "budget": 2000,
+  "charactersBilledTotal": 957,
+  "scenes": {
+    "v1": {
+      "hash": "6afd8b3982bd2817",
+      "voiceId": "QmPfzE500cXXHM9uQKGc",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.25,
+        "use_speaker_boost": true
+      },
+      "characters": 46,
+      "attempts": 3,
+      "speechEndSeconds": 3.065,
+      "problems": [],
+      "generatedAt": "2026-11-06T06:25:35.176Z",
+      "rawPeakDb": -5.97,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 3.065
+    },
+    "v2": {
+      "hash": "3ae907bd9c3e30c9",
+      "voiceId": "QmPfzE500cXXHM9uQKGc",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.25,
+        "use_speaker_boost": true
+      },
+      "characters": 22,
+      "attempts": 3,
+      "speechEndSeconds": 1.672,
+      "problems": [],
+      "generatedAt": "2026-11-06T06:25:35.925Z",
+      "rawPeakDb": -4.71,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 1.672
+    },
+    "v3": {
+      "hash": "f3b473b9cfa0d764",
+      "voiceId": "QmPfzE500cXXHM9uQKGc",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.25,
+        "use_speaker_boost": true
+      },
+      "characters": 196,
+      "attempts": 3,
+      "speechEndSeconds": 12.817,
+      "problems": [],
+      "generatedAt": "2026-11-06T06:25:37.379Z",
+      "rawPeakDb": -6.21,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 12.817
+    },
+    "v4": {
+      "hash": "636f9ba148d1d901",
+      "voiceId": "QmPfzE500cXXHM9uQKGc",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.25,
+        "use_speaker_boost": true
+      },
+      "characters": 23,
+      "attempts": 3,
+      "speechEndSeconds": 1.579,
+      "problems": [],
+      "generatedAt": "2026-11-06T06:25:38.222Z",
+      "rawPeakDb": -9.66,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 1.579
+    },
+    "v5": {
+      "hash": "d586fe210b9bc34b",
+      "voiceId": "QmPfzE500cXXHM9uQKGc",
+      "model": "eleven_multilingual_v2",
+      "settings": {
+        "stability": 0.45,
+        "similarity_boost": 0.8,
+        "style": 0.25,
+        "use_speaker_boost": true
+      },
+      "characters": 32,
+      "attempts": 3,
+      "speechEndSeconds": 2.09,
+      "problems": [],
+      "generatedAt": "2026-11-06T06:25:38.855Z",
+      "rawPeakDb": -7.11,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 2.09
+    }
+  }
+}

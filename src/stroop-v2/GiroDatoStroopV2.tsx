@@ -11,7 +11,7 @@ import type { CaptionOpts } from "../final-v2/captions";
 import type { Word } from "../short-final/words";
 import { RaceExplainer, type RaceGeom } from "../components/stroop/RaceExplainer";
 import { WordCard, wordSize, type CardGeom } from "../components/stroop/WordCard";
-import { blockWords } from "../stroop/script";
+import { blockWords, voiceSrc } from "./voice";
 import { FONTS, INK, STROOP } from "../stroop/theme";
 import { LAST_CARD, LEVELS } from "./script";
 import * as T from "./timeline";
@@ -407,7 +407,7 @@ export const GiroDatoV2Visual: React.FC<{ f: number; showSafeZones?: boolean }> 
 };
 
 /* ── audio: voz + efectos (sin música) ── */
-const VOICE_GAIN = 1.05;
+const VOICE_GAIN = 1.35;
 type Cue = { src: string; at: number; vol: number; dur?: number };
 const CUES: Cue[] = [
   // tics: uno por tarjeta (nivel 1 suave; niveles 2 y 3 cada vez más agudos)
@@ -445,7 +445,7 @@ export const GiroDatoStroopV2: React.FC<GiroDatoStroopV2Props> = ({ showSafeZone
       {hasVoiceover
         ? (Object.keys(T.VOICE_AT) as T.VoiceId[]).map((id) => (
             <Sequence key={id} from={T.VOICE_AT[id]} layout="none" name={`voz ${id}`}>
-              <Audio src={staticFile(`stroop/vo/${id}.mp3`)} volume={VOICE_GAIN} />
+              <Audio src={staticFile(voiceSrc(id))} volume={VOICE_GAIN} />
             </Sequence>
           ))
         : null}

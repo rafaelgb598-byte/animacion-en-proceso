@@ -5,7 +5,9 @@ import { FACE, statePose, type ActState } from "../character/v2/acting";
 import { beatPose, mixPose, snap, type Beat } from "../character/v2/motion2";
 import { HEAD_SCALE } from "../character/v2/style";
 import type { Box } from "../final-v2/cafe";
+import { lipSeries } from "../character/v2/lipsync";
 import * as T from "./timeline";
+import { ALIGN, blockWords, type VoiceId } from "./voice";
 
 /**
  * Tomi V2 en GiroDato · Stroop V2. Mismo personaje y mismo sistema de actuación que el resto del
@@ -37,23 +39,35 @@ const FACEPALM: Pose = {
   armBack: { shoulder: 0, elbow: 10, wrist: 0, hand: "open", ik: { x: 22, y: -62, space: "chin", weight: 1, bend: -1 } },
 };
 const SHOCK: Pose = P("sorpresa", { hop: 0 });
+/** presenta la explicación: palma abierta hacia el diagrama, la otra mano en la cintura (boca libre) */
+const PRESENT: Pose = {
+  ...P("ironico", { face: { ...FACE.neutral, smile: 0.35, browLiftL: 0.25, browLiftR: 0.35 }, headTilt: -3 }),
+  lean: 2,
+  armFront: { shoulder: 0, elbow: 10, wrist: 0, hand: "open", ik: { x: 118, y: -175, space: "hip", weight: 1, bend: 1 }, aim: { x: 900, y: 300, weight: 0.8 } },
+};
+/** «nombrar un color cuesta más»: mano que pesa, gesto de esfuerzo */
+const EFFORT: Pose = {
+  ...P("duda", { face: { ...FACE.duda, smile: -0.1 } }),
+  armBack: { shoulder: 0, elbow: 10, wrist: 0, hand: "fist", ik: { x: 52, y: -44, space: "hip", weight: 1, bend: -1 } },
+};
 
 const BEATS: Beat[] = [
   { at: 0, pose: P0 },
-  { at: T.L_START[1] + 10, pose: CONFIDENT, dur: 8 }, // confianza: lo dice sin esfuerzo
+  { at: T.L_START[1] + 12, pose: CONFIDENT, dur: 12 }, // confianza: lo dice sin esfuerzo
   { at: T.CLOSE1[0] + 6, pose: EASY, dur: 8, ease: snap(0.2, 0.3) }, // «Fácil.»
-  { at: T.VOICE_AT.v2 + 26, pose: SERIOUS, dur: 7 }, // «Ahora en serio.»
-  { at: T.L_START[2] + 8, pose: FOCUS, dur: 10 }, // concentración
-  { at: T.STARTS[1][2] + 8, pose: UNSURE, dur: 8 }, // empieza a dudar
+  { at: T.VOICE_AT.v2 + 28, pose: SERIOUS, dur: 10 }, // «Ahora en serio.»
+  { at: T.L_START[2] + 10, pose: FOCUS, dur: 12 }, // concentración
+  { at: T.STARTS[1][2] + 10, pose: UNSURE, dur: 11 }, // empieza a dudar
   { at: T.MISTAKE + 10, pose: OOPS, dur: 6, ease: snap(0.25, 0.3) }, // se equivoca
-  { at: T.STARTS[2][4] + 2, pose: STRESS, dur: 8 }, // confusión
+  { at: T.STARTS[2][4] + 4, pose: STRESS, dur: 10 }, // confusión
   { at: T.FACEPALM + 8, pose: FACEPALM, dur: 7, ease: snap(0.2, 0.3) }, // se tapa la cara
   { at: T.CLOSE2[0] + 4, pose: SHOCK, dur: 6, ease: snap(0.3, 0.35) }, // sorpresa (primer plano)
-  { at: T.SPLIT + 14, pose: P("pensando"), dur: 12 }, // escucha la explicación
-  { at: T.NAME, pose: P("sospecha"), dur: 8 },
+  { at: T.SPLIT + 16, pose: PRESENT, dur: 14 }, // presenta la explicación
+  { at: T.NAME + 2, pose: EFFORT, dur: 12 },
+  { at: T.CLASH - 2, pose: P("sorpresa", { face: { ...FACE.sorpresa, mouthOpen: 0.3, eyeScale: 1.1 } }), dur: 6, ease: snap(0.2, 0.3) }, // ¡chocan!
   { at: T.WINNER + 4, pose: P("eureka"), dur: 7, ease: snap(0.2, 0.3) }, // comprensión
   { at: T.STAMP_HIT - 2, pose: P("celebracion", { hop: 6 }), dur: 7, ease: snap(0.2, 0.3) },
-  { at: T.END_HEAD + 8, pose: P("ironico", { face: { ...FACE.ironico, smile: 0.7, browLiftR: 0.9 } }), dur: 8 }, // «¿te animás otra vez?» (desafiante)
+  { at: T.END_HEAD + 10, pose: P("ironico", { face: { ...FACE.ironico, smile: 0.7, browLiftR: 0.9 } }), dur: 12 }, // «¿te animás otra vez?» (desafiante)
   { at: T.RETURN[1], pose: P0, dur: T.RETURN[1] - T.RETURN[0] },
 ];
 
@@ -62,7 +76,26 @@ const pulse01 = (f: number, at: number, dur: number) => {
   const d = f - at;
   return d < 0 || d > dur ? 0 : Math.sin(Math.PI * (d / dur));
 };
-/** "dice el color": en el nivel 1 enseguida, después cada vez más tarde */
+/** sincronía de labios con los cinco bloques de voz */
+const VOICES = Object.keys(T.VOICE_AT) as VoiceId[];
+const LIP = lipSeries(VOICES.map((id) => ({ align: ALIGN[id], at: T.VOICE_AT[id] })), T.DURATION);
+/** palabras con acento (cejas arriba y asentimiento) */
+const EMPH = ["facil", "serio", "casi", "automatico", "nombrar", "cuesta", "chocan", "primero", "stroop", "animas", "rapido", "voz", "palabra"];
+const norm = (w: string) => w.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zñ]/g, "");
+const WORD_STARTS = VOICES.flatMap((id) => blockWords(id).map((w) => ({ f: T.VOICE_AT[id] + w.s * 30, len: norm(w.t).length, emph: EMPH.includes(norm(w.t)) })));
+const accents = (f: number) => {
+  let nod = 0;
+  let brow = 0;
+  for (const w of WORD_STARTS) {
+    if (w.len >= 4) nod += 1.6 * pulse01(f, w.f - 1, 8);
+    if (w.emph) {
+      brow = Math.max(brow, pulse01(f, w.f - 3, 16));
+      nod += 2.2 * pulse01(f, w.f - 1, 10);
+    }
+  }
+  return { nod, brow };
+};
+/** "dice el color": en el nivel 1 enseguida, después cada vez más tarde (solo si no habla el narrador) */
 const speak = (f: number) => {
   let m = 0;
   T.STARTS[0].forEach((s) => (m = Math.max(m, pulse01(f, s + 4, 8))));
@@ -76,7 +109,8 @@ const speak = (f: number) => {
 
 type Target = "cam" | "card" | "tokA" | "tokB" | "gate" | "stamp";
 const GAZE: [number, Target][] = [
-  [0, "cam"], [T.L_START[1] - 6, "card"], [T.CLOSE1[0] + 2, "cam"], [T.L_START[2] - 6, "card"], [T.CLOSE2[0], "cam"],
+  [0, "cam"], [T.L_START[1] - 6, "card"], [T.CLOSE1[0] + 2, "cam"], [T.L_START[2] - 6, "card"],
+  [T.MISTAKE + 12, "cam"], [T.MISTAKE + 18, "card"], [T.STARTS[2][4] + 10, "cam"], [T.STARTS[2][4] + 15, "card"], [T.CLOSE2[0], "cam"],
   [T.SPLIT + 6, "card"], [T.AUTO - 4, "tokA"], [T.NAME - 4, "tokB"], [T.CLASH - 6, "gate"], [T.WINNER + 10, "cam"],
   [T.HEAD_EFFECT - 4, "stamp"], [T.END_HEAD, "cam"],
 ];
@@ -96,15 +130,26 @@ const gazeAt = (f: number, head: Vec): [number, number] => {
   const t = ease.saccade(clamp((f - GAZE[i][0]) / 3, 0, 1));
   return [lerp(prev[0], cur[0], t), lerp(prev[1], cur[1], t)];
 };
-const BLINKS = [16, 70, 150, 200, 262, 330, 470, 560, 640, 720, 790, 880, 920];
+const BLINKS = [16, 70, T.CLOSE1[0] + 3, 150, T.CLOSE1[1] + 2, 230, 262, T.MISTAKE + 14, T.MISTAKE + 20, T.SPLIT + 3, 560, 640, 720, 790, 880, 935, 975];
 
 const build = (f: number, hair: number, look: [number, number], lag: [number, number]): Pose => {
   const b = beatPose(f, BEATS);
   const still = frozen(f) ? 0 : 1;
   const breath = Math.sin((f / 46) * Math.PI * 2);
-  const talk = speak(f);
-  const face: FacePose = { ...b.face, lookX: look[0], lookY: look[1], mouthOpen: Math.max(b.face.mouthOpen, 0.4 * talk) };
-  const nod = T.STARTS[0].reduce((a, s) => a + 4 * pulse01(f, s + 4, 10), 0);
+  const tk = frozen(f) ? 0 : LIP.talking[f] ?? 0;
+  const cardTalk = speak(f) * (1 - tk);
+  const lipOpen = (LIP.open[f] ?? 0) * 0.78;
+  const ac = accents(f);
+  const face: FacePose = {
+    ...b.face,
+    lookX: look[0],
+    lookY: look[1],
+    mouthOpen: Math.max(b.face.mouthOpen * (1 - 0.7 * tk), lipOpen * tk, 0.4 * cardTalk),
+    mouthWidth: b.face.mouthWidth * (1 + ((LIP.width[f] ?? 1) - 1) * tk),
+    browLiftL: b.face.browLiftL + 0.35 * ac.brow * tk,
+    browLiftR: b.face.browLiftR + 0.35 * ac.brow * tk,
+  };
+  const nod = T.STARTS[0].reduce((a, s) => a + 4 * pulse01(f, s + 4, 10), 0) * (1 - tk) + ac.nod * tk;
   const loopW = clamp(Math.min(f, T.LAST - f) / 12, 0, 1);
   return {
     ...b,

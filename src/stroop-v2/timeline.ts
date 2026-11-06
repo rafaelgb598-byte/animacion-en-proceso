@@ -1,4 +1,4 @@
-import { blockEnd, blockWords } from "../stroop/script";
+import { blockEnd, blockWords, type VoiceId } from "./voice";
 import { LEVELS } from "./script";
 
 /**
@@ -10,8 +10,8 @@ export const FPS = 30;
 const F = (s: number) => Math.round(s * FPS);
 
 /* ── voz ── */
-export const VOICE_AT = { v1: 2, v2: 120, v3: 462, v4: 812, v5: 866 } as const;
-export type VoiceId = keyof typeof VOICE_AT;
+export const VOICE_AT: Record<VoiceId, number> = { v1: 2, v2: 120, v3: 462, v4: 852, v5: 903 };
+export type { VoiceId };
 export const voiceEnd = (id: VoiceId) => VOICE_AT[id] + F(blockEnd(id));
 const wordFrame = (id: VoiceId, prefix: string) => {
   const w = blockWords(id).find((x) => x.t.toLowerCase().replace(/[¿¡]/g, "").startsWith(prefix.toLowerCase()));
@@ -52,8 +52,8 @@ export const HEAD_EFFECT = wordFrame("v4", "efecto");
 export const STAMP_HIT = wordFrame("v4", "stroop");
 export const END_HEAD = voiceEnd("v4") + 2;
 /** adelanto: tarjetas que barajan rápido («más rápido») e invitan a repetir */
-export const TEASER = [882, 926] as const;
+export const TEASER = [919, 962] as const;
 export const TEASER_STEP = 5;
-export const RETURN = [930, 948] as const;
-export const DURATION = 960;
+export const RETURN = [968, 986] as const;
+export const DURATION = 998;
 export const LAST = DURATION - 1;
