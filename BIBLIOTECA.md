@@ -29,7 +29,7 @@ que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a 
 ## 2. Organización del repo
 
 ```
-videosPrueba/                ← renders de prueba, hasta que el usuario apruebe la final (no se sube a git), por canal:
+videosPrueba/                ← renders de prueba, hasta que el usuario apruebe la final (los .mp4 se suben a git; qa/ no), por canal:
   GiroDato/  MilAños/  Ciberseguridad/  Otro/   (las mismas 4 que videosFinal; nombre <nn>-<video>-vN.mp4)
     qa/<nn-video>/           stills, hojas de contacto y QA de ese video (se borran cuando queda final)
 videosFinal/                 ← SOLO las versiones finales, listas para subir, por canal:

@@ -6,7 +6,6 @@ dist
 # Ignore the output video from Git but not videos you import into src/.
 out
 
-# Pruebas de video: se quedan en la compu (no se suben). Solo se versiona la carpeta.
-videosPrueba/**
-!videosPrueba/*/
-!videosPrueba/*/.gitkeep
+# Pruebas de video: los renders (.mp4) SÍ se suben, para ir masterizándolos; los que no sirvan se borran después.
+# Las stills y el QA (videosPrueba/<canal>/qa/) se regeneran con los scripts y quedan en la compu.
+videosPrueba/*/qa/
