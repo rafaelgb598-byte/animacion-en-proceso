@@ -1,7 +1,7 @@
 // Edición de la voz de la V3 (1000 años · celular) (sin créditos): decodifica las tomas originales de ElevenLabs,
 // acorta pausas largas / recorta según el guion, normaliza, y calcula los tiempos de cada frase
 // (las frases se alinean a las pausas detectadas) para los subtítulos.
-// Entrada: produccion/03-1000-anos/final/voz-original/<id>.mp3
+// Entrada: guiones/MilAños/03-1000-anos/final/voz-original/<id>.mp3
 // Salida:  public/videos/03-1000-anos/final/voz/<id>.wav  +  src/videos/03-1000-anos/final/voz.json
 // Uso: node scripts/edit-voz-1000-anos-final.mjs
 import { execFileSync } from "node:child_process";
@@ -11,9 +11,9 @@ import path from "node:path";
 import console from "node:console";
 
 const SR = 48000;
-const IN = "produccion/03-1000-anos/final/voz-original";
+const IN = "guiones/MilAños/03-1000-anos/final/voz-original";
 const OUT = "public/videos/03-1000-anos/final/voz";
-const guion = JSON.parse(fs.readFileSync("produccion/03-1000-anos/final/guion.json", "utf8"));
+const guion = JSON.parse(fs.readFileSync("guiones/MilAños/03-1000-anos/final/guion.json", "utf8"));
 fs.mkdirSync(OUT, { recursive: true });
 
 /** Edición por segmento: recorte final (s), texto efectivamente usado y pausa máxima (s). */

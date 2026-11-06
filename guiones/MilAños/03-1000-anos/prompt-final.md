@@ -16,7 +16,7 @@ La historia en una línea: **el espectador empieza preguntándose qué sobrevive
 
 ## 1. Inspección (Paso 1)
 
-1. Leé `produccion/03-1000-anos/final/propuesta.md` (diagnóstico, guion, storyboard y revisión científica) y `produccion/03-1000-anos/v2/ENTREGA.md`.
+1. Leé `guiones/MilAños/03-1000-anos/final/propuesta.md` (diagnóstico, guion, storyboard y revisión científica) y `guiones/MilAños/03-1000-anos/v2/ENTREGA.md`.
 2. Estudiá la V2: `src/videos/03-1000-anos/v2/` (`UltimoEnPie.tsx`, `timeline.ts`, `decay.ts`, `theme.ts`, `types.ts`, `lib/`, `episodes/celular.ts`, `episodes/celular.voz.json`) y `src/videos/03-1000-anos/v2/componentes/` (camera, scene, props, fx, ui, audio, debug).
 3. Revisá los scripts: `scripts/stills.mjs`, `gen-sfx-ultimo.mjs`, `edit-voz-ultimo.mjs`, `qa-wave-png.mjs`, `qa-frame-diff.mjs`, `qa-contrast.mjs`, `contact-sheet-1000-anos-v2.mjs`.
 4. Mirá el MP4 de la V2 extrayendo fotogramas: `npx remotion ffmpeg -ss <t> -i videosPrueba/1000-anos-celular-v2.mp4 -frames:v 1 -s 360x640 <png>`. El ffmpeg que trae Remotion es mínimo: no tiene los filtros `fps`, `tile`, `showwavespic` ni `ebur128`, pero sí `loudnorm` y `scale` vía `-s`.
@@ -38,7 +38,7 @@ La historia en una línea: **el espectador empieza preguntándose qué sobrevive
   | `year200` | «Doscientos años. El cobre, verde. La botella, deformada… pero entera.» | 5,53 s |
   | `year1000` | «Mil años.» | 0,76 s |
 
-  Las tomas `hook`, `week`, `winner` y `photo` **no se usan en la V3**. Los originales están en `produccion/03-1000-anos/v2/voz-original/`.
+  Las tomas `hook`, `week`, `winner` y `photo` **no se usan en la V3**. Los originales están en `guiones/MilAños/03-1000-anos/v2/voz-original/`.
 
 ## 2. El video
 
@@ -64,7 +64,7 @@ La historia en una línea: **el espectador empieza preguntándose qué sobrevive
 
 **Cómo generar las tomas nuevas:**
 1. Total ≈ 330 caracteres ≈ 330 créditos (1 toma por línea, `eleven_multilingual_v2`, misma voz). **Pedí aprobación antes.**
-2. Con el conector de ElevenLabs: `creative_generate_speech` con `generations_count: 1` y un solo `flow_id`; después bajá cada `full_res_url` a `produccion/03-1000-anos/final/voz-original/<id>.mp3`. Sin conector: agregá las líneas a un `guion.json` nuevo y adaptá `scripts/gen-voz-1000-anos.mjs` (copia: `gen-voz-v3.mjs`).
+2. Con el conector de ElevenLabs: `creative_generate_speech` con `generations_count: 1` y un solo `flow_id`; después bajá cada `full_res_url` a `guiones/MilAños/03-1000-anos/final/voz-original/<id>.mp3`. Sin conector: agregá las líneas a un `guion.json` nuevo y adaptá `scripts/gen-voz-1000-anos.mjs` (copia: `gen-voz-v3.mjs`).
 3. Editá con una copia de `edit-voz-ultimo.mjs` (`edit-voz-v3.mjs`): pausas de 0,2 s como máximo y salida a `public/videos/03-1000-anos/final/voz/*.wav` + `src/videos/03-1000-anos/final/voz.json` con las frases.
 4. **Medí cada duración y ajustá los frames de entrada.** Ninguna frase puede pisar a la siguiente. Si `v3photo` supera 4,0 s, avisame antes de comprimir.
 5. Si la voz no está aprobada, armá todo con las tomas existentes y marcá en la línea de tiempo dónde van las nuevas (subtítulo provisorio), para que pueda revisar el ritmo.
@@ -184,7 +184,7 @@ Generá stills (`scripts/stills.mjs`, con y sin `showSafeZones`) de un frame por
 - «El cobre se pone verde.» Pátina por humedad.
 - «Todavía quedan restos: vidrio, metal, plástico.» Cualitativo.
 - **Prohibido:** «el vidrio dura un millón de años» (sin respaldo: es un comentario especulativo de 1972), «450 años», «200 a 500 años» y cualquier otra cifra de descomposición.
-- Fuentes en `produccion/03-1000-anos/final/propuesta.md`, sección E.
+- Fuentes en `guiones/MilAños/03-1000-anos/final/propuesta.md`, sección E.
 
 ## 12. Informe final
 

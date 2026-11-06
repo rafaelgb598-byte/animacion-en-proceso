@@ -7,5 +7,6 @@ dist
 out
 
 # Pruebas de video: se quedan en la compu (no se suben). Solo se versiona la carpeta.
-videosPrueba/*
-!videosPrueba/.gitkeep
+videosPrueba/**
+!videosPrueba/*/
+!videosPrueba/*/.gitkeep
