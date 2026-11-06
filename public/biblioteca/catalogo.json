@@ -1,0 +1,290 @@
+[
+  {
+    "id": "investigations-kevin-macleod",
+    "categoria": "musica",
+    "archivo": "biblioteca/musica/investigations-kevin-macleod.mp3",
+    "duracion_s": 93.54,
+    "descripcion": "música de intriga/curiosidad, 93 s, loop fácil",
+    "origen": "Kevin MacLeod (incompetech.com)",
+    "licencia": "CC BY 4.0 — crédito obligatorio en la descripción"
+  },
+  {
+    "id": "sala-cafe",
+    "categoria": "ambiente",
+    "archivo": "biblioteca/sfx/ambiente/sala-cafe.wav",
+    "duracion_s": 45,
+    "descripcion": "ambiente de sala (room tone) para poner debajo de todo",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "click-close",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/click-close.wav",
+    "duracion_s": 0.07,
+    "descripcion": "clic de cierre / agarre",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "flick",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/flick.wav",
+    "duracion_s": 0.16,
+    "descripcion": "toque leve (dar vuelta un ticket, señalar)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "pluck",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/pluck.wav",
+    "duracion_s": 0.6,
+    "descripcion": "pulsación tipo cuerda (conexión entre ideas)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "pop-aparicion",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/pop-aparicion.mp3",
+    "duracion_s": 2.04,
+    "descripcion": "pop cartoon de aparición",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "price-pop",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/price-pop.wav",
+    "duracion_s": 0.18,
+    "descripcion": "pop brillante para carteles y precios",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "shimmer",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/shimmer.wav",
+    "duracion_s": 0.9,
+    "descripcion": "brillo / destello ('esto es lo inteligente')",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "tic-precio",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/tic-precio.mp3",
+    "duracion_s": 2.04,
+    "descripcion": "tic/chime corto para resaltar un precio",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "tick",
+    "categoria": "enfasis",
+    "archivo": "biblioteca/sfx/enfasis/tick.wav",
+    "duracion_s": 0.01,
+    "descripcion": "tic de reloj / marcador muy corto",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "air-clack",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/air-clack.wav",
+    "duracion_s": 0.45,
+    "descripcion": "chasquido de aire (explosión de ideas, separación)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "crack",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/crack.wav",
+    "duracion_s": 0.25,
+    "descripcion": "crujido seco",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "impact",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/impact.wav",
+    "duracion_s": 0.3,
+    "descripcion": "impacto cartoon",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "low-hit",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/low-hit.wav",
+    "duracion_s": 1.4,
+    "descripcion": "golpe grave dramático (revelaciones)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "paper-slap",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/paper-slap.wav",
+    "duracion_s": 0.35,
+    "descripcion": "papel que golpea la mesa",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "thud",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/thud.wav",
+    "duracion_s": 0.2,
+    "descripcion": "golpe sordo (caída, aterrizaje)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "vaso-apoyo",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/vaso-apoyo.mp3",
+    "duracion_s": 1.04,
+    "descripcion": "vaso de papel apoyado en el mostrador",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "wood",
+    "categoria": "impactos",
+    "archivo": "biblioteca/sfx/impactos/wood.wav",
+    "duracion_s": 0.16,
+    "descripcion": "golpe de madera",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "coin-clink",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/coin-clink.wav",
+    "duracion_s": 0.5,
+    "descripcion": "moneda que tintinea",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "coin-spin",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/coin-spin.wav",
+    "duracion_s": 1.1,
+    "descripcion": "moneda girando hasta frenar",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "creak",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/creak.wav",
+    "duracion_s": 0.55,
+    "descripcion": "crujido de madera / balanza",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "paper",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/paper.wav",
+    "duracion_s": 0.6,
+    "descripcion": "manipular papel",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "pasos",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/pasos.mp3",
+    "duracion_s": 16.04,
+    "descripcion": "pasos en piso de madera",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "servilleta",
+    "categoria": "objetos",
+    "archivo": "biblioteca/sfx/objetos/servilleta.mp3",
+    "duracion_s": 2.04,
+    "descripcion": "servilleta de papel que cubre algo",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "revelacion",
+    "categoria": "reacciones",
+    "archivo": "biblioteca/sfx/reacciones/revelacion.mp3",
+    "duracion_s": 1.04,
+    "descripcion": "golpe grave + respiración de suspenso",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "sorpresa",
+    "categoria": "reacciones",
+    "archivo": "biblioteca/sfx/reacciones/sorpresa.mp3",
+    "duracion_s": 1.04,
+    "descripcion": "reacción de sorpresa cartoon sutil",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "riser",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/riser.wav",
+    "duracion_s": 1.1,
+    "descripcion": "subida de tensión antes de una revelación",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "swish",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/swish.wav",
+    "duracion_s": 0.5,
+    "descripcion": "roce rápido (entradas de objetos, manos)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "whip",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/whip.wav",
+    "duracion_s": 0.3,
+    "descripcion": "látigo de cámara (whip-pan / corte rápido)",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "whoosh-corto",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/whoosh-corto.wav",
+    "duracion_s": 0.65,
+    "descripcion": "barrido corto y seco",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  },
+  {
+    "id": "whoosh-suave",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/whoosh-suave.mp3",
+    "duracion_s": 2.04,
+    "descripcion": "barrido de aire suave (giros de cabeza, cambios de escena)",
+    "origen": "ElevenLabs Sound Effects (cuenta del canal)",
+    "licencia": "uso según los términos de ElevenLabs del plan"
+  },
+  {
+    "id": "zip",
+    "categoria": "transiciones",
+    "archivo": "biblioteca/sfx/transiciones/zip.wav",
+    "duracion_s": 0.8,
+    "descripcion": "cierre / deslizamiento rápido",
+    "origen": "sintetizado por nuestros scripts (shorts-remotion/scripts/gen-sfx*.mjs)",
+    "licencia": "propio, libre"
+  }
+]
