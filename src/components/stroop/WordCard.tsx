@@ -11,7 +11,8 @@ import { FONTS, STROOP } from "../../stroop/theme";
 export const CARD = { cx: 520, cy: 760, w: 800, h: 300, fontSize: 170, maxText: 720 } as const;
 
 /** tamaño de letra: 170 px, salvo que la palabra no entre en la tarjeta */
-export const wordSize = (word: string) => Math.min(CARD.fontSize, CARD.maxText / (word.length * 0.74));
+export type CardGeom = { cx: number; cy: number; w: number; h: number; fontSize: number; maxText: number };
+export const wordSize = (word: string, g: CardGeom = CARD) => Math.min(g.fontSize, g.maxText / (word.length * 0.74));
 
 export const WordCard: React.FC<{
   f: number;
@@ -24,7 +25,9 @@ export const WordCard: React.FC<{
   /** si es false, la tarjeta queda (p. ej. la última antes del congelado) */
   exits?: boolean;
   fps?: number;
-}> = ({ f, word, ink, start, dur, exits = true, fps = 30 }) => {
+  /** geometría (por defecto, la del episodio V1) */
+  geom?: CardGeom;
+}> = ({ f, word, ink, start, dur, exits = true, fps = 30, geom = CARD }) => {
   const t = f - start;
   if (t < 0 || t >= dur) return null;
   const land = spring({ frame: t, fps, config: { damping: 13, stiffness: 260, mass: 0.55 } });
@@ -32,8 +35,8 @@ export const WordCard: React.FC<{
   const y = -70 * (1 - land) + 14 * out;
   const sc = (1.06 - 0.06 * land) * (1 - 0.06 * out);
   const op = interpolate(t, [0, 2], [0, 1], { extrapolateRight: "clamp" }) * (1 - out);
-  const size = wordSize(word);
-  const { cx, cy, w, h } = CARD;
+  const size = wordSize(word, geom);
+  const { cx, cy, w, h } = geom;
   return (
     <g opacity={op} transform={`translate(${cx},${cy + y}) scale(${sc})`}>
       {/* sombra de contacto: crece al apoyarse */}

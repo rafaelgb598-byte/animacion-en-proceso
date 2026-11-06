@@ -49,4 +49,6 @@ const tick = (freq) => {
 
 writeWav("tic-r1.wav", tick(1600));
 for (let k = 0; k < 8; k++) writeWav(`tic-r2-${k + 1}.wav`, tick(1600 + (1000 * k) / 7));
+// V2: niveles 2 y 3 (9 tarjetas incongruentes), de 1,6 a 2,6 kHz
+for (let k = 0; k < 9; k++) writeWav(`tic-v2-${k + 1}.wav`, tick(1600 + (1000 * k) / 8));
 console.log("tics escritos en public/stroop/sfx");

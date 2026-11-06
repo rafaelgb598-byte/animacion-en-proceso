@@ -1,19 +1,24 @@
 // QA de imagen del Short Stroop (sección 9): loop, daltonismo, legibilidad y hoja de contactos.
-// Uso: node scripts/qa-stroop.mjs   (requiere los stills de out/stroop/stills/)
+// Uso: node scripts/qa-stroop.mjs [dirStills] [dirQA] [prefijo] [desde-hasta del desafío difícil]
+//   por defecto: out/stroop/stills out/stroop/qa StroopShort 281-521
 import fs from "node:fs";
 import path from "node:path";
 import console from "node:console";
+import process from "node:process";
 import { blit, canvas, decodePng, downscale, encodePng } from "./lib/png.mjs";
 
-const DIR = "out/stroop/stills";
-const QA = "out/stroop/qa";
+const [argDir, argQa, argPrefix, argRange] = process.argv.slice(2);
+const DIR = argDir ?? "out/stroop/stills";
+const QA = argQa ?? "out/stroop/qa";
+const PREFIX = argPrefix ?? "StroopShort";
+const [R0, R1] = (argRange ?? "281-521").split("-").map(Number);
 fs.mkdirSync(QA, { recursive: true });
-const load = (f) => decodePng(fs.readFileSync(path.join(DIR, `StroopShort-${String(f).padStart(4, "0")}.png`)));
+const load = (f) => decodePng(fs.readFileSync(path.join(DIR, `${PREFIX}-${String(f).padStart(4, "0")}.png`)));
 
 /* ── 1. hoja de contactos (con y sin guías) + versión de 360 px de ancho ── */
-const FRAMES = fs.readdirSync(DIR).filter((n) => /^StroopShort-\d{4}\.png$/.test(n)).map((n) => Number(n.slice(12, 16))).sort((a, b) => a - b);
+const FRAMES = fs.readdirSync(DIR).filter((n) => n.startsWith(`${PREFIX}-`) && /-\d{4}\.png$/.test(n)).map((n) => Number(n.slice(PREFIX.length + 1, PREFIX.length + 5))).sort((a, b) => a - b);
 const sheet = (dir, cols, factor) => {
-  const imgs = FRAMES.map((f) => downscale(decodePng(fs.readFileSync(path.join(dir, `StroopShort-${String(f).padStart(4, "0")}.png`))), factor));
+  const imgs = FRAMES.map((f) => downscale(decodePng(fs.readFileSync(path.join(dir, `${PREFIX}-${String(f).padStart(4, "0")}.png`))), factor));
   const w = imgs[0].width;
   const h = imgs[0].height;
   const gap = 8;
@@ -80,7 +85,7 @@ for (const [name, m] of Object.entries(M)) {
     }
   console.log(`DALTONISMO ${name}: ΔE mínimo entre tintas ${min.toFixed(1)} (${pair}) → ${min >= 20 ? "se distinguen" : "RIESGO"}`);
   // stills de la ronda 2 simulados
-  const r2 = FRAMES.filter((f) => f >= 281 && f < 521);
+  const r2 = FRAMES.filter((f) => f >= R0 && f < R1);
   const imgs = r2.map((f) => {
     const im = downscale(load(f), 3);
     for (let i = 0; i < im.data.length; i += 4) {

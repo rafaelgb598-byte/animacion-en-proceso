@@ -18,6 +18,8 @@ import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./final-v2/EfectoSenueloTom
 import { QA2_H, QA2_W, QATomiV2 } from "./final-v2/QA";
 import { STROOP_FRAMES, StroopShort, stroopSchema } from "./stroop/StroopShort";
 import { QAS_H, QAS_W, QAStroop } from "./stroop/QAStroop";
+import { GIRODATO_STROOP_V2_FRAMES, GiroDatoStroopV2, giroDatoStroopV2Schema } from "./stroop-v2/GiroDatoStroopV2";
+import { QAV2_H, QAV2_W, QAStroopV2 } from "./stroop-v2/QAStroopV2";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -79,6 +81,17 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ showSafeZones: false, hasVoiceover: true }}
       />
       <Still id="QAStroop" component={QAStroop} width={QAS_W} height={QAS_H} />
+      <Composition
+        id="GiroDatoStroopV2"
+        component={GiroDatoStroopV2}
+        durationInFrames={GIRODATO_STROOP_V2_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={giroDatoStroopV2Schema}
+        defaultProps={{ showSafeZones: false, hasVoiceover: true }}
+      />
+      <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />
         <Still id="ActuacionV2" component={HojaActuacion} width={ACT_W} height={ACT_H} />
