@@ -21,8 +21,6 @@ export type Slot = { x: "c" | "l"; base: number; row: number };
 const SLOTS: Slot[] = [...BASES.map((base, row) => ({ x: "c" as const, base, row })), ...BASES.map((base, row) => ({ x: "l" as const, base, row }))];
 /** centro vertical de una página apoyada en `base` */
 export const centerY = (p: { h: number }, base: number) => base - p.h / 2;
-const CENTER_X = (SAFE.left + SAFE.right) / 2;
-const MAX_W = SAFE.right - SAFE.left - 40;
 const PAD = 22;
 const CHAR_W = 0.7;
 
@@ -33,12 +31,13 @@ const SWITCH_PER_ROW = 20000;
 /** ocultar 1 fotograma (último recurso ante un cruce breve; más barato que un salto grande) */
 const HIDE_COST = 90000;
 
-export type Page = { words: Word[]; start: number; end: number; lines: Word[][]; size: number; w: number; h: number };
+export type Page = { words: Word[]; start: number; end: number; lines: Word[][]; size: number; w: number; h: number; safe: typeof SAFE };
 
-const buildPages = (): Page[] => {
+const buildPages = (words: Word[], safe: typeof SAFE = SAFE): Page[] => {
+  const maxW = safe.right - safe.left - 40;
   const pages: Word[][] = [];
   let cur: Word[] = [];
-  for (const w of WORDS) {
+  for (const w of words) {
     cur.push(w);
     const chars = cur.map((x) => x.t).join(" ").length;
     if (/[.?!]$|…$/.test(w.t) || (/[,:]$/.test(w.t) && chars > 14) || cur.length >= 4 || chars > 20) {
@@ -68,14 +67,14 @@ const buildPages = (): Page[] => {
       if (best > 0) lines = [ws.slice(0, best), ws.slice(best)];
     }
     const longest = Math.max(...lines.map((l) => l.map((w) => w.t).join(" ").length));
-    const size = Math.min(70, MAX_W / (longest * CHAR_W));
+    const size = Math.min(70, maxW / (longest * CHAR_W));
     const w = longest * size * CHAR_W + PAD * 2;
     const h = lines.length * size * 1.22 + PAD * 1.4;
-    return { words: ws, start: ws[0].s - 0.08, end, lines, size, w, h };
+    return { words: ws, start: ws[0].s - 0.08, end, lines, size, w, h, safe };
   });
 };
 
-export const slotX = (p: Page, x: Slot["x"]) => (x === "c" ? CENTER_X : SAFE.left + 6 + p.w / 2);
+export const slotX = (p: Page, x: Slot["x"]) => (x === "c" ? (p.safe.left + p.safe.right) / 2 : p.safe.left + 6 + p.w / 2);
 export const captionRect = (p: Page, y: number, x: Slot["x"]) => {
   const cx = slotX(p, x);
   return { x0: cx - p.w / 2, x1: cx + p.w / 2, y0: y - p.h / 2, y1: y + p.h / 2 };
@@ -85,27 +84,34 @@ const overlap = (a: { x0: number; y0: number; x1: number; y1: number }, b: Box) 
 
 export type Placed = Page & { f0: number; f1: number; slots: Slot[]; hidden: boolean[]; switches: number[] };
 
-let placed: Placed[] | null = null;
-let placedFor: unknown = null;
+/** Opciones de carril (por defecto, las del Short aprobado). */
+export type CaptionOpts = { safe?: typeof SAFE; bases?: number[] };
+const cache = new Map<unknown, { words: Word[]; key: string; placed: Placed[] }>();
 
 /** ubica todas las páginas (una vez); `boxesAt(f)` = zonas protegidas del fotograma f */
-export const getCaptions = (frames: number, boxesAt: (f: number) => Box[]): Placed[] => {
-  if (placed && placedFor === boxesAt) return placed;
-  const pages = buildPages();
+export const getCaptions = (frames: number, boxesAt: (f: number) => Box[], words: Word[] = WORDS, opts: CaptionOpts = {}): Placed[] => {
+  const key = JSON.stringify(opts);
+  const hit = cache.get(boxesAt);
+  if (hit && hit.words === words && hit.key === key) return hit.placed;
+  const safe = opts.safe ?? SAFE;
+  const slotsAll: Slot[] = opts.bases
+    ? [...opts.bases.map((base, row) => ({ x: "c" as const, base, row })), ...opts.bases.map((base, row) => ({ x: "l" as const, base, row }))]
+    : SLOTS;
+  const pages = buildPages(words, safe);
   let prev = 0;
-  placed = pages.map((p) => {
+  const placed = pages.map((p) => {
     const f0 = Math.max(0, Math.floor(p.start * FPS));
     const f1 = Math.min(frames, Math.ceil(p.end * FPS));
     const n = Math.max(1, f1 - f0);
-    const valid = SLOTS.map((sl) => {
+    const valid = slotsAll.map((sl) => {
       const r = captionRect(p, centerY(p, sl.base), sl.x);
-      return r.y0 >= SAFE.top && r.y1 <= SAFE.bottom;
+      return r.y0 >= safe.top && r.y1 <= safe.bottom;
     });
     const hardAt: number[][] = [];
     const cost = Array.from({ length: n }, (_, i) => {
       const boxes = boxesAt(f0 + i);
       const hard: number[] = [];
-      const c = SLOTS.map((sl, si) => {
+      const c = slotsAll.map((sl, si) => {
         if (!valid[si]) {
           hard.push(Infinity);
           return Infinity;
@@ -124,13 +130,13 @@ export const getCaptions = (frames: number, boxesAt: (f: number) => Box[]): Plac
       hardAt.push(hard);
       return c;
     });
-    const K = SLOTS.length + 1; // último estado = oculto
+    const K = slotsAll.length + 1; // último estado = oculto
     const HID = K - 1;
     const dil = cost.map((_, i) => [
-      ...SLOTS.map((__, k) => Math.max(...[-1, 0, 1].map((d) => cost[Math.min(n - 1, Math.max(0, i + d))][k]))),
+      ...slotsAll.map((__, k) => Math.max(...[-1, 0, 1].map((d) => cost[Math.min(n - 1, Math.max(0, i + d))][k]))),
       HIDE_COST,
     ]);
-    const rowOf = (k: number) => (k === HID ? -1 : SLOTS[k].row);
+    const rowOf = (k: number) => (k === HID ? -1 : slotsAll[k].row);
     const sw = (j: number, k: number) =>
       j === k ? 0 : j === HID || k === HID ? 0 : SWITCH_COST + Math.abs(rowOf(j) - rowOf(k)) * SWITCH_PER_ROW;
     const acc: number[][] = [];
@@ -167,12 +173,12 @@ export const getCaptions = (frames: number, boxesAt: (f: number) => Box[]): Plac
       ...p,
       f0,
       f1,
-      slots: vis.map((si) => SLOTS[si]),
+      slots: vis.map((si) => slotsAll[si]),
       hidden: path.map((k2, i) => k2 === HID || hardAt[i][k2] > 0),
       switches: vis.flatMap((si, i) => (i > 0 && si !== vis[i - 1] ? [f0 + i] : [])),
     };
   });
-  placedFor = boxesAt;
+  cache.set(boxesAt, { words, key, placed });
   return placed;
 };
 
@@ -190,8 +196,8 @@ export const hideFade = (p: Placed, f: number) => {
 };
 
 /** QA fotograma a fotograma */
-export const captionReport = (frames: number, boxesAt: (f: number) => Box[]) => {
-  const caps = getCaptions(frames, boxesAt);
+export const captionReport = (frames: number, boxesAt: (f: number) => Box[], words: Word[] = WORDS, opts: CaptionOpts = {}) => {
+  const caps = getCaptions(frames, boxesAt, words, opts);
   const rows: { f: number; has: boolean; hard: string[]; soft: string[]; lane: boolean; hidden: boolean; y: number }[] = [];
   for (let f = 0; f < frames; f++) {
     const p = pageAt(caps, f);

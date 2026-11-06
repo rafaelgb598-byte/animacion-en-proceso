@@ -1,0 +1,7 @@
+[
+  { "id": "v1", "display": "Decí en voz alta el color. No leas la palabra.", "spoken": "Decí en voz alta el color. No leas la palabra." },
+  { "id": "v2", "display": "Fácil. Ahora en serio.", "spoken": "Fácil. Ahora en serio." },
+  { "id": "v3", "display": "¿Te trabaste? Le pasa a casi todos. Leer es automático: tu cerebro lee la palabra antes de que puedas evitarlo. Nombrar un color cuesta más. Las dos respuestas chocan, y gana la que llega primero.", "spoken": "¿Te trabaste? Le pasa a casi todos. Leer es automático: tu cerebro lee la palabra antes de que puedas evitarlo. Nombrar un color cuesta más. Las dos respuestas chocan, y gana la que llega primero." },
+  { "id": "v4", "display": "Se llama efecto Stroop.", "spoken": "Se llama efecto Stroop." },
+  { "id": "v5", "display": "¿Te animás otra vez? Más rápido.", "spoken": "¿Te animás otra vez? Más rápido." }
+]

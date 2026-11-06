@@ -5,7 +5,8 @@ import { snap } from "../character/v2/motion2";
 import { BoardScene } from "../short-final/BoardScene";
 import { CUE, DURATION, SFX } from "../short-final/timing";
 import { CafeSceneV2 } from "./CafeSceneV2";
-import { captionRect, centerY, getCaptions, hideFade, pageAt, SAFE, slotAt, slotX } from "./captions";
+import { SAFE } from "./captions";
+import { CaptionsLayer } from "./CaptionsLayer";
 import { frameBoxes, LOOP_TITLE_IN, montage, TITLE_OUT } from "./layout";
 
 /**
@@ -55,52 +56,9 @@ const HookTitle: React.FC<{ f: number }> = ({ f }) => {
   );
 };
 
-const Captions: React.FC<{ f: number; debug: boolean }> = ({ f, debug }) => {
-  const caps = getCaptions(DURATION, frameBoxes);
-  const page = pageAt(caps, f);
-  if (!page) return null;
-  const t = f / 30;
-  let current = null as (typeof page.words)[number] | null;
-  for (const w of page.words) if (t >= w.s - 0.04 && t < w.e + 0.25) current = w;
-  const sl = slotAt(page, f);
-  const last = Math.max(page.f0, ...page.switches.filter((x) => x <= f));
-  const inT = last === 0 ? 1 : clamp((f - last) / 6, 0, 1);
-  const sc = 0.86 + 0.14 * snap(0, 0.01, 4.5, 1.6 * Math.PI)(inT);
-  const LH = page.size * 1.22;
-  const cx = slotX(page, sl.x);
-  const cy = centerY(page, sl.base);
-  const baseY = cy - ((page.lines.length - 1) * LH) / 2 + page.size * 0.36;
-  const r = captionRect(page, cy, sl.x);
-  const op = clamp(inT * 2, 0, 1) * hideFade(page, f);
-  if (op <= 0) return null;
-  return (
-    <g opacity={op} transform={`translate(${cx},${cy}) scale(${sc}) translate(${-cx},${-cy})`}>
-      {debug ? <rect x={r.x0} y={r.y0} width={r.x1 - r.x0} height={r.y1 - r.y0} fill="none" stroke="#00E0FF" strokeWidth={4} strokeDasharray="10 8" /> : null}
-      {page.lines.map((line, li) => (
-        <text key={li} x={cx} y={baseY + li * LH} textAnchor="middle" fontFamily={FONT} fontWeight={900} fontSize={page.size} letterSpacing={-1}>
-          {line.map((w, wi) => {
-            const active = w === current;
-            return (
-              <tspan
-                key={wi}
-                fill={active ? "#FFD84A" : "#FFFFFF"}
-                stroke={LINE}
-                strokeWidth={14}
-                paintOrder="stroke"
-                strokeLinejoin="round"
-                dy={active ? -4 : 0}
-                dx={wi === 0 ? 0 : 18}
-                style={{ fontSize: active ? page.size * 1.06 : page.size }}
-              >
-                {w.t.toUpperCase()}
-              </tspan>
-            );
-          })}
-        </text>
-      ))}
-    </g>
-  );
-};
+const Captions: React.FC<{ f: number; debug: boolean }> = ({ f, debug }) => (
+  <CaptionsLayer f={f} frames={DURATION} boxesAt={frameBoxes} debug={debug} />
+);
 
 const DebugBoxes: React.FC<{ f: number }> = ({ f }) => (
   <g>

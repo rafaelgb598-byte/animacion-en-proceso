@@ -16,6 +16,8 @@ import { CLIP_FRAMES } from "./proposal-v2/clip/timeline";
 import { QA_H, QA_W, QASubtitulos } from "./proposal-v2/clip/QA";
 import { EfectoSenueloTomiV2, TOMI_V2_FRAMES } from "./final-v2/EfectoSenueloTomiV2";
 import { QA2_H, QA2_W, QATomiV2 } from "./final-v2/QA";
+import { STROOP_FRAMES, StroopShort, stroopSchema } from "./stroop/StroopShort";
+import { QAS_H, QAS_W, QAStroop } from "./stroop/QAStroop";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -66,6 +68,17 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{ debug: false }}
       />
       <Still id="QATomiV2" component={QATomiV2} width={QA2_W} height={QA2_H} />
+      <Composition
+        id="StroopShort"
+        component={StroopShort}
+        durationInFrames={STROOP_FRAMES}
+        fps={30}
+        width={1080}
+        height={1920}
+        schema={stroopSchema}
+        defaultProps={{ showSafeZones: false, hasVoiceover: true }}
+      />
+      <Still id="QAStroop" component={QAStroop} width={QAS_W} height={QAS_H} />
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />
         <Still id="ActuacionV2" component={HojaActuacion} width={ACT_W} height={ACT_H} />
