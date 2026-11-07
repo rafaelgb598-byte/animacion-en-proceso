@@ -25,8 +25,8 @@ export type BloqueVoz = {
 };
 
 /**
- * Ritmo de planificación sin voz (caracteres/s). Medida de referencia del repo: Donovan ES ≈ 13,9 c/s a velocidad 1,0
- * (guiones/APRENDIZAJES.md). Matías todavía no se midió: se planifica con 15 y se corrige con la voz real.
+ * Ritmo de planificación sin voz (caracteres/s). Medida real de Matías: ≈ 13,8 c/s a velocidad 1,0
+ * (guiones/APRENDIZAJES.md). Se planifica con 15 (un poco más rápido, a propósito) y se corrige con la voz real.
  */
 export const CPS_PLAN = 15;
 

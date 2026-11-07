@@ -37,7 +37,7 @@ const BUDGET = Number(opt("budget", 6000));
 const MAX_ATTEMPTS_PER_SCENE = 3; // first try + 2 retries
 const MAX_INNER_GAP_S = 0.8;
 
-// Variable de entorno con el ID de la voz (por defecto la de GiroDato; Ciberseguridad pasa ELEVENLABS_VOICE_ID_CIBER)
+// Variable de entorno con el ID de la voz (por defecto la de GiroDato; otro canal pasa la suya con --voice-env)
 const VOICE_ENV = opt("voice-env", "ELEVENLABS_VOICE_ID");
 
 // ── args ────────────────────────────────────────────────────────

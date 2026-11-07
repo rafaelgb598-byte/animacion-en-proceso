@@ -34,19 +34,6 @@ import { DURATION as MIL_COCINA_DURATION, FPS as MIL_COCINA_FPS } from "./videos
 import { MilAnosCocinaV2, milAnosCocinaV2Schema } from "./videos/04-1000-anos-cocina/v2/MilAnosCocinaV2";
 import { DURATION as MIL_COCINA_V2_DURATION, FPS as MIL_COCINA_V2_FPS } from "./videos/04-1000-anos-cocina/v2/episodes/cocina.timeline";
 import {
-  ESTAFA_CODIGO_FPS,
-  ESTAFA_CODIGO_FRAMES,
-  EstafaCodigo,
-  EstafaCodigoHojaContactos,
-  HOJA_DURACION as ESTAFA_HOJA_DURACION,
-  HOJA_H as ESTAFA_HOJA_H,
-  HOJA_W as ESTAFA_HOJA_W,
-  estafaCodigoMetadata,
-  estafaCodigoSchema,
-  hojaSchema as estafaHojaSchema,
-} from "./canales/ciberseguridad/episodios/01-codigo-por-error";
-import { SPONSOR_APAGADO } from "./canales/ciberseguridad/marca/SponsorSlot";
-import {
   CERRADURA_FPS,
   cerraduraDuracion,
   cerraduraMetadata,
@@ -190,33 +177,6 @@ export const RemotionRoot: React.FC = () => {
           height={690}
         />
         <Still id="MilAnosV2HojaContactos" component={MilAnosV2Sheet} width={UEP_SHEET_W} height={UEP_SHEET_H} />
-      </Folder>
-      <Folder name="ciberseguridad">
-        {(["es", "en"] as const).map((lang) => (
-          <Composition
-            key={lang}
-            id={lang === "es" ? "EstafaCodigoES" : "EstafaCodigoEN"}
-            component={EstafaCodigo}
-            schema={estafaCodigoSchema}
-            calculateMetadata={estafaCodigoMetadata}
-            durationInFrames={ESTAFA_CODIGO_FRAMES}
-            fps={ESTAFA_CODIGO_FPS}
-            width={1080}
-            height={1920}
-            defaultProps={{ lang, showSafeZones: false, capa: "todo" as const, sponsor: SPONSOR_APAGADO }}
-          />
-        ))}
-        {/* hoja de contactos: Composition (no Still) para que <Freeze> pueda ir a cualquier frame; se renderiza con `remotion still` */}
-        <Composition
-          id="EstafaCodigoHojaContactos"
-          component={EstafaCodigoHojaContactos}
-          schema={estafaHojaSchema}
-          defaultProps={{ lang: "es" as const }}
-          durationInFrames={ESTAFA_HOJA_DURACION}
-          fps={ESTAFA_CODIGO_FPS}
-          width={ESTAFA_HOJA_W}
-          height={ESTAFA_HOJA_H}
-        />
       </Folder>
       <Folder name="Propuesta-V2">
         <Still id="PropuestaPersonajeV2" component={PropuestaPersonaje} width={SHEET_W} height={SHEET_H} />

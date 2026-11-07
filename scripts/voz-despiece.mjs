@@ -1,4 +1,4 @@
-// Voz de un episodio de Despiece a partir de UNA toma (plugin de ElevenLabs) + su transcripción Scribe. Copiado de voz-ciberseguridad.mjs (sin idiomas).
+// Voz de un episodio de Despiece a partir de UNA toma (plugin de ElevenLabs) + su transcripción Scribe. Basado en el del viejo canal Ciberseguridad (borrado), sin idiomas.
 // 1. masteriza la toma entera con normalize-voice.mjs (--drive 6: misma ganancia para todos los bloques);
 // 2. la corta en bloques (voz-lineas.json) usando los tiempos por palabra de Scribe;
 // 3. escribe las palabras de cada bloque (tiempos relativos al bloque) para los subtítulos; los captions quedan en tiempos de la toma.

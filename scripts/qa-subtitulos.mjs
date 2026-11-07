@@ -1,5 +1,5 @@
 // QA de subtítulos que mide los PÍXELES renderizados (no reutiliza cajas ni medidas del sistema de subtítulos).
-// Uso: npm run qa:subs -- <Composicion>      (EfectoSenueloTomiV2 | GiroDatoStroopV2 | EstafaCodigoES | EstafaCodigoEN)
+// Uso: npm run qa:subs -- <Composicion>      (la lista está en COMPS, abajo)
 // Salida: videosPrueba/<canal>/qa/<nn-video>/subtitulos[-<sufijo>]/{reporte.json, reporte.md, paginas.png}
 // Código de salida ≠ 0 si falla cualquier prueba.
 //
@@ -34,8 +34,6 @@ const COMPS = {
   // 1000 años · Cocina v2: el escenario (pared, muebles, piso, tierra, luz y clima) es la capa «fondo»; comida, receta,
   // lata, PET, plato, alacena, fragmentos, escombros e insectos son objetos y no pueden quedar bajo el subtítulo.
   MilAnosCocinaV2: { nn: "04-1000-anos-cocina", canal: "MilAños", sufijo: "v2", familia: null, props: { showSafeZones: false, showYear: false } },
-  EstafaCodigoES: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "es", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "es", showSafeZones: false } },
-  EstafaCodigoEN: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "en", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "en", showSafeZones: false } },
   // canal Despiece (solo español): con voz real y borrador sin voz
   DespieceCerradura: { nn: "01-cerradura", canal: "Despiece", familia: "Space Grotesk", props: { conVoz: true, showSafeZones: false } },
   DespieceCerraduraSinVoz: { nn: "01-cerradura", canal: "Despiece", sufijo: "sin-voz", familia: "Space Grotesk", props: { conVoz: false, showSafeZones: false } },

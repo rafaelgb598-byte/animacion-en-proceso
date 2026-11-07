@@ -52,19 +52,13 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - Isaac a 1,0 habla a ~15 caracteres/s, pero «…» y «.» agregan pausas largas (0,4–0,9 s): «El plato, sí. La receta… no.» (28 car.) dura 2,98 s. Medir el fin real de la voz por energía (el MP3 trae silencio al final). *(04 v2)*
 - **Mezcla con voz:** compresión leve por frase (3:1 sobre −22 dBFS) + nivelado a −17 dBFS RMS antes del master, así el limitador final casi no trabaja. Verificar «voz sobre efectos» con stems (prop `mezcla`: voz / efectos, render `--codec=wav`): la nota de la carta sin ducking tapaba la frase 9. *(04 v2)*
 
-## Ciberseguridad («Anatomía de una estafa»)
+## Técnicos generales (quedaron del canal Ciberseguridad, que se borró)
 
-- **El 01 se aprobó a la primera** (ES y EN). Lo que funcionó: 3 actos (trampa en primera persona → rebobinado y autopsia con marcadores amarillos numerados → defensa de 1 paso), paleta oscura con regla de color estricta, app de chat propia, cámara 2.5D con la mesa de evidencia y cada evento visual colgado de la palabra que lo nombra en la voz real. Partir de esta plantilla y de este flujo de voz para el 02. *(01)*
-
-- **El texto pide más tiempo del que da el cronograma:** a ~15 caracteres/s, los 677 caracteres del 01 ES son ~45 s de voz en un video de 40 s. Contar caracteres por bloque ANTES de fijar frames y colgar todo `timeline.ts` del inicio de cada bloque de voz. *(01 v1)*
-- **Teléfono 2.5D con burbujas de 40 px:** con el carril de subtítulos libre a escala 1,06, el teléfono no puede pasar de ~580 × 900; renglones de burbuja escritos a mano (≤ 17 caracteres) y la hora en el mismo renglón para que entren dos mensajes. *(01 v1)*
-- **Mesa a 52°:** el texto del teléfono acostado se achata (se lee poco); lo que se lee en la autopsia son los marcadores y los subtítulos. Los marcadores de pie sobre la mesa se ven de canto con cámara cenital: se levantan al subir a la defensa. *(01 v1)*
-- `<Freeze>` dentro de un `<Still>` no pasa del frame 0: la hoja de contactos va como `Composition` y se renderiza con `remotion still`. *(01 v1)*
-- `fontStretch` no condensa Archivo variable cargada con `loadVariableFont`: usar `fontVariationSettings: "'wdth' 75"`. *(01 v1)*
-- **Voz con el plugin de ElevenLabs** (sin `.env`): una toma por idioma con todo el guion (da continuidad natural, en vez de `previous_text`), `generations_count: 1`, y Scribe (0 créditos) para los tiempos por palabra; `scripts/voz-ciberseguridad.mjs` masteriza la toma entera y la corta en bloques. Costo real: ~1 crédito por carácter (ES 688, EN 703). *(01)*
-- **Medida real de Donovan a 1,0:** ES ≈ 13,9 caracteres/s, EN ≈ 16,1. El mismo guion dura 48,8 s en ES y 42,9 s en EN: cada idioma necesita su propio timeline (eventos colgados de la palabra que los nombra). Con los silencios (acción, rebobinado, loop) el 01 quedó en 56 s ES / 50 s EN. *(01)*
-- El ffmpeg que trae Remotion no tiene `afade` ni filtros de dinámica: los fundidos y el limitador se hacen en Node. *(01)*
-- Lista de marcas reales «solo pantalla» (`PROHIBIDAS_PANTALLA`): la voz puede decir «WhatsApp», la imagen no; el QA la busca como palabra entera para no confundir «Plin» con «disciplina». *(01 v1)*
+- **Voz con el plugin de ElevenLabs** (sin `.env`): una toma con todo el guion (da continuidad natural, en vez de `previous_text`), `generations_count: 1`, y Scribe (0 créditos) para los tiempos por palabra; después se masteriza la toma entera y se corta en bloques (`scripts/voz-despiece.mjs`). Costo real: ~1 crédito por carácter.
+- **Contar caracteres por bloque ANTES de fijar frames** (~14 caracteres/s a 1,0) y colgar todo `timeline.ts` de las palabras de la voz real.
+- `<Freeze>` dentro de un `<Still>` no pasa del frame 0: la hoja de contactos va como `Composition` y se renderiza con `remotion still`.
+- `fontStretch` no condensa una fuente variable cargada con `loadVariableFont`: usar `fontVariationSettings: "'wdth' 75"`.
+- El ffmpeg que trae Remotion no tiene `afade` ni filtros de dinámica: los fundidos y el limitador se hacen en Node.
 
 ## Despiece (objetos por dentro, solo ES)
 

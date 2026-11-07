@@ -1,5 +1,5 @@
 // Efectos del canal Despiece, sintetizados por código (sin licencias, sin música). Utilidades copiadas de
-// scripts/gen-sfx-ciberseguridad.mjs (que no se toca). WAV 48 kHz, mono, 16 bits, semilla fija.
+// el generador del viejo canal Ciberseguridad (borrado). WAV 48 kHz, mono, 16 bits, semilla fija.
 // Salida: public/videos/despiece/sfx/ (compartidos por todos los episodios) · lista en src/canales/despiece/marca/sfx.ts
 // Uso: node scripts/gen-sfx-despiece.mjs
 import fs from "node:fs";

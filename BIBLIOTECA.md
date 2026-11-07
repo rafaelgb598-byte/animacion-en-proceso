@@ -30,13 +30,14 @@ que más se parezca y cambiando guion, voz, escena y tiempos. Los finales van a 
 
 ```
 videosPrueba/                ← renders de prueba, hasta que el usuario apruebe la final (los .mp4 se suben a git; qa/ no), por canal:
-  GiroDato/  MilAños/  Ciberseguridad/  Otro/   (las mismas 4 que videosFinal; nombre <nn>-<video>-vN.mp4)
+  GiroDato/  MilAños/  Despiece/  ManoAMano/  Otro/   (las mismas que videosFinal; nombre <nn>-<video>-vN.mp4)
     qa/<nn-video>/           stills, hojas de contacto y QA de ese video (se borran cuando queda final)
 videosFinal/                 ← SOLO las versiones finales, listas para subir, por canal:
   GiroDato/                  videos de Tomi (psicología, curiosidades) → todos los de este tipo van acá
   MilAños/                   serie «1000 años» (sin Tomi: qué queda de un objeto con el paso de los siglos)
-  Ciberseguridad/  Otro/     (qué va en cada una lo define el usuario)
-guiones/                     ← guiones, prompts, planes y entregas, por canal (mismas 4 carpetas):
+  Despiece/                  canal Despiece (objetos por dentro, sin Tomi)
+  ManoAMano/  Otro/          (qué va en cada una lo define el usuario)
+guiones/                     ← guiones, prompts, planes y entregas, por canal (mismas carpetas):
   APRENDIZAJES.md            qué funcionó y qué no (leer antes de escribir un guion)
   README.md                  índice de todos los videos
   <canal>/<nn-video>/        guion, prompt-vN, propuesta, ENTREGA, voz-original/
@@ -194,15 +195,6 @@ caja ensanchada 12 px, una página o primer renglón corta mal, hay huérfanas, 
 Salida en `videosPrueba/<canal>/qa/<nn-video>/subtitulos/`: `reporte.json`, `reporte.md` y `paginas.png` (hoja con guías).
 
 ---
-
-## Canal Ciberseguridad («Anatomía de una estafa»)
-
-Otro canal, con identidad propia (oscuro «expediente nocturno», Archivo + Space Mono, marcadores amarillos numerados). No usa Tomi ni la estética de §1.
-Comparte con el resto la zona segura, los subtítulos (con `fuente` = Archivo 900 y `colorEnfasis` = amarillo evidencia) y el QA.
-- Marca y plantilla `AnatomiaEstafa`: `src/canales/ciberseguridad/marca/`. Episodio = carpeta de datos `src/canales/ciberseguridad/episodios/<nn>/` (`timeline.ts`, `escena.ts`, `i18n/{es,en}.ts`).
-- Efectos de la serie: `node scripts/gen-sfx-ciberseguridad.mjs` → `public/videos/ciberseguridad/sfx/`. Líneas de voz desde el i18n: `node scripts/voz-lineas-ciberseguridad.mjs <nn>`.
-- Voz propia (`--voice-env ELEVENLABS_VOICE_ID_CIBER` en `gen-voice.mjs`). Marcas reales prohibidas en pantalla: `PROHIBIDAS_PANTALLA.ciberseguridad`.
-- Reglas completas y cómo crear un episodio: `guiones/Ciberseguridad/README.md`.
 
 ## Canal Despiece
 
