@@ -33,6 +33,9 @@ const COMPS = {
   GiroDatoStroopV2: { nn: "02-stroop", props: { showSafeZones: false, hasVoiceover: true } },
   EstafaCodigoES: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "es", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "es", showSafeZones: false } },
   EstafaCodigoEN: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "en", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "en", showSafeZones: false } },
+  // canal Despiece (solo español): con voz real y borrador sin voz
+  DespieceCerradura: { nn: "01-cerradura", canal: "Despiece", familia: "Space Grotesk", props: { conVoz: true, showSafeZones: false } },
+  DespieceCerraduraSinVoz: { nn: "01-cerradura", canal: "Despiece", sufijo: "sin-voz", familia: "Space Grotesk", props: { conVoz: false, showSafeZones: false } },
 };
 const comp = process.argv[2];
 if (!COMPS[comp]) {

@@ -60,6 +60,15 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - El ffmpeg que trae Remotion no tiene `afade` ni filtros de dinámica: los fundidos y el limitador se hacen en Node. *(01)*
 - Lista de marcas reales «solo pantalla» (`PROHIBIDAS_PANTALLA`): la voz puede decir «WhatsApp», la imagen no; el QA la busca como palabra entera para no confundir «Plin» con «disciplina». *(01 v1)*
 
+## Despiece (objetos por dentro, solo ES)
+
+- **El borrador del arranque no entraba:** ~540 caracteres ≈ 39 s de voz a 14 c/s, en un video de 36 s con acciones sin voz (giro, rebote). Se recortó a 449 caracteres (82 palabras) antes de animar; contar caracteres ANTES de fijar frames sigue siendo la regla. *(01 sin voz)*
+- **`<Subtitulos>` dibuja SVG:** va dentro de un `<svg width=1080 height=1920>`; dentro de un div sale como texto suelto arriba a la izquierda. *(01 sin voz)*
+- **El naranja no sirve de énfasis:** el QA de subtítulos solo detecta énfasis amarillo; con un solo acento de marca, Despiece va sin palabras resaltadas. *(01 sin voz)*
+- **Mecanismo físico de verdad, por código:** los pernos se apoyan en el perfil de la llave (`min(reposo, canto)`) en cada fotograma, así la entrada de la llave, la llave mal cortada y el giro (lo de adentro del rotor se aplasta con cos θ) salen solos y son correctos. Que las columnas «suban de a una» no es físico (al entrar la llave suben todas juntas): se resolvió con un barrido de luces, una por columna. *(01 sin voz)*
+- **Tramo muerto encontrado por medición:** f97–127 (0,34 % de cambio a 1 s) entre que la llave llega y la pregunta se va; se estiró la entrada de la llave. `scripts/qa-tramos-muertos.mjs` lo mide sobre el MP4 (también el gancho f0→f10 y el loop). *(01 sin voz)*
+- Etiquetas en Plex Mono 42 px: a 360 px de ancho se leen; 38 px quedaban justas. *(01 sin voz)*
+
 ## Otro
 
 - (Todavía sin videos.)

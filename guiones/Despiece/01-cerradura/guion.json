@@ -1,0 +1,18 @@
+{
+  "episodio": "Despiece 01 · ¿Cómo sabe tu cerradura que es TU llave?",
+  "voz": { "nombre": "Matías – Argentine Customer Service", "voice_id": "wW8LJCzyKXPO6ftZkssL", "modelo": "eleven_multilingual_v2", "velocidad": 1.0 },
+  "estado": "guion final PROPUESTO (falta el OK del usuario para generar la voz)",
+  "caracteres": 449,
+  "palabras": 82,
+  "nota": "Recortado del borrador del arranque v4 (≈ 95 palabras, ≈ 540 caracteres ≈ 39 s a 14 c/s) para que el video entre en 34–38 s. Los tiempos son los planificados a 14 c/s; con la voz real, timeline.ts se ajusta solo a la alineación de ElevenLabs.",
+  "bloques": [
+    { "id": "v1", "t": 0.1, "voz": "¿Cómo sabe tu cerradura que esta es TU llave?", "pantalla": "Pregunta «¿Cómo sabe que / es TU llave?» desde el cuadro 0; la línea de corte (30 %) termina de recorrer la cerradura y la abre antes de 1,5 s; la llave asoma desde la derecha." },
+    { "id": "v2", "t": 3.4, "voz": "Abrámosla.", "pantalla": "Corte transversal: carcasa, rotor, 5 columnas (perno + contraperno + resorte); los resortes laten." },
+    { "id": "v3", "t": 4.3, "voz": "Adentro, un cilindro tiene que girar. Lo traban estas columnas de pernos con resortes.", "pantalla": "Etiquetas que se dibujan solas: ROTOR («cilindro»), CARCASA («girar»), PERNOS («pernos»), RESORTES («resortes»)." },
+    { "id": "v4", "t": 10.5, "voz": "Cada columna está partida en dos, a una altura distinta.", "pantalla": "Highlight sobre la columna del medio (el resto al 35 %): CONTRAPERNO y PERNO; cota del perno y su valor (2); después las otras cuatro cotas: 3 6 2 7 4." },
+    { "id": "v5", "t": 14.7, "voz": "El truco: tu llave no abre nada. Solo sube cada columna a la altura justa.", "pantalla": "Zoom 1,00 → 1,08 sobre los dientes de la llave; en «sube», la llave entra del todo y los pernos suben montados en sus dientes." },
+    { "id": "v6", "t": 20.2, "voz": "Cuando todos los cortes tocan esta línea, el cilindro queda libre.", "pantalla": "Cada corte se enciende en naranja sobre la línea de corte, de a uno (5 tics de 0,8 s); etiqueta LÍNEA DE CORTE; destello; el rotor gira 90° con un clac." },
+    { "id": "v7", "t": 26.3, "voz": "Con otra llave, basta una sola columna corrida y no gira.", "pantalla": "El rotor vuelve, sale la llave, entra otra: una columna queda corrida (en rojo), el rotor intenta girar y rebota." },
+    { "id": "v8", "t": 30.6, "voz": "Tu llave no es una llave: es una contraseña de alturas.", "pantalla": "En pantalla «TU LLAVE / 3 6 2 7 4»; después el aviso «PRÓXIMO DESPIECE · La llave doble paleta» (sin voz) y el cierre en loop." }
+  ]
+}
