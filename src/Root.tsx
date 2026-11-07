@@ -46,6 +46,16 @@ import {
   hojaSchema as estafaHojaSchema,
 } from "./canales/ciberseguridad/episodios/01-codigo-por-error";
 import { SPONSOR_APAGADO } from "./canales/ciberseguridad/marca/SponsorSlot";
+import {
+  CERRADURA_FPS,
+  cerraduraDuracion,
+  cerraduraMetadata,
+  cerraduraSchema,
+  DespieceCerradura,
+  DespieceCerraduraHojaContactos,
+  HOJA_CERRADURA,
+  hojaCerraduraSchema,
+} from "./canales/despiece/episodios/01-cerradura/CerraduraEpisode";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -237,6 +247,34 @@ export const RemotionRoot: React.FC = () => {
         <Still id="DiagnosticoV2" component={DiagV2} width={1400} height={900} />
         <Still id="DiagnosticoV3" component={DiagV3} width={1400} height={900} />
         <Still id="DiagnosticoFinal" component={DiagFinal} width={1400} height={900} />
+      </Folder>
+      <Folder name="Despiece">
+        {/* 01 · cerradura: con voz real (cuando exista vozReal.json) y borrador sin voz para revisar el ritmo */}
+        {[true, false].map((conVoz) => (
+          <Composition
+            key={String(conVoz)}
+            id={conVoz ? "DespieceCerradura" : "DespieceCerraduraSinVoz"}
+            component={DespieceCerradura}
+            schema={cerraduraSchema}
+            calculateMetadata={cerraduraMetadata}
+            durationInFrames={cerraduraDuracion(conVoz)}
+            fps={CERRADURA_FPS}
+            width={1080}
+            height={1920}
+            defaultProps={{ conVoz, showSafeZones: false, capa: "todo" as const }}
+          />
+        ))}
+        {/* hoja de contactos: Composition (no Still) para que <Freeze> vaya a cualquier frame; se renderiza con `remotion still` */}
+        <Composition
+          id="DespieceCerraduraHojaContactos"
+          component={DespieceCerraduraHojaContactos}
+          schema={hojaCerraduraSchema}
+          defaultProps={{ conVoz: false }}
+          durationInFrames={HOJA_CERRADURA.duracion}
+          fps={CERRADURA_FPS}
+          width={HOJA_CERRADURA.w}
+          height={HOJA_CERRADURA.h}
+        />
       </Folder>
     </>
   );

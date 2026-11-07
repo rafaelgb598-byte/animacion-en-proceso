@@ -1,0 +1,42 @@
+[
+ {
+  "id": "v01",
+  "spoken": "Tu llave tiene una contraseña escondida."
+ },
+ {
+  "id": "v02",
+  "spoken": "Mirá."
+ },
+ {
+  "id": "v03",
+  "spoken": "Adentro, el cilindro lo traban columnas de pernos, empujadas por resortes."
+ },
+ {
+  "id": "v04",
+  "spoken": "Cada columna está partida en dos, y cada corte, a otra altura."
+ },
+ {
+  "id": "v05",
+  "spoken": "Los dientes de tu llave no abren nada: solo suben cada columna a la altura justa."
+ },
+ {
+  "id": "v06",
+  "spoken": "Cuando todos los cortes tocan esta línea…"
+ },
+ {
+  "id": "v07",
+  "spoken": "…el cilindro gira."
+ },
+ {
+  "id": "v08",
+  "spoken": "¿Y cuál de estas abre?"
+ },
+ {
+  "id": "v09",
+  "spoken": "Basta una sola columna corrida… y no gira."
+ },
+ {
+  "id": "v10",
+  "spoken": "Tu llave no es una llave: es una contraseña de alturas."
+ }
+]

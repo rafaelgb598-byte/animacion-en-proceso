@@ -204,6 +204,13 @@ Comparte con el resto la zona segura, los subtítulos (con `fuente` = Archivo 90
 - Voz propia (`--voice-env ELEVENLABS_VOICE_ID_CIBER` en `gen-voice.mjs`). Marcas reales prohibidas en pantalla: `PROHIBIDAS_PANTALLA.ciberseguridad`.
 - Reglas completas y cómo crear un episodio: `guiones/Ciberseguridad/README.md`.
 
+## Canal Despiece
+
+Objetos cotidianos por dentro, en plano técnico 2,5D (azul, papel, un solo acento naranja: la línea de corte). Solo en español, con voseo; sin Tomi.
+Comparte la zona segura, los subtítulos (con `fuente` = Space Grotesk y sin énfasis amarillo) y el QA. Motor reutilizable en
+`src/canales/despiece/motor/`; efectos con `node scripts/gen-sfx-despiece.mjs`; tramos quietos, gancho y loop con `node scripts/qa-tramos-muertos.mjs`.
+Reglas completas y cómo hacer un episodio: [`guiones/Despiece/README.md`](guiones/Despiece/README.md).
+
 ---
 
 ## 5. Checklist antes de entregar

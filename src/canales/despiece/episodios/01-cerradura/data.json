@@ -1,0 +1,20 @@
+{
+  "_nota": "Geometría del dibujo (px del lienzo 1080 × 1920, coordenadas de escena). Las alturas son del DIBUJO, no medidas reales de una cerradura: por eso en pantalla van como niveles 1–9 sin unidad (ver guiones/Despiece/01-cerradura/fuentes.md).",
+  "carcasa": { "x0": 90, "x1": 700, "y0": 520, "y1": 1060 },
+  "rotor": { "x0": 110, "x1": 700, "y0": 780, "y1": 1010 },
+  "canal": { "y0": 826, "y1": 992 },
+  "lineaDeCorte": 780,
+  "camara": { "y0": 540, "ancho": 52 },
+  "columnas": { "x0": 170, "paso": 100, "anchoPerno": 44 },
+  "perno": { "largoBase": 40, "largoPorNivel": 10, "reposo": 910 },
+  "contraperno": { "largo": 84 },
+  "niveles": [3, 6, 2, 7, 4],
+  "llave": { "puntaMontada": 120, "puntaMitad": 420, "puntaFuera": 1180, "lomo": 832, "base": 988, "hoja": 600, "cabeza": { "u0": 600, "u1": 700, "y0": 796, "y1": 1024 } },
+  "llaveIncorrecta": { "columna": 3, "corrimiento": -26 },
+  "columnaFoco": 2,
+  "encuadre": { "_nota": "escena → pantalla: centro de escena (cx, cy) va a (X, Y) con escala S; el conjunto cerradura + llave queda en x 71–889", "S": 1.12, "cx": 455, "cy": 790, "X": 480, "Y": 880 },
+  "gancho": { "_nota": "llave sola en el cuadro 0: escala K, centrada en X; el eje de la hoja (y 910) va a Y", "K": 1.15, "X": 480, "Y": 980, "yNumeros": 770 },
+  "frente": { "X": 480, "Y": 880, "carcasa": 300, "rotor": 150 },
+  "dosLlaves": { "K": 0.78, "X": 480, "Y1": 760, "Y2": 1060 },
+  "proximo": "La llave doble paleta"
+}
