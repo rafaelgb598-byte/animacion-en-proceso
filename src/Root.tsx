@@ -29,6 +29,8 @@ import { ComparaFuentes } from "./laboratorio/subtitulos/ComparaFuentes";
 import { MilAnosCelularV4, milAnosV4Schema } from "./videos/03-1000-anos/v4/MilAnosCelularV4";
 import { DURATION as MIL_V4_DURATION, FPS as MIL_V4_FPS } from "./videos/03-1000-anos/v4/timeline";
 import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
+import { MilAnosCocinaV1, milAnosCocinaSchema } from "./videos/04-1000-anos-cocina/MilAnosCocinaV1";
+import { DURATION as MIL_COCINA_DURATION, FPS as MIL_COCINA_FPS } from "./videos/04-1000-anos-cocina/episodes/cocina.timeline";
 import {
   ESTAFA_CODIGO_FPS,
   ESTAFA_CODIGO_FRAMES,
@@ -116,6 +118,16 @@ export const RemotionRoot: React.FC = () => {
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="1000-anos">
+        <Composition
+          id="MilAnosCocinaV1"
+          component={MilAnosCocinaV1}
+          schema={milAnosCocinaSchema}
+          durationInFrames={MIL_COCINA_DURATION}
+          fps={MIL_COCINA_FPS}
+          width={1080}
+          height={1920}
+          defaultProps={{ showSafeZones: false, showYear: false }}
+        />
         <Composition
           id="MilAnosCelularV4"
           component={MilAnosCelularV4}

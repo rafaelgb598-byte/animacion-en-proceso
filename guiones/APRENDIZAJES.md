@@ -40,6 +40,11 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - Estructura: pregunta → «se corta la luz» → épocas con contador (1, 10, 50, 200, 1.000 años) → lo que queda → **lo que desapareció antes (giro)** → cierre que vuelve a la pregunta. *(03 V3)*
 - Se conserva: contador de años con rueda y barra logarítmica, la luz que cuenta el tiempo (velador → ventana → exterior), deterioro continuo en función de `year`. *(03)*
 - Efectos sintetizados por código (sin licencias) + un **motivo sonoro** para el objeto clave; ambientes con fundidos cruzados, ducking al 40 % bajo la voz. *(03)*
+- **Piezas comunes de la serie en `src/canal/mil-anos/`** (desde el 04): reloj `makeClock` (tramos → años, unidades DÍA/SEMANA/MES/AÑO), contador, barra, etiquetas, carta, gancho palabra por palabra, marcadores 1-2-3, atmósfera, capa de efectos. Reciben el reloj y los textos del episodio por props: un episodio nuevo solo escribe `episodes/<x>.timeline.ts`, `<x>.decay.ts`, `<x>.ts` y su escena. Los componentes de la v4 del celular leían su propio `timeline.ts` y no se podían reutilizar sin copiarlos. *(04 v1)*
+- Regla de la serie: «último en pie» = **el último objeto que todavía se reconoce**, no el material con la cifra más alta (por eso la carta del 04 va sin número). *(04)*
+- Episodio sin voz: el ritmo lo dan las etiquetas (máx. 3, renglón libre más bajo) y los eventos. Medir los «tramos muertos» comparando fotogramas a 1 s de distancia del MP4: en el 04 v1 el final del año 50 quedó quieto (0,2 %) y se le agregó un evento (la puerta del bajo mesada que cae). *(04 v1)*
+- **Mezcla sin silencios muertos:** revisar el RMS por segundo del render crudo. En el 04 v1 había 2 s en −∞ entre la lluvia y el viento, y los ambientes estaban ~35 dB debajo de los golpes (el limitador trabajaba demasiado). El ffmpeg de Remotion no trae `f32le`, `rawvideo`, `volumedetect` ni filtros de dinámica: `scripts/master-audio.mjs` lee un WAV temporal, mide con `loudnorm` y limita en Node. *(04 v1)*
+- Noche creíble sin desenfocar el dibujo: escena pintada «a plena luz» + capas de oscuridad (gradiente radial alrededor de la única fuente de luz, máscara para el haz de luna) + tintes en `screen`. *(04 v1)*
 
 ## Ciberseguridad («Anatomía de una estafa»)
 
