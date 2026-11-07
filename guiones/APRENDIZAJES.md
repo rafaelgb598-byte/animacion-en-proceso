@@ -62,6 +62,8 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 
 ## Despiece (objetos por dentro, solo ES)
 
+- **El 01 se aprobó como final con la primera versión con voz (v2, 29,8 s).** Lo que funcionó: la revelación del final como gancho (la llave con su «contraseña»), nombrar piezas solo en la acción, el giro de frente con clac y tics crecientes, «¿Cuál abre?» y el loop exacto al cuadro 0. Total: 448 créditos (1 toma). Partir de este episodio y de este flujo de voz para el 02. *(01 final)*
+
 - **El borrador del arranque no entraba:** ~540 caracteres ≈ 39 s de voz a 14 c/s, en un video de 36 s con acciones sin voz (giro, rebote). Se recortó a 449 caracteres (82 palabras) antes de animar; contar caracteres ANTES de fijar frames sigue siendo la regla. *(01 sin voz)*
 - **`<Subtitulos>` dibuja SVG:** va dentro de un `<svg width=1080 height=1920>`; dentro de un div sale como texto suelto arriba a la izquierda. *(01 sin voz)*
 - **El naranja no sirve de énfasis:** el QA de subtítulos solo detecta énfasis amarillo; con un solo acento de marca, Despiece va sin palabras resaltadas. *(01 sin voz)*
