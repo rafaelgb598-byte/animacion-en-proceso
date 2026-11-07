@@ -31,6 +31,9 @@ const COMPS = {
     ],
   },
   GiroDatoStroopV2: { nn: "02-stroop", props: { showSafeZones: false, hasVoiceover: true } },
+  // 1000 años · Cocina v2: el escenario (pared, muebles, piso, tierra, luz y clima) es la capa «fondo»; comida, receta,
+  // lata, PET, plato, alacena, fragmentos, escombros e insectos son objetos y no pueden quedar bajo el subtítulo.
+  MilAnosCocinaV2: { nn: "04-1000-anos-cocina", canal: "MilAños", sufijo: "v2", familia: null, props: { showSafeZones: false, showYear: false } },
   EstafaCodigoES: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "es", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "es", showSafeZones: false } },
   EstafaCodigoEN: { nn: "01-codigo-por-error", canal: "Ciberseguridad", sufijo: "en", familia: "Archivo", pantalla: "ciberseguridad", props: { lang: "en", showSafeZones: false } },
 };

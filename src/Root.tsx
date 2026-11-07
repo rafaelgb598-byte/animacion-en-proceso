@@ -31,6 +31,8 @@ import { DURATION as MIL_V4_DURATION, FPS as MIL_V4_FPS } from "./videos/03-1000
 import { ContactSheetV3 as MilAnosV3Sheet, contactSheetSchema as milAnosSheetSchema, sheetSize as milAnosSheetSize } from "./videos/03-1000-anos/final/componentes/debug/ContactSheetV3";
 import { MilAnosCocinaV1, milAnosCocinaSchema } from "./videos/04-1000-anos-cocina/MilAnosCocinaV1";
 import { DURATION as MIL_COCINA_DURATION, FPS as MIL_COCINA_FPS } from "./videos/04-1000-anos-cocina/episodes/cocina.timeline";
+import { MilAnosCocinaV2, milAnosCocinaV2Schema } from "./videos/04-1000-anos-cocina/v2/MilAnosCocinaV2";
+import { DURATION as MIL_COCINA_V2_DURATION, FPS as MIL_COCINA_V2_FPS } from "./videos/04-1000-anos-cocina/v2/episodes/cocina.timeline";
 import {
   ESTAFA_CODIGO_FPS,
   ESTAFA_CODIGO_FRAMES,
@@ -118,6 +120,16 @@ export const RemotionRoot: React.FC = () => {
       />
       <Still id="QAStroopV2" component={QAStroopV2} width={QAV2_W} height={QAV2_H} />
       <Folder name="1000-anos">
+        <Composition
+          id="MilAnosCocinaV2"
+          component={MilAnosCocinaV2}
+          schema={milAnosCocinaV2Schema}
+          durationInFrames={MIL_COCINA_V2_DURATION}
+          fps={MIL_COCINA_V2_FPS}
+          width={1080}
+          height={1920}
+          defaultProps={{ showSafeZones: false, showYear: false }}
+        />
         <Composition
           id="MilAnosCocinaV1"
           component={MilAnosCocinaV1}
