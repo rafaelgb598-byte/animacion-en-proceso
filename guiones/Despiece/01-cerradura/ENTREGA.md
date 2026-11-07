@@ -1,68 +1,57 @@
-# Despiece 01 · Cerradura · ENTREGA (borrador sin voz)
+# Despiece 01 · Cerradura · ENTREGA (v5: viralidad + voz)
 
-## 1. Rutas
-- **MP4 (sin voz):** `videosPrueba/Despiece/01-cerradura-sin-voz-v2.mp4` (37,4 s) · anterior `…-sin-voz-v1.mp4` (tenía un tramo quieto en f97–127).
-- **Hoja de contactos:** `videosPrueba/Despiece/qa/01-cerradura/hoja-v2.png` (queda en la compu: `qa/` no se sube) · prueba a 360 px: `qa/01-cerradura/celular-360.png`.
-- **Rama:** `canales/despiece` (sin mergear a `main`). Último commit: ver `git log -1 canales/despiece`.
-- **Archivos nuevos:**
-  - Marca: `src/canales/despiece/marca/{theme,anim,sfx,voz}.ts`
-  - Motor: `src/canales/despiece/motor/{CutLine,SectionSplit,Callout,Dimension,Mecanica,Highlight,TeaserChip,DespieceEpisode,HojaContactos}.tsx`, `geom.ts`, `index.ts`
-  - Episodio: `src/canales/despiece/episodios/01-cerradura/{Cerradura.tsx,CerraduraEpisode.tsx,timeline.ts,script.ts,data.json,vozReal.json}`
-  - Mano a Mano: `src/canales/mano-a-mano/README.md`, `guiones/ManoAMano/_banco-de-ideas.md`
-  - Guiones: `guiones/Despiece/{README.md,_banco-de-ideas.md}`, `guiones/Despiece/01-cerradura/{guion.json,fuentes.md,publicacion.md,ENTREGA.md}`
-  - Scripts: `scripts/gen-sfx-despiece.mjs`, `scripts/qa-tramos-muertos.mjs`
-  - Recursos: `public/videos/despiece/sfx/*.wav` (10 efectos sintetizados), `public/videos/despiece/01-cerradura/{voz,captions}/` (vacías)
-  - Carpetas vacías: `videosPrueba/ManoAMano/`, `videosFinal/{Despiece,ManoAMano}/`
-- **Archivos existentes tocados (solo agregados):** `src/Root.tsx` (`<Folder name="Despiece">`), `CLAUDE.md` (sección + línea de `videosFinal/`), `guiones/README.md` (filas), `BIBLIOTECA.md` (sección), `guiones/APRENDIZAJES.md` (sección Despiece), `scripts/qa-subtitulos.mjs` (2 entradas en `COMPS`; ver desvíos).
+## Rutas
+- **MP4 con voz (el que hay que mirar):** `videosPrueba/Despiece/01-cerradura-v2.mp4` · 29,8 s.
+  `…-v1.mp4` es el primer render con voz y tenía dos tramos al límite (26,1 s y 28,1 s), que se corrigieron en la v2.
+- **MP4 sin voz:** `videosPrueba/Despiece/01-cerradura-sin-voz-v3.mp4` (32,5 s, ritmo planificado; antes de la voz).
+- **Hoja de contactos:** `videosPrueba/Despiece/qa/01-cerradura/hoja-voz-v1.png` · gancho a 360 px: `qa/01-cerradura/celular-360-gancho.png`
+  (`qa/` queda en la compu: no se sube).
+- **Rama:** `canales/despiece` (sin mergear a `main`).
 
-## 2. Estado: **BORRADOR**
-Falta la voz (frenado a propósito: regla 0.4, espera tu OK). Sin voz no se pueden cerrar Sincronía ni Audio, y `DespieceCerradura` hoy
-renderiza igual que el borrador. También falta la ficha técnica de un fabricante en `fuentes.md`.
-
-## 3. Control de calidad (sobre `DespieceCerraduraSinVoz` v2)
+## Control de calidad (sobre `01-cerradura-v2.mp4` / `DespieceCerradura`)
 | Prueba | Resultado |
 |---|---|
-| Gancho | ✅ movimiento f0→f10 (la línea de corte avanza; 0,27 % de píxeles) · primer cambio de estado grande en **f36** (< f45) |
-| Tramos muertos | ✅ ninguno: mínimo 0,62 % de cambio a 1 s (umbral 0,5 %) · la v1 tenía uno (f97–127), corregido |
-| Rigor | ✅ mecanismo según Wikipedia (fuentes.md) · sin cifras con unidad; «3 6 2 7 4» son niveles del dibujo · ⚠️ falta la fuente de fabricante |
-| Texto | ✅ contraste calculado: papel 12,99:1, naranja 5,40:1 · títulos 84 px, etiquetas 42 px, valores 52–112 px · dentro de la zona segura · no repite la voz palabra por palabra |
-| Subtítulos | ✅ `npm run qa:subs -- DespieceCerraduraSinVoz`: **0 fallas**, 17 páginas, fuente Space Grotesk (con voz real hay que repetirlo sobre `DespieceCerradura`) |
-| Legibilidad en celular | ✅ fotogramas a 360 px de ancho: etiquetas legibles (con 38 px quedaban justas → 42 px) |
-| Idioma | ✅ todo en español (pantalla, voz y subtítulos) |
-| Coherencia | ✅ un acento naranja (línea de corte, «TU», lo que la línea toca), rojo solo en la columna que falla, dos familias, trazos de `STROKE` |
-| Loop | ✅ último fotograma vs f0: 0,09 % de diferencia |
-| Sincronía | ⏳ pendiente de la voz real (los eventos ya están colgados de las palabras) |
-| Audio | ⏳ el borrador (solo efectos y ambiente) mide −23,1 LUFS y −6,1 dBTP, sin clipping; el mastering a −14 LUFS / ≤ −1 dBTP va con la voz (`master-audio.mjs`). Ojo: el comando del arranque necesita `-vn` con el ffmpeg de Remotion |
-| Render | ✅ H.264, 1080 × 1920, 30 fps (ffprobe) |
-| Modularidad | ✅ el episodio solo usa el motor por props; el 02 cambia el objeto SVG, `data.json`, `timeline.ts` y `script.ts` (+ registrar la composición) |
+| Cuadro 0 | ✅ la llave grande y centrada con 3 6 2 7 4 en naranja sobre sus dientes y «Tu llave tiene una contraseña»; a 360 px de ancho se reconoce la llave y se leen los números |
+| Primer cambio | ✅ primer cambio grande en **f7** (la línea barre y aparece la cerradura); f0→f10: 21,8 % de píxeles |
+| Duración | ✅ **29,8 s** (894 frames) |
+| Tramos muertos | ✅ ninguno: mínimo 0,86 % de cambio a 1 s (umbral 0,5 %); cada 1–3 s hay un evento |
+| Giro | ✅ vista de frente: la boca con la llave adentro gira 90° con flecha naranja, clac y sacudón (ver nota en «qué mirar») |
+| Loop | ✅ último fotograma = f0: `qa-frame-diff` 0,02/255 de diferencia media, 0,00 % de píxeles > 40. Audio: la última palabra termina ≈ 0,9 s antes del final y la frase 1 arranca en f3 (pausa ≈ 1 s, como las de la toma original) |
+| Sincronía | ✅ los eventos salen de los tiempos de Scribe: destello en «línea», giro completo en «gira» (clac 1 frame antes), rojo en «corrida», rebote y bzz en «gira» → 0 a 1 frame de su palabra |
+| Subtítulos | ✅ `npm run qa:subs -- DespieceCerradura`: **0 fallas**, 17 páginas, Space Grotesk |
+| Loudness | ✅ **−14,2 LUFS** integrados, pico real **−1,4 dBTP** (medido sobre el MP4 final) |
+| Rigor | ✅ mecanismo según `fuentes.md`; 3 6 2 7 4 son niveles ilustrativos; la voz no dice ninguna cifra |
+| Texto | ✅ contraste papel 12,99:1, naranja 5,40:1 · títulos 84 px, rótulos 42 px · dentro de la zona segura · no repite la voz palabra por palabra |
+| Idioma | ✅ todo en español rioplatense |
+| Coherencia | ✅ naranja = línea de corte, la contraseña y lo que la línea toca; rojo solo en la columna que falla; dos familias tipográficas |
+| Render | ✅ H.264, 1080 × 1920, 30 fps, AAC 48 kHz |
+| Modularidad | ✅ el motor solo cambió para ser más genérico (ids únicos de `clipPath` y `duck` para el ducking); el episodio 2 sigue siendo objeto SVG + `data.json` + `timeline.ts` + `script.ts` |
 
-## 4. Fuentes (resumen)
-Wikipedia «Pin tumbler lock», sección *Design*: carcasa fija + rotor que gira; pernos de largo variable + contrapernos + resortes; la línea de
-corte entre rotor y carcasa; sin llave los pernos la cruzan; con la llave correcta cada unión cae justo en ella; con otra llave no gira
-(*Vulnerabilities*: una columna mal ubicada impide abrir). Dice «típicamente cinco o seis» pernos en general, no en cerraduras domésticas:
-por eso la voz no menciona cuántas hay.
+## Voz
+- **1 toma** con el guion completo (no hizo falta otra): Matías `wW8LJCzyKXPO6ftZkssL`, `eleven_multilingual_v2`, ajustes por defecto, velocidad 1,0.
+  **448 créditos** (de un presupuesto de ≈ 1.500). Scribe para los tiempos por palabra: 0 créditos.
+- Por qué esa toma: la transcripción coincide palabra por palabra con el guion, sin silencios internos > 0,8 s, y las pausas marcadas («…», «:»)
+  quedaron donde van. La toma dura 32,3 s; cortada por frase con `scripts/voz-despiece.mjs` (pausas de ≈ 0,3 s entre frases) son 26,8 s de voz.
+- Original: `guiones/Despiece/01-cerradura/voz-original/toma1.{mp3,words.json}` · bloques masterizados: `public/videos/despiece/01-cerradura/voz/`
+  · tiempos: `public/videos/despiece/01-cerradura/captions/voz.json` y `src/canales/despiece/episodios/01-cerradura/vozReal.json`.
 
-## 5. Voz
-Todavía no se generó: **0 créditos**. Propuesta: Matías `wW8LJCzyKXPO6ftZkssL`, `eleven_multilingual_v2`, velocidad 1,0, 449 caracteres (≈ 449 créditos).
+## Cambios al guion (respecto del v5)
+- Frase 3: «el cilindro **está trabado por** columnas de pernos» → «el cilindro **lo traban** columnas de pernos» (más corta, igual sentido).
+- Frase 4: «y cada corte, a una altura distinta» → «y cada corte, **a otra altura**».
+- Frases 6 y 7 van en una sola línea de la toma («…esta línea… el cilindro gira») y se separan al cortar.
+- Las frases 1 y 10 (las del loop) quedaron igual.
 
-## 6. Episodio 2
-Copiar `episodios/01-cerradura/` y cambiar: el objeto SVG (`Cerradura.tsx` → `<Objeto>.tsx`), `data.json`, `timeline.ts`, `script.ts`.
-`CerraduraEpisode.tsx` solo cambia de nombre e importa el objeto nuevo. El motor no se toca.
+## Desvíos
+- **Centrado:** el conjunto (cerradura + llave) se centra en **x = 480** (el centro de la zona segura 60–900), no en 540: agrandado un 12 %
+  ocupa 71–889 px; centrado en 540 se pasaría de x = 900. Se acortó la cabeza de la llave para que entre.
+- **Vista de frente del giro:** la cabeza de la llave se dibuja como una paleta con agujero (icónica) para que se lea como llave; vista de canto real sería una línea.
+- **«Mirá»:** la apertura tiene que pasar antes de f12, así que en «Mirá» las mitades del corte se separan y vuelven (y hay un golpe de cámara).
+- Los dos tramos al límite del v2 (13,9 s y 34,6 s) ya no existen: el tramo de rótulos se eliminó y el final tiene los saltos de los números.
+- Subtítulos sin palabra en amarillo (el naranja es el único acento y el QA solo detecta amarillo).
 
-## 7. Desvíos
-- **Guion recortado** de ≈ 95 a 82 palabras (449 caracteres): el borrador daba ≈ 39 s de voz.
-- **Las columnas suben juntas** cuando entra la llave (es lo físico: se apoyan en los dientes), y después **se encienden de a una** (5 tics de 0,8 s). El arranque pedía que subieran de a una.
-- **Sin palabras en amarillo** en los subtítulos: el naranja es el único acento y el QA solo detecta el amarillo.
-- **Etiquetas en 42 px** (el arranque pedía ≥ 24; `APRENDIZAJES.md` pide ≥ 56 para el texto principal: los títulos van en 84 px).
-- `scripts/qa-subtitulos.mjs` es un archivo existente: le agregué 2 entradas en `COMPS` (sin eso, `npm run qa:subs -- DespieceCerradura` no corre). Es lo mismo que pide `guiones/Ciberseguridad/README.md` para cada episodio.
-- **Zona segura:** uso `src/canal/zonaSegura.ts` para las guías, no el `SafeZoneOverlay` de MilAños (tiene otros límites: 80–940, 240–1420).
-- `vozReal.json` en la carpeta del episodio (vacío hasta generar la voz): es un dato generado, no un archivo más para el episodio 2.
-
-## 8. Qué tenés que mirar y escuchar
-- El borrador `01-cerradura-sin-voz-v2.mp4`, de punta a punta: el ritmo, si se entiende el mecanismo y si la cerradura se ve lo bastante grande (ocupa ~60 % del ancho).
-- La vista exterior del cuadro 0 (cilindro en 3/4): si te convence como «objeto entero».
-- Los efectos (tics, clac, rebote): son sintetizados.
-- El guion final (abajo y en `guion.json`) antes de darme el OK para la voz.
-
-## 9. Aprendizajes
-Sumados en `guiones/APRENDIZAJES.md` § Despiece.
+## Qué tenés que mirar y escuchar
+- **Escuchar entero** `01-cerradura-v2.mp4`: yo no puedo escuchar audio, así que verifiqué la voz por la transcripción (coincide entera), los niveles y la
+  ausencia de silencios largos, pero no el tono. Fijate si Matías suena natural y si las pausas acortadas no suenan cortadas.
+- Los efectos: whoosh, tics crecientes, clac fuerte y bzz (todos sintetizados por código). Fijate si el clac se siente «satisfactorio».
+- El cuadro 0 como portada, y si la vista de frente del giro se entiende.
+- El loop: ponelo en repetición y escuchá si la frase final empalma con la primera.

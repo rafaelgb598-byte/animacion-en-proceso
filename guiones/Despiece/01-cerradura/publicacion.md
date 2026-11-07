@@ -1,21 +1,24 @@
-# Despiece 01 · Publicación (borrador, revisar antes de subir)
+# Despiece 01 · Publicación
 
-**Título:** ¿Cómo sabe tu cerradura que es TU llave? 🔑
-**Alternativas:** «Tu llave no es una llave» · «Abrimos una cerradura por dentro»
+**Título:** Tu llave es una contraseña 🔑
+**Alternativas (< 50 caracteres):**
+- ¿Cómo sabe la cerradura que es TU llave? (40)
+- Abrimos una cerradura: ¿cuál llave abre? (40)
 
-**Descripción:**
-Abrimos la cerradura de cilindro que usás todos los días: un rotor que tiene que girar, columnas de pernos con resortes que lo traban
-y una llave que no «abre» nada: solo sube cada columna a la altura justa.
-Fuente: «Pin tumbler lock», Wikipedia.
-Próximo despiece: la llave doble paleta.
+**Descripción (2 líneas):**
+Abrimos la cerradura que usás todos los días: tu llave no abre nada, solo sube cada columna de pernos a la altura justa.
+Fuente: «Pin tumbler lock», Wikipedia. #shorts #cerradura #ingenieria
 
-**Hashtags:** #Despiece #ComoFunciona #Cerradura #Ingenieria #Shorts
+**Portada sugerida:** el cuadro 0 (la llave con 3 6 2 7 4 en naranja y «Tu llave tiene una contraseña»).
+
+**Comentario fijado:** ¿Cuál era la que abría, la 1 o la 2? 👇
 
 ## Contenido alterado o sintético
 **«No».** YouTube no permite fijarlo por defecto: marcarlo a mano en cada video.
-Motivo: el video es una animación vectorial hecha por código (Remotion), los efectos de sonido están sintetizados por código y **no hay
-música** ni **imágenes o video de IA fotorrealistas**. La narración es una voz sintética de ElevenLabs que no imita a ninguna persona real y
-no presenta como real nada que no pasó. Si algún día se suma música generada por IA o imágenes de IA fotorrealistas, pasa a «Sí».
+Motivo: es una animación vectorial hecha por código (Remotion), sin imágenes ni video de IA fotorrealistas y sin música (de IA ni
+de terceros); los efectos están sintetizados por código. La voz es sintética (ElevenLabs, Matías), pero no muestra a una persona real
+diciendo algo que no dijo ni presenta como real algo que no pasó. Si algún día se suma música generada por IA o imágenes de IA
+fotorrealistas, pasa a «Sí».
 
 ## Créditos
-Sin música de terceros. Efectos: `scripts/gen-sfx-despiece.mjs` (propios).
+Sin música. Efectos: `scripts/gen-sfx-despiece.mjs` (propios). Voz: ElevenLabs, «Matías – Argentine Customer Service».

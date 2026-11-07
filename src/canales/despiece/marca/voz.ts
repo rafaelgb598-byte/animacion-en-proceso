@@ -26,9 +26,9 @@ export type BloqueVoz = {
 
 /**
  * Ritmo de planificación sin voz (caracteres/s). Medida de referencia del repo: Donovan ES ≈ 13,9 c/s a velocidad 1,0
- * (guiones/APRENDIZAJES.md). Matías todavía no se midió: se planifica con 14 y se corrige con la voz real.
+ * (guiones/APRENDIZAJES.md). Matías todavía no se midió: se planifica con 15 y se corrige con la voz real.
  */
-export const CPS_PLAN = 14;
+export const CPS_PLAN = 15;
 
 export const duracionBloque = (b: BloqueVoz) => b.duracion ?? b.dicho.length / CPS_PLAN;
 

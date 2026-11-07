@@ -1,5 +1,5 @@
 // Piezas mecánicas paramétricas: Spring (resorte), Pin (perno / contraperno) y Gear (engranaje).
-import React from "react";
+import React, { useId } from "react";
 import { z } from "zod";
 import { ALPHA, COLOR, STROKE } from "../marca/theme";
 
@@ -49,6 +49,8 @@ export type PinProps = z.input<typeof pinSchema>;
 
 export const Pin: React.FC<PinProps> = (raw) => {
   const p = pinSchema.parse(raw);
+  // id único por instancia (la hoja de contactos dibuja el mismo perno en varios fotogramas)
+  const clip = `pin-${p.id}-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const w = p.ancho;
   const x0 = p.x - w / 2;
   const h = p.yBottom - p.yTop;
@@ -60,20 +62,20 @@ export const Pin: React.FC<PinProps> = (raw) => {
   return (
     <g>
       <defs>
-        <clipPath id={`pin-${p.id}`}>
+        <clipPath id={clip}>
           <path d={d} />
         </clipPath>
       </defs>
       {p.resalte ? <path d={d} fill="none" stroke={p.resalte} strokeWidth={STROKE.piece + 8} opacity={0.45} /> : null}
       <path d={d} fill={p.relleno} />
       {p.tipo === "contra" ? (
-        <g clipPath={`url(#pin-${p.id})`}>
+        <g clipPath={`url(#${clip})`}>
           {Array.from({ length: Math.ceil((h + w) / 14) + 1 }, (_, i) => (
             <line key={i} x1={x0 - 4} y1={p.yTop + i * 14} x2={x0 + w + 4} y2={p.yTop + i * 14 - w - 8} stroke={ALPHA.hatch} strokeWidth={STROKE.thin} />
           ))}
         </g>
       ) : (
-        <rect x={x0 + w * 0.62} y={p.yTop + 6} width={w * 0.16} height={Math.max(0, h - r - 10)} fill={ALPHA.shade} clipPath={`url(#pin-${p.id})`} />
+        <rect x={x0 + w * 0.62} y={p.yTop + 6} width={w * 0.16} height={Math.max(0, h - r - 10)} fill={ALPHA.shade} clipPath={`url(#${clip})`} />
       )}
       <path d={d} fill="none" stroke={p.resalte ?? p.trazo} strokeWidth={STROKE.piece} strokeLinejoin="round" />
     </g>

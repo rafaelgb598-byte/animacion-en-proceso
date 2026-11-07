@@ -1,0 +1,17 @@
+{
+  "origen": "ElevenLabs (plugin) · toma1 · eleven_multilingual_v2 · Matías wW8LJCzyKXPO6ftZkssL · velocidad 1,0",
+  "scenes": {
+    "toma": {
+      "rawPeakDb": -5.58,
+      "mastering": {
+        "driveDb": 6,
+        "ceilingDb": -3,
+        "lookaheadMs": 2,
+        "releaseMs": 60,
+        "maxGainReductionDb": 6,
+        "peakDb": -3
+      },
+      "durationSeconds": 32.322
+    }
+  }
+}

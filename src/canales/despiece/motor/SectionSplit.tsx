@@ -1,5 +1,5 @@
 // Parte un objeto SVG en dos mitades por una línea horizontal; las mitades se separan y dejan ver el corte transversal.
-import React from "react";
+import React, { useId } from "react";
 import { z } from "zod";
 import { LIENZO } from "../../../canal/zonaSegura";
 
@@ -25,26 +25,28 @@ export type SectionSplitProps = z.input<typeof sectionSplitSchema> & {
 
 export const SectionSplit: React.FC<SectionSplitProps> = ({ exterior, interior, ...raw }) => {
   const p = sectionSplitSchema.parse(raw);
+  // id único por instancia (la hoja de contactos dibuja el mismo objeto en varios fotogramas)
+  const id = `${p.id}-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const s = (p.apertura * p.separacion) / 2;
   const W = LIENZO.w;
   const H = LIENZO.h;
   return (
     <g>
       <defs>
-        <clipPath id={`${p.id}-arriba`}>
+        <clipPath id={`${id}-arriba`}>
           <rect x={0} y={0} width={W} height={p.corteY} />
         </clipPath>
-        <clipPath id={`${p.id}-abajo`}>
+        <clipPath id={`${id}-abajo`}>
           <rect x={0} y={p.corteY} width={W} height={H - p.corteY} />
         </clipPath>
       </defs>
       {p.opacidadInterior > 0 ? <g opacity={p.opacidadInterior}>{interior}</g> : null}
       {p.opacidadExterior > 0 ? (
         <g opacity={p.opacidadExterior}>
-          <g transform={`translate(0 ${-s})`} clipPath={`url(#${p.id}-arriba)`}>
+          <g transform={`translate(0 ${-s})`} clipPath={`url(#${id}-arriba)`}>
             {exterior}
           </g>
-          <g transform={`translate(0 ${s})`} clipPath={`url(#${p.id}-abajo)`}>
+          <g transform={`translate(0 ${s})`} clipPath={`url(#${id}-abajo)`}>
             {exterior}
           </g>
         </g>

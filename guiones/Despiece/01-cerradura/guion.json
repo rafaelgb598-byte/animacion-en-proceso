@@ -1,18 +1,20 @@
 {
-  "episodio": "Despiece 01 · ¿Cómo sabe tu cerradura que es TU llave?",
-  "voz": { "nombre": "Matías – Argentine Customer Service", "voice_id": "wW8LJCzyKXPO6ftZkssL", "modelo": "eleven_multilingual_v2", "velocidad": 1.0 },
-  "estado": "guion final PROPUESTO (falta el OK del usuario para generar la voz)",
-  "caracteres": 449,
-  "palabras": 82,
-  "nota": "Recortado del borrador del arranque v4 (≈ 95 palabras, ≈ 540 caracteres ≈ 39 s a 14 c/s) para que el video entre en 34–38 s. Los tiempos son los planificados a 14 c/s; con la voz real, timeline.ts se ajusta solo a la alineación de ElevenLabs.",
+  "episodio": "Despiece 01 · Tu llave es una contraseña (cerradura de cilindro)",
+  "version": "guion v2 (documento v5) · voz real",
+  "voz": { "nombre": "Matías – Argentine Customer Service", "voice_id": "wW8LJCzyKXPO6ftZkssL", "modelo": "eleven_multilingual_v2", "ajustes": "los de la voz por defecto", "velocidad": 1.0, "toma": "toma1 (única)", "creditos": 448 },
+  "caracteres": 440,
+  "palabras": 80,
+  "nota": "Una sola toma con todo el guion (continuidad natural); Scribe da los tiempos por palabra y scripts/voz-despiece.mjs la corta en 10 bloques. Los segundos son los del video final (29,8 s): las pausas entre frases se acortaron por código, sin regenerar.",
   "bloques": [
-    { "id": "v1", "t": 0.1, "voz": "¿Cómo sabe tu cerradura que esta es TU llave?", "pantalla": "Pregunta «¿Cómo sabe que / es TU llave?» desde el cuadro 0; la línea de corte (30 %) termina de recorrer la cerradura y la abre antes de 1,5 s; la llave asoma desde la derecha." },
-    { "id": "v2", "t": 3.4, "voz": "Abrámosla.", "pantalla": "Corte transversal: carcasa, rotor, 5 columnas (perno + contraperno + resorte); los resortes laten." },
-    { "id": "v3", "t": 4.3, "voz": "Adentro, un cilindro tiene que girar. Lo traban estas columnas de pernos con resortes.", "pantalla": "Etiquetas que se dibujan solas: ROTOR («cilindro»), CARCASA («girar»), PERNOS («pernos»), RESORTES («resortes»)." },
-    { "id": "v4", "t": 10.5, "voz": "Cada columna está partida en dos, a una altura distinta.", "pantalla": "Highlight sobre la columna del medio (el resto al 35 %): CONTRAPERNO y PERNO; cota del perno y su valor (2); después las otras cuatro cotas: 3 6 2 7 4." },
-    { "id": "v5", "t": 14.7, "voz": "El truco: tu llave no abre nada. Solo sube cada columna a la altura justa.", "pantalla": "Zoom 1,00 → 1,08 sobre los dientes de la llave; en «sube», la llave entra del todo y los pernos suben montados en sus dientes." },
-    { "id": "v6", "t": 20.2, "voz": "Cuando todos los cortes tocan esta línea, el cilindro queda libre.", "pantalla": "Cada corte se enciende en naranja sobre la línea de corte, de a uno (5 tics de 0,8 s); etiqueta LÍNEA DE CORTE; destello; el rotor gira 90° con un clac." },
-    { "id": "v7", "t": 26.3, "voz": "Con otra llave, basta una sola columna corrida y no gira.", "pantalla": "El rotor vuelve, sale la llave, entra otra: una columna queda corrida (en rojo), el rotor intenta girar y rebota." },
-    { "id": "v8", "t": 30.6, "voz": "Tu llave no es una llave: es una contraseña de alturas.", "pantalla": "En pantalla «TU LLAVE / 3 6 2 7 4»; después el aviso «PRÓXIMO DESPIECE · La llave doble paleta» (sin voz) y el cierre en loop." }
+    { "id": "v01", "voz": "Tu llave tiene una contraseña escondida.", "pantalla": "Cuadro 0: la llave grande y centrada con 3 6 2 7 4 en naranja sobre sus dientes y «Tu llave tiene una contraseña»; la línea de corte ya cruza. Antes de f12 la línea barre con un whoosh, la cerradura aparece en corte y los números bajan a su columna." },
+    { "id": "v02", "voz": "Mirá.", "pantalla": "Las mitades del corte se separan y vuelven; golpe de cámara." },
+    { "id": "v03", "voz": "Adentro, el cilindro lo traban columnas de pernos, empujadas por resortes.", "pantalla": "Rótulo PERNO en «pernos»; CONTRAPERNO y latido de los resortes en «resortes»." },
+    { "id": "v04", "voz": "Cada columna está partida en dos, y cada corte, a otra altura.", "pantalla": "Highlight sobre la columna del medio (el resto al 35 %) y las cotas de las cinco columnas, cada una a otra altura." },
+    { "id": "v05", "voz": "Los dientes de tu llave no abren nada: solo suben cada columna a la altura justa.", "pantalla": "Zoom a los dientes en «dientes»; en «suben» la llave entra y los pernos suben montados en ellos." },
+    { "id": "v06", "voz": "Cuando todos los cortes tocan esta línea…", "pantalla": "5 tics crecientes (cada corte se enciende en naranja) y destello + rótulo LÍNEA DE CORTE en «línea»." },
+    { "id": "v07", "voz": "…el cilindro gira.", "pantalla": "En 6 frames, vista de frente: la boca con la llave gira 90°; clac fuerte y sacudón de 4 px en «gira»." },
+    { "id": "v08", "voz": "¿Y cuál de estas abre?", "pantalla": "Dos llaves casi iguales, 1 y 2, y «¿Cuál abre?» (≈ 1,8 s)." },
+    { "id": "v09", "voz": "Basta una sola columna corrida… y no gira.", "pantalla": "Entra la 2: la columna corrida se marca en rojo en «corrida»; en «gira» el conjunto rebota con un bzz metálico." },
+    { "id": "v10", "voz": "Tu llave no es una llave: es una contraseña de alturas.", "pantalla": "«TU LLAVE 3 6 2 7 4»; los números saltan de a uno (con su columna); chip «Próximo despiece: la llave doble paleta» en «contraseña»; la llave vuelve al cuadro 0 (loop)." }
   ]
 }

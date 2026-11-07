@@ -154,6 +154,28 @@ const recipes = {
     add(x, env(sine(0.25, (t) => 660 + 500 * Math.min(1, t / 0.05), 0.6), (t) => Math.min(1, t / 0.005) * Math.exp(-t * 18)));
     return x;
   },
+  // whoosh: el corte que abre la cerradura en el gancho (0,4 s): soplo que barre de grave a agudo + chasquido final
+  whoosh(rnd) {
+    const sec = 0.4;
+    const n = Math.round(sec * SR);
+    const x = env(biquad(pink(n, rnd), "bp", (i) => 300 + 4200 * Math.pow(i / n, 1.6), 1.4), (t) => Math.sin(Math.PI * Math.min(1, t / sec)) ** 1.5);
+    add(x, click(rnd, 3, 2500), Math.round(0.3 * SR), 0.5);
+    return x;
+  },
+  // bzz: la llave incorrecta, zumbido metálico seco (0,35 s)
+  bzz() {
+    const sec = 0.35;
+    const x = buf(sec);
+    // diente de sierra a 110 Hz con armónicos ásperos, recortado
+    for (let i = 0; i < x.length; i++) {
+      const t = i / SR;
+      const saw = 2 * ((t * 110) % 1) - 1;
+      x[i] = Math.tanh(3 * saw) * 0.5 * Math.min(1, t / 0.01) * Math.exp(-t * 6);
+    }
+    const b = biquad(x, "bp", 1400, 0.9);
+    add(b, metal(0.2, 180, [[1, 0.6], [2.2, 0.3]], 30), 0, 0.6);
+    return b;
+  },
   // ambiente: ruido rosa pasabajos 300 Hz (40 s)
   ambiente(rnd) {
     const n = Math.round(40 * SR);
@@ -164,4 +186,23 @@ const recipes = {
 for (const [i, [name, fn]] of Object.entries(recipes).entries()) {
   const rnd = mulberry32(0xde5b1 + i * 97);
   writeWav(name, fn(rnd), { fadeMs: name === "ambiente" ? 400 : 3, peakDb: name === "ambiente" ? -6 : -1 });
+}
+
+// tics crecientes: cada columna un poco más aguda y más fuerte que la anterior (la progresión termina en el clac)
+for (let k = 0; k < 5; k++) {
+  const rnd = mulberry32(0x71c0 + k * 31);
+  const x = buf(0.16);
+  add(x, click(rnd, 2, 3000), 0, 0.8);
+  add(x, metal(0.16, 1900 * Math.pow(1.12, k), [[1, 0.6], [1.58, 0.35], [2.31, 0.2]], 50), 0, 0.7);
+  writeWav(`tic${k + 1}`, x, { fadeMs: 3, peakDb: -7 + k * 1.5 });
+}
+// clac fuerte: el giro de frente (más grave y con más cuerpo que el clac)
+{
+  const rnd = mulberry32(0xc1ac);
+  const x = buf(0.5);
+  add(x, click(rnd, 6, 700), 0, 1);
+  add(x, metal(0.5, 150, [[1, 1], [2.4, 0.5], [4.1, 0.25]], 12), 0, 1);
+  add(x, env(biquad(white(Math.round(0.08 * SR), rnd), "lp", 500), (t) => Math.exp(-t * 40)), 0, 0.9);
+  add(x, click(rnd, 3, 2000), Math.round(0.05 * SR), 0.7);
+  writeWav("clac-fuerte", x, { fadeMs: 3, peakDb: -0.5 });
 }

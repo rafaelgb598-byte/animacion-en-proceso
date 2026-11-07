@@ -36,6 +36,8 @@ export type DespieceEpisodeProps = {
   ambiente: string | null;
   /** hoja de contactos: escena + subtítulos, sin audio */
   conSubtitulos?: boolean;
+  /** ducking: factor (0..1) para efectos y ambiente en cada frame del video (1 = sin bajar) */
+  duck?: (f: number) => number;
   /** la escena: elementos SVG en coordenadas del lienzo */
   children: React.ReactNode;
 };
@@ -68,7 +70,8 @@ const useFuentesListas = () => {
   }, [handle]);
 };
 
-export const DespieceEpisode: React.FC<DespieceEpisodeProps> = ({ capa, showSafeZones, palabras, subtitulos, sfx, voz, ambiente, conSubtitulos = false, children }) => {
+export const DespieceEpisode: React.FC<DespieceEpisodeProps> = ({ capa, showSafeZones, palabras, subtitulos, sfx, voz, ambiente, conSubtitulos = false, duck, children }) => {
+  const k = duck ?? (() => 1);
   useFuentesListas();
   const f = useCurrentFrame();
   const escena = capa === "todo" || capa === "escena";
@@ -97,10 +100,10 @@ export const DespieceEpisode: React.FC<DespieceEpisodeProps> = ({ capa, showSafe
       ) : null}
       {capa === "todo" ? (
         <>
-          {ambiente ? <Audio src={staticFile(ambiente)} volume={MEZCLA.ambiente} /> : null}
+          {ambiente ? <Audio src={staticFile(ambiente)} volume={(fr) => MEZCLA.ambiente * k(fr)} /> : null}
           {sfx.map((c) => (
             <Sequence key={c.id} from={c.f} durationInFrames={c.dur ?? 45} layout="none" name={`sfx ${c.id}`}>
-              <Audio src={staticFile(c.archivo)} volume={(c.volumen ?? 1) * MEZCLA.sfx} />
+              <Audio src={staticFile(c.archivo)} volume={(fr) => (c.volumen ?? 1) * MEZCLA.sfx * k(c.f + fr)} />
             </Sequence>
           ))}
           {voz.map((b) =>

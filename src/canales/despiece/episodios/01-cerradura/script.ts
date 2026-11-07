@@ -1,21 +1,23 @@
-// Episodio 01 · «¿Cómo sabe tu cerradura que es TU llave?» — guion (voz de Matías) y textos en pantalla.
-// Borrador v4 del arranque, recortado para entrar en 34–38 s a ritmo natural (desvío anotado en ENTREGA.md).
+// Episodio 01 · «Tu llave es una contraseña» — guion v2 (voz de Matías) y textos en pantalla.
+// Guion del documento v5 con 2 ajustes de largo (frases 3 y 4; anotados en ENTREGA.md). Frases 1 y 10 = las del loop.
 // La copia de lectura humana está en guiones/Despiece/01-cerradura/guion.json.
 import type { BloqueVoz } from "../../marca/voz";
 import vozReal from "./vozReal.json";
 
-export const VOZ_IDS = ["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8"] as const;
+export const VOZ_IDS = ["v01", "v02", "v03", "v04", "v05", "v06", "v07", "v08", "v09", "v10"] as const;
 export type VozId = (typeof VOZ_IDS)[number];
 
-const TEXTO: Record<VozId, string> = {
-  v1: "¿Cómo sabe tu cerradura que esta es TU llave?",
-  v2: "Abrámosla.",
-  v3: "Adentro, un cilindro tiene que girar. Lo traban estas columnas de pernos con resortes.",
-  v4: "Cada columna está partida en dos, a una altura distinta.",
-  v5: "El truco: tu llave no abre nada. Solo sube cada columna a la altura justa.",
-  v6: "Cuando todos los cortes tocan esta línea, el cilindro queda libre.",
-  v7: "Con otra llave, basta una sola columna corrida y no gira.",
-  v8: "Tu llave no es una llave: es una contraseña de alturas.",
+export const TEXTO: Record<VozId, string> = {
+  v01: "Tu llave tiene una contraseña escondida.",
+  v02: "Mirá.",
+  v03: "Adentro, el cilindro lo traban columnas de pernos, empujadas por resortes.",
+  v04: "Cada columna está partida en dos, y cada corte, a otra altura.",
+  v05: "Los dientes de tu llave no abren nada: solo suben cada columna a la altura justa.",
+  v06: "Cuando todos los cortes tocan esta línea…",
+  v07: "…el cilindro gira.",
+  v08: "¿Y cuál de estas abre?",
+  v09: "Basta una sola columna corrida… y no gira.",
+  v10: "Tu llave no es una llave: es una contraseña de alturas.",
 };
 
 type Real = Partial<Record<VozId, { duracion: number; palabras: { t: string; s: number; e: number }[]; audio: string }>>;
@@ -32,10 +34,11 @@ export const HAY_VOZ_REAL = VOZ_IDS.every((id) => Boolean(REAL[id]));
 
 /** textos en pantalla (no repiten la voz palabra por palabra) */
 export const PANTALLA = {
-  pregunta: ["¿Cómo sabe que", "es TU llave?"],
-  rotulos: { carcasa: "Carcasa", resortes: "Resortes", rotor: "Rotor", pernos: "Pernos", contra: "Contra-\nperno", perno: "Perno", linea: "Línea\nde corte" },
+  gancho: ["Tu llave tiene", "una contraseña"],
+  rotulos: { contra: "Contra-\nperno", perno: "Perno", linea: "Línea\nde corte" },
+  cual: "¿Cuál abre?",
   final: "TU LLAVE",
 } as const;
 
 /** subtítulos: sin énfasis (el naranja es solo de la línea de corte y el QA solo detecta amarillo) */
-export const SUBS = { enfasis: [] as string[], remates: ["Abrámosla."] };
+export const SUBS = { enfasis: [] as string[], remates: ["Mirá."] };

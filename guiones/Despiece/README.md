@@ -4,16 +4,16 @@ Cuenta: `despiece.tv`. **Solo en español rioplatense, con voseo** (nada de vers
 Sin Tomi ni nada de GiroDato (cafetería, mesa, tarjetas). Prioridad YouTube Shorts, después Instagram.
 
 ## Fórmula del episodio (≈ 36 s, 34–38 s)
-1. **Cuadro 0:** el objeto entero, centrado, con la **línea de corte naranja ya recorriéndolo** (30 %) y la pregunta escrita. Nada quieto.
-2. **Antes de 1,5 s:** la línea completa el corte y el objeto se abre en corte transversal (las mitades se separan ~40 px).
-3. **Las piezas:** etiquetas que se dibujan solas, una por vez, colgadas de la palabra que las nombra.
+1. **Cuadro 0 = la revelación:** lo más intrigante del final, grande y centrado (en el 01, la llave con su «contraseña» 3 6 2 7 4), con la frase escrita y la **línea de corte naranja ya cruzando**. Nada quieto.
+2. **Antes de f12 (0,4 s):** la línea barre con un whoosh y abre el objeto en corte transversal.
+3. **Las piezas:** solo los rótulos necesarios, **mientras pasa la acción** y en la palabra que los nombra (nada de tramo de «clase»).
 4. **El detalle:** `Highlight` sobre una pieza (el resto al 35 %) + cotas.
 5. **El truco (punto medio):** zoom suave (1,00 → 1,08) y la explicación del mecanismo.
 6. **La revelación:** el mecanismo funciona paso a paso, con un sonido por evento.
 7. **El contraejemplo:** qué pasa cuando falla (rojo `#E5484D`, el único otro color).
 8. **Frase final + `TeaserChip`** («Próximo despiece: …», solo en pantalla) y **loop**: el objeto se cierra y la línea vuelve a la posición del cuadro 0.
 
-Regla de ritmo: ningún tramo de más de 1 s sin cambios (`node scripts/qa-tramos-muertos.mjs <mp4> <dir>`).
+Duración: 28–31 s. Regla de ritmo: ningún tramo de más de 1 s sin cambios, algo nuevo cada 2–3 s (`node scripts/qa-tramos-muertos.mjs <mp4> <dir>`).
 Cada escena se piensa como **módulo** para unirla después en un video largo de 8–12 min con narración nueva.
 
 ## Marca (todo vive en `src/canales/despiece/marca/theme.ts`)
@@ -22,7 +22,7 @@ Cada escena se piensa como **módulo** para unirla después en un video largo de
 | Estética | Plano técnico vivo, 2,5D (vectorial con profundidad falsa). No competimos en 3D realista. |
 | Paleta | azul `#0B2545` (fondo) · papel `#F4EBD9` (piezas y texto) · naranja `#FF6B1A` (**un solo acento**: la línea de corte y lo que toca) · grafito `#2B2B2B` (trazos) · rojo `#E5484D` solo para el error |
 | Tipografía | Space Grotesk (títulos y subtítulos) · IBM Plex Mono (etiquetas y cotas). Títulos ≥ 64 px, etiquetas ≥ 36 px. |
-| Narración | Matías (`wW8LJCzyKXPO6ftZkssL`, «Matías – Argentine Customer Service»), curiosa, precisa, sin exagerar: «el amigo ingeniero que te desarma la tostadora». Velocidad 1,0, mastering suave. |
+| Narración | Matías (`wW8LJCzyKXPO6ftZkssL`, «Matías – Argentine Customer Service»; ≈ 13,8 caracteres/s a 1,0; plugin de ElevenLabs + Scribe + `scripts/voz-despiece.mjs`), curiosa, precisa, sin exagerar: «el amigo ingeniero que te desarma la tostadora». Velocidad 1,0, mastering suave. |
 | Prohibido | imágenes de IA, logos o marcas reales en los objetos, miedo, salud, política, texto en inglés |
 
 Subtítulos: el sistema compartido (`src/canal/subtitulos/`) con la fuente del canal y **sin palabras en amarillo** (el naranja es de la

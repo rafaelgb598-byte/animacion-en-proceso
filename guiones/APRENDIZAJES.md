@@ -68,6 +68,14 @@ Lo que fuimos aprendiendo video a video. Leer antes de escribir un guion; sumar 
 - **Mecanismo físico de verdad, por código:** los pernos se apoyan en el perfil de la llave (`min(reposo, canto)`) en cada fotograma, así la entrada de la llave, la llave mal cortada y el giro (lo de adentro del rotor se aplasta con cos θ) salen solos y son correctos. Que las columnas «suban de a una» no es físico (al entrar la llave suben todas juntas): se resolvió con un barrido de luces, una por columna. *(01 sin voz)*
 - **Tramo muerto encontrado por medición:** f97–127 (0,34 % de cambio a 1 s) entre que la llave llega y la pregunta se va; se estiró la entrada de la llave. `scripts/qa-tramos-muertos.mjs` lo mide sobre el MP4 (también el gancho f0→f10 y el loop). *(01 sin voz)*
 - Etiquetas en Plex Mono 42 px: a 360 px de ancho se leen; 38 px quedaban justas. *(01 sin voz)*
+- **Gancho = la revelación del final** (v5): la llave con su «contraseña» 3 6 2 7 4 en el cuadro 0, y la línea abre la cerradura antes de f12. El v2 tenía el primer segundo casi quieto y un cilindro cerrado que no se reconocía como cerradura. *(01 v5)*
+- **Sin tramo de «clase»:** las piezas se nombran mientras pasa la acción (3 rótulos, en la palabra). Se cortaron 7 s de rótulos uno por uno. *(01 v5)*
+- **El giro se entiende de frente**, no de costado (de costado el rotor queda como un bloque rayado): corte → vista de frente en 6 frames, 90°, clac fuerte y sacudón de 4 px. Los tics crecen (tono y volumen) hasta el clac. *(01 v5)*
+- **«¿Cuál abre?»** con dos llaves casi iguales numeradas, para sumar comentarios (comentario fijado: «¿Cuál era la que abría, la 1 o la 2?»). *(01 v5)*
+- **Matías a velocidad 1,0 ≈ 13,8 caracteres/s** (440 caracteres = 32,3 s en una toma). Para un Short de 28–31 s con acciones sin voz: una toma entera + Scribe y cortar por frase con pausas de ≈ 0,3 s (`scripts/voz-despiece.mjs`) dejó 26,8 s de voz sin regenerar. 1 toma = 448 créditos. *(01 v5)*
+- **Hoja de contactos y `clipPath`:** con varios fotogramas en el mismo documento, los ids se pisan (todos usaban el `clipPath` del primero). Ids con `useId()`. *(01 v5)*
+- **Los dos tramos quietos aparecieron recién con la voz:** el final (código + chip) y «Tu llave no es una llave». Se resolvieron con los números del código saltando de a uno (con un tic) y un acercamiento lento; medir `qa-tramos-muertos` también sobre el MP4 con voz. *(01 v5)*
+- **Loop exacto:** las rampas del cierre tienen que terminar en `DURACION - 1` (no en `DURACION`), así el último fotograma es igual al f0 (diferencia 0,00 %). *(01 v5)*
 
 ## Otro
 

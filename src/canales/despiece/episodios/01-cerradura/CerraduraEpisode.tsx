@@ -3,7 +3,7 @@
 import React from "react";
 import type { CalculateMetadataFunction } from "remotion";
 import { z } from "zod";
-import { SFX } from "../../marca/sfx";
+import { MEZCLA, SFX } from "../../marca/sfx";
 import { palabrasDelVideo } from "../../marca/voz";
 import { DespieceEpisode, episodioSchema, HojaContactos, hojaTam, type CueSfx } from "../../motor";
 import { Cerradura } from "./Cerradura";
@@ -25,25 +25,32 @@ const armar = (conVoz: boolean) => {
 export const cerraduraDuracion = (conVoz: boolean) => armar(conVoz).T.DURACION;
 export const cerraduraMetadata: CalculateMetadataFunction<CerraduraProps> = ({ props }) => ({ durationInFrames: cerraduraDuracion(props.conVoz ?? true) });
 
-/** efectos colgados de los eventos del timeline */
+/** efectos colgados de los eventos del timeline (los tics crecen hasta el clac) */
 const sfxDe = (T: Timeline): CueSfx[] => [
-  { id: "corte", f: 0, archivo: SFX.corte, volumen: 0.7, dur: 32 },
-  { id: "apertura", f: T.APERTURA, archivo: SFX.apertura, volumen: 0.9 },
-  { id: "llave-asoma", f: T.LLAVE_ASOMA, archivo: SFX.llave, volumen: 0.45 },
-  ...Object.entries(T.ROTULOS).map(([k, f]) => ({ id: `trazo-${k}`, f, archivo: SFX.trazo, volumen: 0.6 })),
-  { id: "trazo-contra", f: T.ROTULO_CONTRA, archivo: SFX.trazo, volumen: 0.6 },
+  { id: "whoosh", f: 0, archivo: SFX.whoosh, volumen: 1, dur: 14 },
+  { id: "apertura", f: T.CORTE_FIN - 2, archivo: SFX.apertura, volumen: 0.6 },
+  { id: "mira", f: T.RESPIRO, archivo: SFX.apertura, volumen: 0.45 },
   { id: "trazo-perno", f: T.ROTULO_PERNO, archivo: SFX.trazo, volumen: 0.6 },
+  { id: "trazo-contra", f: T.ROTULO_CONTRA, archivo: SFX.trazo, volumen: 0.6 },
+  { id: "trazo-cota", f: T.COTA_FOCO, archivo: SFX.trazo, volumen: 0.5 },
   { id: "llave-entra", f: T.LLAVE_ENTRA, archivo: SFX.llave, volumen: 0.7 },
-  ...T.LUCES.map((f, i) => ({ id: `tic-${i}`, f, archivo: SFX.tic, volumen: 0.9 })),
-  { id: "destello", f: T.DESTELLO, archivo: SFX.destello, volumen: 0.6 },
-  { id: "clac", f: T.GIRO_FIN - 4, archivo: SFX.clac, volumen: 1 },
-  { id: "llave-sale", f: T.LLAVE_SALE, archivo: SFX.llave, volumen: 0.35 },
-  { id: "mala-entra", f: T.MALA_ENTRA, archivo: SFX.llave, volumen: 0.55 },
-  { id: "rebote", f: T.INTENTO, archivo: SFX.rebote, volumen: 1 },
+  ...T.LUCES.map((f, i) => ({ id: `tic-${i}`, f, archivo: [SFX.tic1, SFX.tic2, SFX.tic3, SFX.tic4, SFX.tic5][i], volumen: 1 })),
+  { id: "destello", f: T.DESTELLO, archivo: SFX.destello, volumen: 0.7 },
+  { id: "clac", f: T.CLAC - 1, archivo: SFX.clacFuerte, volumen: 1.6 },
+  { id: "llave-sale", f: T.LLAVE_SALE, archivo: SFX.llave, volumen: 0.3 },
+  { id: "cual", f: T.CUAL, archivo: SFX.chip, volumen: 0.6 },
+  { id: "mala-entra", f: T.MALA_ENTRA, archivo: SFX.llave, volumen: 0.5 },
+  { id: "rojo", f: T.MALA_MARCA, archivo: SFX.tic1, volumen: 0.7 },
+  { id: "bzz", f: T.INTENTO, archivo: SFX.bzz, volumen: 1.3 },
+  { id: "rebote", f: T.INTENTO + 1, archivo: SFX.rebote, volumen: 0.7 },
   { id: "chip", f: T.AVISO, archivo: SFX.chip, volumen: 0.7 },
-  { id: "cierre", f: T.CIERRE + 2, archivo: SFX.apertura, volumen: 0.5 },
-  { id: "corte-loop", f: T.CIERRE + 10, archivo: SFX.corte, volumen: 0.4, dur: 20 },
+  ...T.SALTOS.map((f, i) => ({ id: `salto-${i}`, f, archivo: [SFX.tic1, SFX.tic2, SFX.tic3, SFX.tic4, SFX.tic5][i], volumen: 0.5 })),
+  { id: "loop", f: T.CIERRE + 4, archivo: SFX.corte, volumen: 0.35, dur: T.DURACION - T.CIERRE - 4 },
 ];
+
+/** ducking: si suena una palabra, los efectos bajan un poco (con 3 frames de margen) */
+const duckDe = (palabras: { s: number; e: number }[], fps: number) => (f: number) =>
+  palabras.some((w) => f >= w.s * fps - 3 && f <= w.e * fps + 3) ? MEZCLA.ducking : 1;
 
 export const DespieceCerradura: React.FC<CerraduraProps & { conSubtitulos?: boolean }> = ({ capa, showSafeZones, conVoz, conSubtitulos }) => {
   const { bs, T } = React.useMemo(() => armar(conVoz ?? true), [conVoz]);
@@ -58,6 +65,7 @@ export const DespieceCerradura: React.FC<CerraduraProps & { conSubtitulos?: bool
       voz={bs.map((b) => ({ id: b.id, f: T.V[b.id as keyof typeof T.V], audio: b.audio }))}
       ambiente={SFX.ambiente}
       conSubtitulos={conSubtitulos}
+      duck={duckDe(palabras, FPS)}
     >
       <Cerradura T={T} />
     </DespieceEpisode>
@@ -67,7 +75,7 @@ export const DespieceCerradura: React.FC<CerraduraProps & { conSubtitulos?: bool
 // ── hoja de contactos: 0; 0,5; 1; 1,5 s y después uno cada 2 s, más el último fotograma ──
 export const hojaFrames = (conVoz: boolean) => {
   const D = cerraduraDuracion(conVoz);
-  const fs = [0, 15, 30, 45];
+  const fs = [0, 6, 12, 30];
   for (let t = 2; t * FPS < D; t += 2) fs.push(t * FPS);
   fs.push(D - 1);
   return fs;
