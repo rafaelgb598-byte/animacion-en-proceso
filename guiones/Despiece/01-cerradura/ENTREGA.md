@@ -1,11 +1,13 @@
 # Despiece 01 · Cerradura · ENTREGA (v5: viralidad + voz)
 
+**✅ FINAL (2026-11-07):** el usuario aprobó la v2 con voz. Está en `videosFinal/Despiece/01-cerradura.mp4`; las pruebas quedan en `videosPrueba/Despiece/`.
+
 ## Rutas
-- **MP4 con voz (el que hay que mirar):** `videosPrueba/Despiece/01-cerradura-v2.mp4` · 29,8 s.
+- **MP4 final:** `videosFinal/Despiece/01-cerradura.mp4` (era `videosPrueba/Despiece/01-cerradura-v2.mp4`) · 29,8 s.
   `…-v1.mp4` es el primer render con voz y tenía dos tramos al límite (26,1 s y 28,1 s), que se corrigieron en la v2.
 - **MP4 sin voz:** `videosPrueba/Despiece/01-cerradura-sin-voz-v3.mp4` (32,5 s, ritmo planificado; antes de la voz).
 - **Hoja de contactos:** `videosPrueba/Despiece/qa/01-cerradura/hoja-voz-v1.png` · gancho a 360 px: `qa/01-cerradura/celular-360-gancho.png`
-  (`qa/` queda en la compu: no se sube).
+  (borradas al quedar final; se regeneran con `npx remotion still DespieceCerraduraHojaContactos …`).
 - **Rama:** `canales/despiece` (sin mergear a `main`).
 
 ## Control de calidad (sobre `01-cerradura-v2.mp4` / `DespieceCerradura`)
